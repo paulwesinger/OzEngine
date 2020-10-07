@@ -57,7 +57,6 @@ struct sSize {
     int h;
 } ;
 
-
 typedef struct _float2{
     float x;
     float y;
@@ -76,6 +75,12 @@ typedef struct _float4{
     float w;
 }FLOAT4;
 
+typedef struct {
+    float x;
+    float y;
+    float z;
+} VECTOR;
+
 typedef struct _2D{
     long id;
     float x;
@@ -86,7 +91,6 @@ typedef struct _3D{
     long id;
     _float3 vector;
     _float3 normale;
-    _float2 texture;
 }VECTOR3D;
 
 typedef struct _transform {
@@ -96,10 +100,15 @@ typedef struct _transform {
 }TRANSFORM;
 
 typedef struct _face {
-    int p0;
-    int p1;
-    int p2;
+    short p0;
+    short p1;
+    short p2;
 }FACE;
+
+typedef struct{
+    float u;
+    float v;
+}TEXTURECOORDS;
 
 typedef struct _color{
     _float4 color;

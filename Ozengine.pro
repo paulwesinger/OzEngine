@@ -19,6 +19,7 @@ SOURCES += \
         lights/light.cpp \
         logs/logs.cpp \
         main.cpp \
+        meshobject/meshobject.cpp \
         objectclasses/object.cpp \
         plane3D/plane3D.cpp \
         projection/projection.cpp \
@@ -66,6 +67,8 @@ HEADERS += \
     initgl.h \
     lights/light.h \
     logs/logs.h \
+    meshobject.h \
+    meshobject/meshobject.h \
     objectclasses/object.h \
     plane3D/plane3D.h \
     projection/projection.h \
@@ -80,6 +83,7 @@ DISTFILES += \
     BtnInstances/Button0.txt \
     BtnInstances/Button2.txt \
     Makefile \
+    Meshes/spaceship.3ds \
     ShaderSources/colorshader.frg \
     ShaderSources/cubefragmentshaderMulti.frg \
     ShaderSources/cubefragmentshaderMultinormals.frg \

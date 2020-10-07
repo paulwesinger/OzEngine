@@ -12,6 +12,7 @@
 //#include "vecmath/vecmath.h"
 #include <vector>
 #include "3DLoader/load3ds.h"
+#include "meshobject/meshobject.h"
 
 
 
@@ -358,6 +359,19 @@ bool InitGL::InitSDL2()  {
         printf ("InitGL -- RES_X,RES_Y :  %i x %i h \n",_ResX,_ResY);
 
     InitEngineObject();
+
+
+    // --------------------------------
+    // Test Loader:
+    //---------------------------------
+
+    CMeshObject * mesh = new CMeshObject();
+    if (mesh->Load3DS("Meshes/Kiste.3ds") )
+        logimage("Spaceship geladen ");
+    else
+        logwarn("Konnte spaceship nicht laden");
+
+
 
     return true;
 }
