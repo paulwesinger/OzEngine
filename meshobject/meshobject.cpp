@@ -89,16 +89,17 @@ bool CMeshObject::Load3DS(std::string filename){
 
             case 0x4000:
                 i=0;
+                char name[20];
                 do
                 {
                     fread (&l_char, 1, 1, l_file);
                     loginfo(IntToString(i));
-                    _Objectname[i]=l_char;
+                    name[i]=l_char;
                     i++;
                 }while(l_char != '\0' && i<20);
+                _Objectname = static_cast<std::string>(name);
                 logwarn("Objectname : " + _Objectname);
             break;
-
 
             //--------------- OBJ_TRIMESH ---------------
             // Description: Triangular mesh, contains chunks for 3d mesh info
@@ -153,7 +154,6 @@ bool CMeshObject::Load3DS(std::string filename){
                     fread (&face.p1, sizeof (unsigned short), 1, l_file);
                     fread (&face.p2, sizeof (unsigned short), 1, l_file);
                     fread (&l_face_flags, sizeof (unsigned short), 1, l_file);
-                    printf("Face flags: %x\n",l_face_flags);
                     faces.push_back(face);
                 }
                 break;

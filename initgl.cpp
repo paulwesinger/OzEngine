@@ -366,7 +366,7 @@ bool InitGL::InitSDL2()  {
     //---------------------------------
 
     CMeshObject * mesh = new CMeshObject();
-    if (mesh->Load3DS("Meshes/Kiste.3ds") )
+    if (mesh->Load3DS("Meshes/spaceship.3ds") )
         logimage("Spaceship geladen ");
     else
         logwarn("Konnte spaceship nicht laden");
