@@ -11,36 +11,36 @@
 #ifndef CMESHOBJECT_H
 #define CMESHOBJECT_H
 
-#include "../defines.h"
+
 #include <string>
 #include <list>
+#include <GL/gl.h>
+//#include <GL/glew.h>
+#include "../defines.h"
+#include "../baseobject/baseobject.h"
+#include "../3DLoader/load3ds.h"
+#include "../camera/camera.h"
 
-class CMeshObject{
+const int GL_DATA_SIZE = 8; // 3*Vector, 3 * NORMALE, 2* Texture
+const int FACESIZE = 3;
+const int FLOATS_PER_FACE = GL_DATA_SIZE * FACESIZE;  // Needed floats per face
+
+class CMeshObject : public BaseObject{
 public:
     CMeshObject();
     CMeshObject(std::string filename);
+
     ~CMeshObject();
-
-    bool Load3DS(std::string filenmame);
-    int faceCount();
-    std::string Objectname();
-
+    virtual void Draw( Camera * cam, GLuint shaderprog);
+    bool Load3DSMesh(std::string filename);
 
 private:
-    int _FaceCount;
-    int _Vertexcount;
+    void init();
+    bool meshLoaded;
+    void initMesh();
+
+    C3DSLoad * load3DS;
     std::string _Filename;
-    std::string _Objectname;
-
-    std::list<TEXTURECOORDS> texCoords;
-    std::list<VECTOR> vecs;
-    std::list<FACE> faces;
-
-    std::_List_iterator<TEXTURECOORDS> * textureIter;
-    std::_List_iterator<VECTOR3D> * vecIter;
-    std::_List_iterator<FACE> * faceIter;
-
-    long filelength(int f);
 };
 
 #endif // CMESHOBJECT_H

@@ -246,11 +246,19 @@ void CCube::Init() {
     */
 
 
-    // Vertex mit Normaler
     glBufferData(GL_ARRAY_BUFFER,
                  sizeof(vertex_normals),
                  vertex_normals,
                  GL_DYNAMIC_DRAW);
+
+    // Vertex mit Normaler
+
+    glBufferData(GL_ARRAY_BUFFER,
+                 sizeof(vertex_normals),
+                 vertex_normals,
+                 GL_DYNAMIC_DRAW);
+
+
 
     // Index Buffer
     glGenBuffers(1,&index_buffer);

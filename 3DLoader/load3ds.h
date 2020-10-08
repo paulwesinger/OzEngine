@@ -1,20 +1,39 @@
 #ifndef CLOAD3DS_H
 #define CLOAD3DS_H
+#include "../defines.h"
+#include <string>
+#include <vector>
 
-#include <fstream>
-#include <iostream>
-
-
-class CLoad3DS {
+class C3DSLoad{
 public:
-    CLoad3DS(std::string filename);
-    CLoad3DS(const CLoad3DS& orig);
-    virtual ~CLoad3DS();
+    C3DSLoad();
+    C3DSLoad(std::string filename);
+    ~C3DSLoad();
 
-    bool LoadMesh();
+    bool Load3DS(std::string filenmame);
+    std::vector<TEXTURECOORDS>& TextureCoordinates();
+    std::vector<VECTOR> & Vecs();
+    std::vector<FACE> & Faces();
+
+    int FaceCount();
+    int VertexCount();
+    int TextureCount();
+    std::string Objectname();
+
 private:
-    std::string file;
+    int _FaceCount;
+    int _VertexCount;
+    int _TextureCount;
+    std::string _Filename;
+    std::string _Objectname;
 
+
+
+    std::vector<TEXTURECOORDS> texCoords;
+    std::vector<VECTOR> vecs;
+    std::vector<FACE> faces;
+
+    long filelength(int f);
 };
 
 #endif // CLOAD3DS_H
