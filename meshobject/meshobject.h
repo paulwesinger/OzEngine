@@ -39,6 +39,9 @@ private:
     bool meshLoaded;
     void initMesh();
 
+    void storeInArray(float* arrayvar, int & ind, VECTOR v, VECTOR n,TEXTURECOORDS t);
+
+
     C3DSLoad * load3DS;
     std::string _Filename;
 };

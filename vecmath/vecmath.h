@@ -17,6 +17,7 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
+#include "../defines.h"
 
 void rotX(glm::vec3 & vec, float angle );  // degrees, no radians -> need to be converted !!
 void rotY(glm::vec3 & vec, float angle );
@@ -27,8 +28,6 @@ void rotY(glm::vec3 & vec, double angle );
 void rotZ(glm::vec3 & vec, double angle );
 // Kreis berechnungen für kartessisches 2D System:
 void calccircle(float radius, float angle,glm::vec2 &point);
-
-
 
 // other transforms later, if needed  ! 
 

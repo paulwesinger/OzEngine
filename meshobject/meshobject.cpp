@@ -5,6 +5,7 @@
 #include "meshobject.h"
 #include "../logs/logs.h"
 #include "../utils/utils.h"
+#include <glm/glm.hpp>
 
 
 
@@ -59,6 +60,7 @@ void CMeshObject::initMesh(){
 
         float meshFloats[arraySize];
         int index = 0;  // indexvariable für meshfloats
+
         for (int i=0; i<facecount; i++){
             // indexes für facevektoren
             int p0 = faces[i].p0;
@@ -73,7 +75,19 @@ void CMeshObject::initMesh(){
             TEXTURECOORDS t1 = textures.at(p1);
             TEXTURECOORDS t2 = textures.at(p2);
 
-            VECTOR crossproduct; // aus den 3 vektoren errrechnen
+
+            glm::vec3 d1,d2;
+            d1.x = v0.x; d1.y = v0.y; d1.z = v0.z;
+            d2.x = v1.x; d2.y = v1.y; d2.z = v1.z;
+
+            glm::vec3 crossproduct = glm::cross(glm::normalize(d1),glm::normalize(d2));
+            //crossproduct
+            VECTOR norm;
+            norm.x = crossproduct.x; norm.y = crossproduct.y; norm.z = crossproduct.z;
+
+
+            storeInArray(meshFloats, index,v0, norm, t0 );
+            /*
             meshFloats[index++] = v0.x;
             meshFloats[index++] = v0.y;
             meshFloats[index++] = v0.z;
@@ -82,13 +96,31 @@ void CMeshObject::initMesh(){
             //------
             meshFloats[index++] = t0.u;  // oder v ?
             meshFloats[index++] = t0.v;
+
+            */
            //-----------------------------------------
            // das ganze jetzt noch mit v1,v2, , function erstellen !!!
 
         }
+        logwarn("index: " + IntToString(index));
     }
 }
 
+void CMeshObject::storeInArray(float *arrayvar, int &ind, VECTOR v, VECTOR n, TEXTURECOORDS t) {
+    arrayvar[ind++] = v.x;
+    arrayvar[ind++] = v.y;
+    arrayvar[ind++] = v.z;
+
+    // NormVektor
+    arrayvar[ind++] = n.x;
+    arrayvar[ind++] = n.y;
+    arrayvar[ind++] = n.z;
+
+    // Textures
+    arrayvar[ind++] = t.u;  // oder v ?
+    arrayvar[ind++] = t.v;
+
+}
 void CMeshObject::Draw(Camera *cam, GLuint shaderprog){
 
 }

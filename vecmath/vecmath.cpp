@@ -81,6 +81,8 @@ void calccircle(float radius, float angle, glm::vec2 & point) {
 }
 
 
+
+
 void checkdegree(float & angle) {
     if (angle == 0.0f )
         return;
