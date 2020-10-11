@@ -13,19 +13,12 @@
 #include <SDL2/SDL_image.h>
 
 #include <glm/glm.hpp>
-//#include <glm/vec3.hpp>
-//#include <glm/vec4.hpp>
 
 #include "../shaders/shader.h"
 #include "../baseobject/baseobject.h"
 #include "../camera/camera.h"
 #include "../shaders/shader.h"
 #include "../lights/light.h"
-
-
-
-
-uint const  MAX_TEXTURES = 2;
 
 using namespace glm;
 
@@ -41,20 +34,11 @@ public:
     virtual void SetColor(vec4 color);
 
     void Init();
-    //Diese Funktion wird nach dem initialsieren aufgerufen.
-    // Liste > 1 Element == Multitextureing
-    bool addTexture(std::vector<std::string> path,std::string obj);
-    void setActiveShader(ShaderType t);
-    void initShader(ShaderType s,GLuint prog);
     void addLight(light * l);
 
-    // Fürs erste ersmal maximal 3    bool addTexture(std::string path);
 private:
-
-    GLuint       perspectiveTextureShader,perspectiveColorShader, lightshader, currentShader;
     int          orthoShader;
     GLuint       vao;
-
 
     GLuint          position_buffer;
     GLuint          index_buffer;
@@ -76,12 +60,7 @@ private:
     vec4           _Color;
     // flags  --> ins BaseObject ??
     bool left;
-    // wenn alles mit liste läuft, ersetzen
-   // unsigned int multitex[2];
-
-    uint _CountTextures;  // die Anzehl = Listen länge
-    GLuint  _Textures[5];
-};
+ };
 
 
 #endif // CCUBE_H

@@ -12,8 +12,7 @@
 #include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-//#include <glad.h>
-//#include <glm/detail/type_mat4x4.hpp>
+
 #include "../logs/logs.h"
 #include "../utils/utils.h"
 #include "../imageloader/loadimage.h"
@@ -196,24 +195,6 @@ CCube::~CCube() {
     //delete shader;
 }
 
-void CCube::initShader(ShaderType s, GLuint prog) {
-    switch (s) {
-
-        case COLOR_SHADER:      perspectiveColorShader = prog; break;
-        case TEXTURE_SHADER:    perspectiveTextureShader = prog; break;
-        case LIGHT_SHADER:      lightshader = prog; break;
-    }
-}
-
-void CCube::setActiveShader(ShaderType t){
-
-    switch (t) {
-        case COLOR_SHADER: currentShader = perspectiveColorShader; break;
-        case TEXTURE_SHADER: currentShader = perspectiveTextureShader; break;
-        case LIGHT_SHADER: currentShader = lightshader; break;
-    }
-}
-
 // Owns Methodes
 void CCube::Init() {
 
@@ -234,31 +215,15 @@ void CCube::Init() {
     //Genererate vertexarray object and buffers
     glGenVertexArrays(1,&vao);
     glBindVertexArray(vao);
+
     // positon buffer
     glGenBuffers(1,&position_buffer);
     glBindBuffer(GL_ARRAY_BUFFER,position_buffer);
-
-    /*  Vertex ohne Normale:
-    glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(vertex_positions),
-                 vertex_positions,
-                 GL_DYNAMIC_DRAW);
-    */
-
-
-    glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(vertex_normals),
-                 vertex_normals,
-                 GL_DYNAMIC_DRAW);
-
     // Vertex mit Normaler
-
     glBufferData(GL_ARRAY_BUFFER,
                  sizeof(vertex_normals),
                  vertex_normals,
                  GL_DYNAMIC_DRAW);
-
-
 
     // Index Buffer
     glGenBuffers(1,&index_buffer);
@@ -306,57 +271,6 @@ void CCube::Init() {
     _Trans.x =  0.0f;
     // flags:
     left = true;
-}
-
-bool CCube::addTexture(std::vector<std::string> path, std::string obj) {
-
-
-    _HasTextures = false;
-    for ( uint i = 0; i< path.size(); i++) {
-
-        SDL_Surface * surface = CLoadImage::getSurface(path[i], "CCbe::Init"); ///home/paul/Bilder/angelinh.jpg"
-
-        if ( surface ) {
-            int width = surface->w;
-            int height = surface->h;
-            char * data = static_cast<char*>(surface->pixels);
-            _HasTextures = true;
-            if ( data ) {
-
-                GLuint tex;
-                glGenTextures(1,&tex);
-                switch (i) {
-                    case 0: glActiveTexture(GL_TEXTURE0); glBindTexture(GL_TEXTURE_2D,tex); break;
-                    case 1: glActiveTexture(GL_TEXTURE1); glBindTexture(GL_TEXTURE_2D,tex); break;
-                    case 2: glActiveTexture(GL_TEXTURE2); glBindTexture(GL_TEXTURE_2D,tex); break;
-                    case 3: glActiveTexture(GL_TEXTURE3); glBindTexture(GL_TEXTURE_2D,tex); break;
-                    case 4: glActiveTexture(GL_TEXTURE4); glBindTexture(GL_TEXTURE_2D,tex); break;
-                }
-                // *******************************************
-                // Generate Textures
-                // *******************************************
-                _Textures[i] = tex;
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-                logimage("Texture "+ path[i]+ " geladen. Index = " + IntToString(i),obj);
-            }
-        }  // if surface
-        else
-            logwarn("Texture  nicht geladen !"," CCube::addTexture");
-
-        if ( ++ _CountTextures > MAX_TEXTURES ) {
-            logwarn( "No more Textures available ! MAX_TEXTURES = 5","CCube::addTextures");
-            break;
-        }
-    }  // for
-
-    loginfo("addTexture :: _CountTextures: " + IntToString(_CountTextures),"CCube::Init");
-    if (_HasTextures)
-        return true;
-    return  false;
 }
 
 void CCube::addLight(light *l) {

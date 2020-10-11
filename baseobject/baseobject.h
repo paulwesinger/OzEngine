@@ -1,9 +1,17 @@
 #ifndef BASEOBJECT_H
 #define BASEOBJECT_H
 
+#include <GL/gl.h>
+//#include <GL/glew.h>
+
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
+#include <vector>
+#include <string>
+
+#include "../defines.h"
+
 
 /*
  * This class holds the positon , translation and scale
@@ -11,6 +19,10 @@
  * every object shouldbe derrived from this object !
  */
 using namespace glm;
+
+
+
+uint const  MAX_TEXTURES = 5;
 
 class BaseObject {
 public:
@@ -35,6 +47,10 @@ public:
     virtual void StepTranslate(vec3 step);
     virtual void StepRotate(vec3 step);
     virtual void StepScale(vec3 step);
+    virtual bool addTexture(std::vector<std::string> path, std::string obj);
+    virtual void setActiveShader(ShaderType t);
+    virtual void initShader(ShaderType s,GLuint prog);
+
 
     // Flags
     void SetFirstTranslate(bool ok);
@@ -47,6 +63,8 @@ public:
 
 
 protected:
+    GLuint       perspectiveTextureShader,perspectiveColorShader, lightshader, currentShader;
+
     // This vectors holds the current translation,rotation,scale
     vec3 _rotate;
     vec3 _translate;
@@ -63,6 +81,9 @@ protected:
     glm::mat4 _Projection;
     bool _IsOrtho;
     bool _HasTextures;
+
+    uint _CountTextures;  // die Anzehl = Listen länge
+    GLuint  _Textures[5];
 
 
 };

@@ -36,6 +36,8 @@
 #include "textrenderer/textrender.h"
 #include "baseobject/baseobject.h"
 
+#include "meshobject/meshobject.h"
+
 #include "buttons/button.h"
 #include "lights/light.h"
 
@@ -101,6 +103,8 @@ protected:
     CCube * cube;
     CCube * cube2;
     CCube * cube3;
+
+     CMeshObject *me;
 
     CSphere *sphere1;
     CSphere *lightSource;   // Damit wir wissen wo die ichtquekke wirjkich  ist

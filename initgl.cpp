@@ -11,13 +11,7 @@
 #include "initgl.h"
 //#include "vecmath/vecmath.h"
 #include <vector>
-#include "3DLoader/load3ds.h"
-#include "meshobject/meshobject.h"
-
-
-
-
-
+//#include "3DLoader/load3ds.h"
 
 // Res for windowed Mode
 
@@ -365,10 +359,8 @@ bool InitGL::InitSDL2()  {
     // Test Loader:
     //---------------------------------
 
-    CMeshObject * me = new CMeshObject();
+    me = new CMeshObject();
     me->Load3DSMesh("Meshes/spaceship.3ds");
-
-
 
     return true;
 }
@@ -826,6 +818,16 @@ void InitGL::Run() {
         dummy = vec3(1.0,2.0,3.0);
         sphere1->SetFirstTranslate(true);
         sphere1 ->StepRotate(dummy);
+
+
+        //meshObject
+        dummy = vec3(1.0,0.0,0.0);
+        me->SetFirstTranslate(true);
+        me ->StepRotate(dummy);
+        me->StepTranslate(glm::vec3(2.0,0.5,0.0));
+        me->Translate(glm::vec3(dummy));
+        me->Draw(camera,currentShader);
+
 
         // lightsource
         dummy = vec3(1.0,0.0,0.0);
