@@ -47,13 +47,13 @@ private:
     bool meshLoaded;
     void initMesh();
 
-    void storeInVertexArray(float* arrayvar, int & ind, VECTOR v, VECTOR n,TEXTURECOORDS t);
+    void storeInVertexArray(std::vector<GLfloat> &arrayvar, VECTOR v, VECTOR n,TEXTURECOORDS t);
 
     C3DSLoad * load3DS;
     std::string _Filename;
 
-    float *  meshFloats;
-    GLuint *  meshIndexes;
+    std::vector<GLfloat>  meshFloats;
+    std::vector<GLshort>  meshIndexes;
 
     GLuint vao;
     GLuint vbo;

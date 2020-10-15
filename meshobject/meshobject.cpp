@@ -27,6 +27,51 @@ static const GLushort vertex_indices[] =
     7, 3, 1
 };
 
+static const GLfloat vertex_normals[] = {
+     // x,y,z                normales           texture
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0, 0.0,
+     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0, 0.0,
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0, 1.0,
+     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0, 1.0,  // Back
+    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0, 1.0,
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0, 0.0,
+
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0, 0.0,
+     0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0, 0.0,  //Front
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0, 1.0,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0, 1.0,
+    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0, 1.0,
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0, 0.0,
+
+    -0.5f,  0.5f,  0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 1.0,
+    -0.5f,  0.5f, -0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 1.0,
+    -0.5f, -0.5f, -0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 0.0,
+    -0.5f, -0.5f, -0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 0.0,
+    -0.5f, -0.5f,  0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 0.0,   // LEFT
+    -0.5f,  0.5f,  0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 1.0,
+
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0, 1.0,
+     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0, 1.0,
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0, 0.0,   // Right
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0, 0.0,
+     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  10., 0.0,
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0, 1.0,
+
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0, 0.0,
+     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0, 0.0,    //Bottom
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0, 0.0,
+     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0, 0.0,
+    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0, 0.0,
+    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0, 0.0,
+
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0, 1.0,
+     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0, 1.0,   //TOP
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0, 1.0,
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0, 1.0,
+    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0, 1.0,
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0, 1.0
+};
+
 CMeshObject::CMeshObject()
     :BaseObject(){
     init();
@@ -78,14 +123,13 @@ void CMeshObject::initMesh(){
         arraySize = FLOATS_PER_FACE * facecount;
         indexSize = facecount * 3 ;
 
+
+         loginfo("arraySize " + IntToString( arraySize) );
+         loginfo("indexSize " + IntToString( indexSize) );
+
         std::vector<VECTOR> vecs = load3DS->Vecs();
         std::vector<FACE> faces = load3DS->Faces();
         std::vector<TEXTURECOORDS> textures = load3DS->TextureCoordinates();
-
-        meshFloats =  new float[arraySize];
-        meshIndexes = new GLuint[indexSize];
-
-        int index = 0;  // indexvariable für meshfloats
 
         for (int i=0; i<facecount; i++){
             // indexes für facevektoren
@@ -101,7 +145,6 @@ void CMeshObject::initMesh(){
             TEXTURECOORDS t1 = textures.at(p1);
             TEXTURECOORDS t2 = textures.at(p2);
 
-
             glm::vec3 d1,d2;
             d1.x = v0.x; d1.y = v0.y; d1.z = v0.z;
             d2.x = v1.x; d2.y = v1.y; d2.z = v1.z;
@@ -111,49 +154,21 @@ void CMeshObject::initMesh(){
             VECTOR norm;
             norm.x = crossproduct.x; norm.y = crossproduct.y; norm.z = crossproduct.z;
 
-            storeInVertexArray(meshFloats, index, v0, norm, t0 );
-            storeInVertexArray(meshFloats, index, v1, norm, t1);
-            storeInVertexArray(meshFloats, index, v2, norm, t2);
+            storeInVertexArray(meshFloats, v0, norm, t0 );
+            storeInVertexArray(meshFloats, v1, norm, t1);
+            storeInVertexArray(meshFloats, v2, norm, t2);
         }
-
-
-        loginfo("meshfloat " + FloatToString( meshFloats[0]) );
-        loginfo("meshfloat " + FloatToString( meshFloats[1]) );
-        loginfo("meshfloat " + FloatToString( meshFloats[2]) );
-        loginfo("meshfloat " + FloatToString( meshFloats[3]) );
-        loginfo("meshfloat " + FloatToString( meshFloats[4]) );
-        loginfo("meshfloat " + FloatToString( meshFloats[5]) );
-        loginfo("meshfloat " + FloatToString( meshFloats[6]) );
-        loginfo("meshfloat " + FloatToString( meshFloats[7]) );
-        loginfo("meshfloat " + FloatToString( meshFloats[8]) );
-//        loginfo("meshfloat " + FloatToString( meshFloats[9]) );
 
         // Element Buffer initialisieren
-        loginfo("index " + IntToString( index) );
-        loginfo("arraysize " + IntToString( arraySize) );
-        loginfo("sizeof meshFloats " + IntToString( sizeof(arraySize)) );
-
-        loginfo("sizeof indexes_const " + IntToString( sizeof(vertex_indices)) );
-
-        index =0;
         for (int i= 0; i< facecount; i++){
-            meshIndexes[index++] = faces[i].p0;
-            meshIndexes[index++] = faces[i].p1;
-            meshIndexes[index++] = faces[i].p2;
+            meshIndexes.push_back(faces[i].p0);
+            meshIndexes.push_back(faces[i].p1);
+            meshIndexes.push_back(faces[i].p2);
         }
-
-        loginfo("meshIndex " + IntToString( meshIndexes[0]) );
-        loginfo("meshIndex " + IntToString( meshIndexes[1]) );
-        loginfo("meshIndex " + IntToString( meshIndexes[2]) );
-        loginfo("meshIndex " + IntToString( meshIndexes[3]) );
-        loginfo("meshIndex " + IntToString( meshIndexes[4]) );
-        loginfo("meshIndex " + IntToString( meshIndexes[5]) );
-        loginfo("meshIndex " + IntToString( meshIndexes[6]) );
 
         // ----------------------------------------
         // Vertex Array
         // ----------------------------------------
-
         glGenVertexArrays(1,&vao);
         glBindVertexArray(vao);
 
@@ -161,85 +176,62 @@ void CMeshObject::initMesh(){
         // Vertex Array , Vertex
         // ----------------------------------------
 
-        glCreateBuffers(1, &vbo);
-        glNamedBufferStorage(vbo, arraySize * sizeof(float), NULL, GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
+        glGenBuffers(1, &vbo);
         glBindBuffer(GL_ARRAY_BUFFER,vbo);
 
         loginfo("meshBuffer  bind   ");
+        glBufferData(GL_ARRAY_BUFFER,
+                          meshFloats.size() * sizeof(GLfloat),
+                          &meshFloats[0],
+                          GL_STATIC_DRAW);
 
-        void * ptr = glMapNamedBuffer(vbo,GL_WRITE_ONLY);
-        memcpy(ptr,meshFloats, arraySize * sizeof(float));
-        glUnmapNamedBuffer(GL_ARRAY_BUFFER);
 
         loginfo("meshBuffer erstellt ");
 
         // ----------------------------------------
         // Element buffer
         // ----------------------------------------
-        glCreateBuffers(1,&ebo);
-        glNamedBufferStorage(ebo,indexSize * sizeof(GLshort),NULL,GL_MAP_WRITE_BIT | GL_DYNAMIC_STORAGE_BIT);
+        glGenBuffers(1,&ebo);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ebo);
 
-        void * indexptr = glMapNamedBuffer(ebo,GL_WRITE_ONLY);
-        memcpy(indexptr,meshIndexes,indexSize * sizeof(GLshort));
-        glUnmapNamedBuffer(GL_ELEMENT_ARRAY_BUFFER);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                          meshIndexes.size() * sizeof(GLshort),
+                          &meshIndexes[0],
+                          GL_STATIC_DRAW);
 
         loginfo("IndexBuffer erstellt ");
 
-/*
-        glGenBuffers(GL_ARRAY_BUFFER,&vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-
-        glBufferData(GL_ARRAY_BUFFER,
-                     arraySize * sizeof(GLfloat) ,
-                     meshFloats,
-                     GL_STATIC_DRAW);
-*/
-/*
-
-        // -----------------------------------------
-        // Index buffer
-        // -----------------------------------------
-        glGenBuffers(GL_ELEMENT_ARRAY_BUFFER,&ebo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                     facecount * 3 * sizeof(int),
-                     meshIndexes,
-                     GL_STATIC_DRAW);
-*/
-        //------------------------------------------
-        // VertexAttribute Ptr
-        //------------------------------------------
-        // Vectors
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, STRIDE, (void *)0);
         glEnableVertexAttribArray(0);
         //Normals
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, STRIDE, (void*) (3 * sizeof(float)));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, STRIDE, (void*) (3 * sizeof(GLfloat)));
         glEnableVertexAttribArray(1);
         //Textures
-        glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, STRIDE, (void*) (6* sizeof(float)));
+        glVertexAttribPointer(2, 2, GL_FLOAT,GL_FALSE, STRIDE, (void*) (6* sizeof(GLfloat)));
         glEnableVertexAttribArray(2);
 
         glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 
         loginfo("meshObject::Init Done ");
     }
 }
 
-void CMeshObject::storeInVertexArray(float *arrayvar, int &ind, VECTOR v, VECTOR n, TEXTURECOORDS t) {
-    arrayvar[ind++] = v.x;
-    arrayvar[ind++] = v.y;
-    arrayvar[ind++] = v.z;
+void CMeshObject::storeInVertexArray(std::vector<GLfloat> &arrayvar, VECTOR v, VECTOR n, TEXTURECOORDS t) {
+
+    arrayvar.push_back(v.x);
+    arrayvar.push_back(v.y);
+    arrayvar.push_back(v.z);
 
     // NormVektor
-    arrayvar[ind++] = n.x;
-    arrayvar[ind++] = n.y;
-    arrayvar[ind++] = n.z;
+    arrayvar.push_back(n.x);
+    arrayvar.push_back(n.y);
+    arrayvar.push_back(n.z);
 
     // Textures
-    arrayvar[ind++] = t.u;  // oder v ?
-    arrayvar[ind++] = t.v;
+    arrayvar.push_back(t.u);  // oder v ?
+    arrayvar.push_back(t.v);
 
 }
 
@@ -323,7 +315,7 @@ void CMeshObject::Draw(Camera *cam, GLuint shaderprog){
 
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ebo);
-    glDrawElements( GL_TRIANGLES, sizeof(indexSize), GL_UNSIGNED_SHORT, 0);//GL_TRIANGLES
+    glDrawElements( GL_TRIANGLES, sizeof(meshIndexes), GL_UNSIGNED_SHORT, 0);//GL_TRIANGLES
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindTexture(GL_TEXTURE_2D,0);

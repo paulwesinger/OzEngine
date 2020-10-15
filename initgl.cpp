@@ -826,7 +826,7 @@ void InitGL::Run() {
         me ->StepRotate(dummy);
         me->StepTranslate(glm::vec3(2.0,0.5,0.0));
         me->Translate(glm::vec3(dummy));
-        me->Draw(camera,currentShader);
+        me->Draw(camera, currentShader);
 
 
         // lightsource
