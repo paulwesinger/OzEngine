@@ -21,6 +21,8 @@ SOURCES += \
         main.cpp \
         meshobject/meshobject.cpp \
         objectclasses/object.cpp \
+        objloader.cpp \
+        objloader/objloader.cpp \
         plane3D/plane3D.cpp \
         projection/projection.cpp \
         shaders/shader.cpp \
@@ -70,6 +72,8 @@ HEADERS += \
     meshobject.h \
     meshobject/meshobject.h \
     objectclasses/object.h \
+    objloader.h \
+    objloader/objloader.h \
     plane3D/plane3D.h \
     projection/projection.h \
     shaders/shader.h \

@@ -11,67 +11,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-static const GLushort vertex_indices[] =
-{
-    0, 1, 2,
-    2, 1, 3,
-    2, 3, 4,
-    4, 3, 5,
-    4, 5, 6,
-    6, 5, 7,
-    6, 7, 0,
-    0, 7, 1,
-    6, 0, 2,
-    2, 4, 6,
-    7, 5, 3,
-    7, 3, 1
-};
-
-static const GLfloat vertex_normals[] = {
-     // x,y,z                normales           texture
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0, 0.0,
-     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0, 0.0,
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0, 1.0,
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0, 1.0,  // Back
-    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0, 1.0,
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0, 0.0,
-
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0, 0.0,
-     0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0, 0.0,  //Front
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0, 1.0,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0, 1.0,
-    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0, 1.0,
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0, 0.0,
-
-    -0.5f,  0.5f,  0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 1.0,
-    -0.5f,  0.5f, -0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 1.0,
-    -0.5f, -0.5f, -0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 0.0,
-    -0.5f, -0.5f, -0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 0.0,
-    -0.5f, -0.5f,  0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 0.0,   // LEFT
-    -0.5f,  0.5f,  0.5f, -1.0f,  -1.0f,  0.0f,  0.0, 1.0,
-
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0, 1.0,
-     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0, 1.0,
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0, 0.0,   // Right
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0, 0.0,
-     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  10., 0.0,
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0, 1.0,
-
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0, 0.0,
-     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0, 0.0,    //Bottom
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0, 0.0,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0, 0.0,
-    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0, 0.0,
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0, 0.0,
-
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0, 1.0,
-     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0, 1.0,   //TOP
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0, 1.0,
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0, 1.0,
-    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0, 1.0,
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0, 1.0
-};
-
 CMeshObject::CMeshObject()
     :BaseObject(){
     init();
@@ -100,11 +39,20 @@ bool CMeshObject::Load3DSMesh(std::string filename) {
 
     _Filename = filename;
     meshLoaded = load3DS->Load3DS(filename);
-    initMesh();
+    init3DSMesh();
     return meshLoaded;
 }
 
-void CMeshObject::initMesh(){
+bool CMeshObject::LoadOBJMesh(std::string filename){
+    _Filename = filename;
+    meshLoaded = false;   // loadObj->LoadOBJ(filename);
+    return meshLoaded;
+}
+
+void CMeshObject::initOBJMesh(){
+
+}
+void CMeshObject::init3DSMesh(){
     if (meshLoaded) {
         //----------------------------------------------------------
         // Alle listen (Texture,faces, vektoren) vom 3DSLoader holen
@@ -122,7 +70,6 @@ void CMeshObject::initMesh(){
         int texturecount = load3DS->TextureCount();
         arraySize = FLOATS_PER_FACE * facecount;
         indexSize = facecount * 3 ;
-
 
          loginfo("arraySize " + IntToString( arraySize) );
          loginfo("indexSize " + IntToString( indexSize) );

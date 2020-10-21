@@ -37,6 +37,7 @@ public:
     ~CMeshObject();
     virtual void Draw( Camera * cam, GLuint shaderprog);
     bool Load3DSMesh(std::string filename);
+    bool LoadOBJMesh(std::string filename);
 
 protected:
     GLsizeiptr arraySize;
@@ -45,7 +46,8 @@ protected:
 private:
     void init();
     bool meshLoaded;
-    void initMesh();
+    void init3DSMesh();
+    void initOBJMesh();
 
     void storeInVertexArray(std::vector<GLfloat> &arrayvar, VECTOR v, VECTOR n,TEXTURECOORDS t);
 

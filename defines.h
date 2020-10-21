@@ -18,6 +18,8 @@
 #include <string>
 
 const int MAX_SCHEMES = 6;   // siehe COLOR_SCHEMES
+const std::string NO_FILE  = "NO FILE";
+
 
 // Structs for Objects to read in
 enum ObjectType {
