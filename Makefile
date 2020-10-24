@@ -5,7 +5,7 @@ base2d/base2d.cpp logs/logs.cpp utils/utils.cpp camera/camera.cpp vecmath/vecmat
 skybox/skybox.cpp fileutils/fileutil.cpp objectclasses/object.cpp projection/projection.cpp \
 plane3D/plane3D.cpp 3DLoader/load3ds.cpp textrenderer/textrender.cpp sphere/sphere.cpp \
 imageloader/loadimage.cpp buttons/button.cpp colors/colorscheme.cpp engine/engine.cpp\
-lights/light.cpp meshobject/meshobject.cpp
+lights/light.cpp meshobject/meshobject.cpp objloader/objloader.cpp
 
 	 
 

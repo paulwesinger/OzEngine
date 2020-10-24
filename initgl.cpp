@@ -362,6 +362,13 @@ bool InitGL::InitSDL2()  {
     me = new CMeshObject();
     me->Load3DSMesh("Meshes/spaceship.3ds");
 
+    objLoader = new COBJLoader("Meshes/Quad.obj");
+
+    int errorid = objLoader->LoadOBJ();
+
+    logwarn(" OBJLoader return ID: " + IntToString(errorid));
+
+
     return true;
 }
 

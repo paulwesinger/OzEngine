@@ -37,6 +37,8 @@
 #include "baseobject/baseobject.h"
 
 #include "meshobject/meshobject.h"
+#include "objloader/objloader.h"
+
 
 #include "buttons/button.h"
 #include "lights/light.h"
@@ -104,7 +106,8 @@ protected:
     CCube * cube2;
     CCube * cube3;
 
-     CMeshObject *me;
+    CMeshObject *me;
+    COBJLoader * objLoader;
 
     CSphere *sphere1;
     CSphere *lightSource;   // Damit wir wissen wo die ichtquekke wirjkich  ist

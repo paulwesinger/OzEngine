@@ -16,7 +16,7 @@ enum {
     NO_TEXTUREDATA,
     EMPTY_FILE,
     READ_ERROR
-} OBJ_LOAD_ERRORS;
+};
 
 class COBJLoader
 {
@@ -36,8 +36,14 @@ protected:
     std::vector<VECTOR> vecs;
     std::vector<FACE> faces;
 
+    VECTOR  ReadVec(std::string line, std::string key);
+    TEXTURECOORDS  ReadTex(std::string line, std::string key);
+
 private:
+    float ParseStringToFloat(std::string &line, std::string key, bool & ok);
+
     std::string _FileName;
+
 };
 
 #endif // COBJLOADER_H
