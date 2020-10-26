@@ -47,32 +47,101 @@ int COBJLoader::LoadOBJ() {
         std::string st;
         st.append(cstr,2);
 
-
-        logimage("cstr " + st + "|");
-
         if (st == "v " ) {  // Vectors
             line.erase(0,2);  // erease v+leer -> übrig ist x, y, z
             VECTOR v = ReadVec(line," ");
-            logimage("Vector : x= " + FloatToString(v.x) + " y= " + FloatToString(v.y) + " z= " + FloatToString(v.z));
         }
         else
             if (st == "vt") {// textures
+                // erstmal vt+ leer löschen
+                line.erase(0,3);
+                TEXTURECOORDS t = ReadTex(line," ");
 
             }
             else
                 if ( st == "vn") { // normale
-
+                    line.erase(0,3);
+                    VECTOR v = ReadVec(line," ");
                 }
-
-
-
-
-        //vecs.push_back()
-        logwarn("lines[" +IntToString(i) + "] " + line);
+                else
+                    if (st == "f "){ // face
+                        line.erase(0,2);
+                        int countVecs = 0; // manchmal 3, manchmal 4 und so weiter...
+                        bool ok = ReadFace(line," ",countVecs);
+                    }
 
     }
     return NO_ERROR;
 }
+
+bool COBJLoader::COBJLoader::ReadFace(std::string line, std::string key, int &countfaces)
+{
+    bool ok = false;
+    int i = 0;
+
+    // format n1/n2/n3 n1/n2/n3/ n1/n2/n3 .........
+    // n1 = vectorindex
+    // n2 = texturcoordinatenindex
+    // n3 = normaleindex
+    // das ganze dann 3, (Triangle) oder 4 (linestrip) , mehr... ?
+
+    std::vector<int> vi;
+    std::vector<int> ti;
+    std::vector<int> ni;
+
+    std::size_t pos = line.find(" ",0);
+    std::string st;
+    logwarn("Argument line" + line );
+
+    while (pos != line.npos && countfaces <  10) {
+
+        std::string st = castBufToString(line,pos);
+
+        int f = getIndex(st);     // n1 = Vector index
+        int t = getIndex(st);     // n2 = Texturkoordinaten index
+        int n = getIndex(st);     // n3 = Normalen index
+
+        countfaces ++;
+
+        FACE face;
+
+
+        logwarn("vecindex " + IntToString(f) );
+        logwarn("texindex " + IntToString(t) );
+        logwarn("normalindex " + IntToString(n) );
+        logEmptyLine();
+     //   faces.push_back(face);
+        pos = line.find(" ",0);
+    }
+
+    st = castBufToString(line,pos);
+
+    int f = getIndex(st);     // n1 = Vector index
+    int t = getIndex(st);     // n2 = Texturkoordinaten index
+    int n = getIndex(st);     // n3 = Normalen index
+    countfaces ++;
+    return true;
+}
+
+std::string COBJLoader::castBufToString(std::string &s, size_t p) {
+    char buf[50];
+    s.copy(buf,p);
+    s.erase(0,p+1);
+    std::string st(buf);
+    return st;
+    //return (std::string) buf;
+}
+
+int COBJLoader::getIndex(std::string &line){
+
+    int i = 0;
+    std::size_t pos = line.find("/",0);
+    if (pos != line.npos) {
+        return StringToInt(castBufToString(line,pos));
+    }
+    return StringToInt(line); //StringToInt((std::string) buf);
+}
+
 
 VECTOR COBJLoader::ReadVec(std::string line, std::string key) {
 
@@ -82,40 +151,45 @@ VECTOR COBJLoader::ReadVec(std::string line, std::string key) {
     // Format: "x y z"
     // Finde den das nächste leerzeichen:
     v.x = ParseStringToFloat(line, key, ok);
-
     v.y = ParseStringToFloat(line, key,ok);
-
     v.z = ParseStringToFloat(line,"",ok);
 
-    return  v;
+    logwarn("ReadVec x " + FloatToString(v.x) );
 
+    logwarn("ReadVec y " + FloatToString(v.y) );
+
+    logwarn("ReadVec z " + FloatToString(v.z) );
+    logEmptyLine();
+
+
+    return  v;
 }
+
+TEXTURECOORDS COBJLoader::ReadTex(std::string line, std::string key) {
+    // FORMAT vt u v
+    TEXTURECOORDS tex;
+    bool ok = false;
+
+    tex.u= ParseStringToFloat(line,key,ok);
+    tex.v= ParseStringToFloat(line,"",ok);
+    return tex;
+}
+
+
+
 float COBJLoader::ParseStringToFloat(std::string &line, std::string key, bool & ok) {
 
     ok = false;
-    char buffer[20];
 
     if ( key != "") {
         std::size_t pos = line.find(key,0);
-        if (pos != line.npos ){ // ende der zeile
-
-            line.copy(buffer,pos-1);
-            line.erase(0, pos+1);
-            return StringToFloat((std::string) buffer);
-        }
-        return 0.0f;
+        return StringToFloat(castBufToString(line,pos));
     }
+
     return StringToFloat(line);
-
 }
 
-TEXTURECOORDS  COBJLoader::ReadTex(std::string line, std::string key) {
-    // FORMAT vt u v
-    TEXTURECOORDS tex;
 
-
-    return tex;
-}
 void COBJLoader::SetOBJFileName(std::string filename) {
     _FileName = filename;
 }

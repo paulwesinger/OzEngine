@@ -38,11 +38,15 @@ protected:
 
     VECTOR  ReadVec(std::string line, std::string key);
     TEXTURECOORDS  ReadTex(std::string line, std::string key);
+    bool ReadFace(std::string line, std::string key, int & countfaces);
 
 private:
     float ParseStringToFloat(std::string &line, std::string key, bool & ok);
+    int getIndex(std::string &line);
+    std::string castBufToString(std::string &s, size_t p);
 
     std::string _FileName;
+
 
 };
 
