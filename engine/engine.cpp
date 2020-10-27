@@ -57,9 +57,13 @@ void CEngine::Init2D() {
   }
 
 void CEngine::Init3D(){
+    logEmptyLine();
+    loginfo("============================");
+    loginfo("Erstelle 3D Objekte.........");
+    loginfo("============================");
    fileUtil * fileutil = new fileUtil();
    bool ok;
-   ok = fileutil->readLine(BUTTONS_CFG + "Objects3DList.cfg", object3DList);
+   ok = fileutil->readLine(OBJECT3D_CFG + "Objects3DList.cfg", object3DList);
    if (ok) {
        loginfo("Lade Datei |ObjectList3D.cfg|","CEngine::Init3D");
        logEmptyLine();
@@ -76,6 +80,7 @@ void CEngine::Init3D(){
            if( ! objconfig.empty() ) {
                loginfo("Erstelle Object: .......< " + path+ " >", "Engine::Init3D");
                s3DStruct s3D;
+
 
            }
        }

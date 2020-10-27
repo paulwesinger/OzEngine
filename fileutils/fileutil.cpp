@@ -80,13 +80,18 @@ bool fileUtil::readLine(string datei,std::vector<std::string> &lines) {
     //vector<string> stringlist;
     int i =0;
     if ( is.is_open()) {
-        while ( ! is.eof() ) {
-            char buffer[256];
-            is.getline(buffer,256);
+        while ( ! is.eof() && i < 40 ) {  // sicherheitsabbruch !!!
+            char buffer[512];
+            std::string st;
+            is.getline(buffer,512);
             if ( is.gcount() > 0 ) {
-                lines.push_back((string)buffer);
-                i++;
+                st = (string)buffer;
+                lines.push_back(st);
+
+
             }
+            i++;
+            logwarn("line : " + st + " i " + IntToString(i), "fileutil");
         }
         loginfo("Loaded " + IntToString(i) + " entries" );
         loginfo ("Reading Data from file " + datei + " ... done","fileUtil");

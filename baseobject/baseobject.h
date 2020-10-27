@@ -11,6 +11,7 @@
 #include <string>
 
 #include "../defines.h"
+#include "../camera/camera.h"
 
 
 /*
@@ -36,7 +37,7 @@ public:
     virtual vec3 GetScale();
 
     virtual vec4 GetColor();
-
+    virtual void Draw( Camera * cam, GLuint shaderprog);
 
     virtual void Translate(vec3 trans);
     virtual void Rotate(vec3 rotate);  // ACHTUN : Hält nur den aktuell zu drehenden

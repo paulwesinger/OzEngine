@@ -41,6 +41,8 @@ BaseObject::BaseObject(vec3 pos,vec3 rotate,vec3 scale , vec4 col) {
 BaseObject::~BaseObject() {
 }
 
+void BaseObject::Draw( Camera * cam, GLuint shaderprog){}
+
 bool BaseObject::addTexture(std::vector<std::string> path, std::string obj) {
 
 

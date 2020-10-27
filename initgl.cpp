@@ -359,14 +359,14 @@ bool InitGL::InitSDL2()  {
     // Test Loader:
     //---------------------------------
 
-    me = new CMeshObject();
-    me->Load3DSMesh("Meshes/spaceship.3ds");
+    //me = new CMeshObject();
+    //me->Load3DSMesh("Meshes/spaceship.3ds");
 
-    objLoader = new COBJLoader("Meshes/Quad.obj");
+    //objLoader = new COBJLoader("Meshes/Quad.obj");
 
-    int errorid = objLoader->LoadOBJ();
+    //int errorid = objLoader->LoadOBJ();
 
-    logwarn(" OBJLoader return ID: " + IntToString(errorid));
+    //logwarn(" OBJLoader return ID: " + IntToString(errorid));
 
 
     return true;
@@ -829,11 +829,11 @@ void InitGL::Run() {
 
         //meshObject
         dummy = vec3(1.0,0.0,0.0);
-        me->SetFirstTranslate(true);
-        me ->StepRotate(dummy);
-        me->StepTranslate(glm::vec3(2.0,0.5,0.0));
-        me->Translate(glm::vec3(dummy));
-        me->Draw(camera, currentShader);
+      //  me->SetFirstTranslate(true);
+      //  me ->StepRotate(dummy);
+      //  me->StepTranslate(glm::vec3(2.0,0.5,0.0));
+      //  me->Translate(glm::vec3(dummy));
+      //  me->Draw(camera, currentShader);
 
 
         // lightsource
@@ -855,6 +855,12 @@ void InitGL::Run() {
         // Das beste zum Schluss : Skybox
         // ===================================
         skybox->Draw(camera->GetView());
+
+        if (! objects3D.empty() ) {
+            for (unsigned int i=0;i < objects3D.size(); i++ )
+                objects3D[i]->Draw(camera,currentShader);
+        }
+
         // ===================================
         // Alles für 2D Projektion vorbereiten
         //====================================

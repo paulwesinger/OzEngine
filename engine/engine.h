@@ -9,7 +9,7 @@
 #include <vector>
 
 const std::string BUTTONS_CFG = "config/Buttons/";
-const std::string OBJECT3D_CFG =  "config/3DObjects";
+const std::string OBJECT3D_CFG =  "config/3DObjects/";
 
 class CEngine : public InitGL
 {
