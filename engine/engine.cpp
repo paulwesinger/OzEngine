@@ -66,22 +66,22 @@ void CEngine::Init3D(){
    ok = fileutil->readLine(OBJECT3D_CFG + "Objects3DList.cfg", object3DList);
    if (ok) {
        loginfo("Lade Datei |ObjectList3D.cfg|","CEngine::Init3D");
-       logEmptyLine();
 
        // Liste mit Objekten abarbeiten :
        for (unsigned int i = 0; i < object3DList.size(); i++) {
-
            std::string path = OBJECT3D_CFG + object3DList[i];
+
+           loginfo("Erstelle Object: .......< " + path+ " >","Engine::Init3D");
+
 
            fileUtil * objreader = new fileUtil;
            std::vector<std::string> objconfig;
            objreader->readLine(path, objconfig);
 
            if( ! objconfig.empty() ) {
-               loginfo("Erstelle Object: .......< " + path+ " >", "Engine::Init3D");
+               loginfo(path + ".... Done", "Engine::Init3D");
+               logEmptyLine();
                s3DStruct s3D;
-
-
            }
        }
    }
@@ -164,43 +164,71 @@ void CEngine::loadButtons() {
 
 }
 
+std::string CEngine::getValueName(std::string s){
+    char buf[50];
+    size_t pos = s.find(" ",0);
+    s.copy(buf,pos-1);
+
+    return (std::string) buf;
+}
+
+bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> cfg){
+    if (cfg.size() >= CFG_3D_SIZE ) {
+
+        d3s.origin.x    = StringToFloat(getValueItem(cfg[0], "originX "));
+        d3s.origin.y    = StringToFloat(getValueItem(cfg[1], "originY "));
+        d3s.origin.z    = StringToFloat(getValueItem(cfg[2], "originZ "));
+
+        d3s.color.x     = StringToFloat(getValueItem(cfg[3], "colorRed "));
+        d3s.color.y     = StringToFloat(getValueItem(cfg[4], "colorGreen "));
+        d3s.color.z     = StringToFloat(getValueItem(cfg[5], "colorBlue "));
+        d3s.color.w     = StringToFloat(getValueItem(cfg[6], "colorAlpha "));
+
+        d3s.hasLight    = StringToInt(getValueItem(cfg[7], "hasLight "));
+
+        // Irgendwie anders machen --> dynamischer !!!
+        return true;
+    }
+    return false;
+}
+
 bool CEngine::initButtonStruct(sButtonStruct &bs, std::vector<std::string> cfg) {
 
-    if (cfg.size() >= 12 ) {
-        bs.path = getBtnValueItem(cfg[0],"Image: ");
+    if (cfg.size() >= CFG_BUTTON_SIZE ) {
+        bs.path = getValueItem(cfg[0],"Image: ");
         loginfo("Image Path: "+ bs.path);
 
-        bs.PosX = StringToFloat(getBtnValueItem(cfg[1],"PositionX: "));
+        bs.PosX = StringToFloat(getValueItem(cfg[1],"PositionX: "));
         loginfo("PosX: "+ cfg[1] );
 
-        bs.PosY = StringToFloat(getBtnValueItem(cfg[2],"PositionY: "));
+        bs.PosY = StringToFloat(getValueItem(cfg[2],"PositionY: "));
         loginfo("PosY: "+ cfg[2]);
 
-        bs.SizeX =  StringToFloat(getBtnValueItem(cfg[3],"SizeX: "));
+        bs.SizeX =  StringToFloat(getValueItem(cfg[3],"SizeX: "));
         loginfo("SizeX: "+ cfg[3]);
 
-        bs.SizeY =  StringToFloat(getBtnValueItem(cfg[4],"SizeY: "));
+        bs.SizeY =  StringToFloat(getValueItem(cfg[4],"SizeY: "));
         loginfo("SizeY: "+ cfg[4]);
 
-        bs.Enable = StringToInt(getBtnValueItem(cfg[5],"Enable: "));
+        bs.Enable = StringToInt(getValueItem(cfg[5],"Enable: "));
         loginfo("Enabled: "+ cfg[5]);
 
-        bs.ImageRed = StringToFloat(getBtnValueItem(cfg[6],"BGRed: "));
+        bs.ImageRed = StringToFloat(getValueItem(cfg[6],"BGRed: "));
         loginfo("Image Red: "+ cfg[6]);
 
-        bs.ImageGreen = StringToFloat(getBtnValueItem(cfg[7],"BGGreen: "));
+        bs.ImageGreen = StringToFloat(getValueItem(cfg[7],"BGGreen: "));
         loginfo("ImageGreen: "+ cfg[7]);
 
-        bs.ImageBlue = StringToFloat(getBtnValueItem(cfg[8],"BGBlue: "));
+        bs.ImageBlue = StringToFloat(getValueItem(cfg[8],"BGBlue: "));
         loginfo("ImageBLue " + cfg[8]);
 
-        bs.TextRed = StringToFloat(getBtnValueItem(cfg[9],"TextColorRed: "));
+        bs.TextRed = StringToFloat(getValueItem(cfg[9],"TextColorRed: "));
         loginfo("Textred: "+ cfg[9]);
 
-        bs.TextGreen = StringToFloat(getBtnValueItem(cfg[10],"TextColorGreen: "));
+        bs.TextGreen = StringToFloat(getValueItem(cfg[10],"TextColorGreen: "));
         loginfo("TextGreen: "+ cfg[10]);
 
-        bs.TextBlue = StringToFloat(getBtnValueItem(cfg[11],"TextColorBlue: "));
+        bs.TextBlue = StringToFloat(getValueItem(cfg[11],"TextColorBlue: "));
         loginfo("TextBlue: "+ cfg[11]);
 
         return true;
@@ -209,7 +237,7 @@ bool CEngine::initButtonStruct(sButtonStruct &bs, std::vector<std::string> cfg) 
         return false;
 }
 
-std::string CEngine::getBtnValueItem(std::string s, std::string erasestring) {
+std::string &CEngine::getValueItem(std::string &s, std::string erasestring) {
     return s.erase(0,erasestring.length() ) ;
 }
 

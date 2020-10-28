@@ -11,6 +11,9 @@
 const std::string BUTTONS_CFG = "config/Buttons/";
 const std::string OBJECT3D_CFG =  "config/3DObjects/";
 
+const int CFG_BUTTON_SIZE = 11;
+const int CFG_3D_SIZE = 18;
+
 class CEngine : public InitGL
 {
 public:
@@ -36,7 +39,9 @@ private:
     void Init3D();
 
     bool initButtonStruct(sButtonStruct & bs,std::vector<std::string> cfg);
-    std::string getBtnValueItem(std::string s, std::string erasestring);
+    bool init3DStruct(s3DStruct & d3s, std::vector<std::string> cfg);
+    std::string &getValueItem(std::string &s, std::string erasestring);
+    std::string getValueName(std::string s); // returns the firs part of the string
 
     TextRender * textrenderer;
     fileUtil * fu;
