@@ -1,6 +1,27 @@
 #include "engine.h"
 #include "../utils/utils.h"
 
+/*
+
+#include <stdio.h>
+#include <usb.h>
+main(){
+    struct usb_bus *bus;
+    struct usb_device *dev;
+    usb_init();
+    usb_find_busses();
+    usb_find_devices();
+    for (bus = usb_busses; bus; bus = bus->next)
+        for (dev = bus->devices; dev; dev = dev->next){
+            printf("Trying device %s/%s\n", bus->dirname, dev->filename);
+            printf("\tID_VENDOR = 0x%04x\n", dev->descriptor.idVendor);
+            printf("\tID_PRODUCT = 0x%04x\n", dev->descriptor.idProduct);
+        }
+}
+
+*/
+
+
 
 CEngine::CEngine(std::string titel) :
         InitGL(titel)
@@ -63,6 +84,12 @@ void CEngine::Init3D(){
     loginfo("============================");
    fileUtil * fileutil = new fileUtil();
    bool ok;
+
+   // stringpart testen
+   std::string st = "Heute istroter Oktober";
+   stringPart(st," ",3);
+
+
    ok = fileutil->readLine(OBJECT3D_CFG + "Objects3DList.cfg", object3DList);
    if (ok) {
        loginfo("Lade Datei |ObjectList3D.cfg|","CEngine::Init3D");
@@ -88,6 +115,8 @@ void CEngine::Init3D(){
    else
        logwarn("Fehler: Datei | config/Object3DList.cfg nicht gefunden ! |");
 }
+
+
 
 void CEngine::InitButtons() {
 
@@ -120,6 +149,7 @@ void CEngine::loadButtons() {
             fileUtil * btnreader = new fileUtil;
             std::vector<std::string> btnconfig;
             btnreader->readLine(path, btnconfig);
+
 
 
             if ( ! btnconfig.empty() ) {
@@ -164,16 +194,91 @@ void CEngine::loadButtons() {
 
 }
 
-std::string CEngine::getValueName(std::string s){
-    char buf[50];
-    size_t pos = s.find(" ",0);
-    s.copy(buf,pos-1);
+std::string CEngine::getStringPart(std::string &s,std::string key, std::size_t &p){
 
-    return (std::string) buf;
+    //std::string temp = s;
+    p = s.find(key,0);
+    if ( p != s.npos  ) {
+        char buf[50];
+        s.copy(buf,p );
+
+        s.erase(0,p);
+        s.erase(0,1);
+
+        return (std::string) buf;
+    }
+    return  s;
+}
+
+std::string &CEngine::getValueItem(std::string &s, std::string erasestring) {
+    return s.erase(0,erasestring.length() ) ;
+}
+
+std::string CEngine::stringPart(std::string &s, std::string key,int which) { // Achtung which beginnt bei 1 !!!
+    // --------------------------------------------------------------------
+    // Argument which = 1. 2. oder n. teilstreing im String..
+    // key = trennszeichen zwschen den string part,
+    // bsp.: 'Heute ist nebel': Der 3. TeilString "nebel" nach dem 2. "space"
+    //----------------------------------------------------------------------
+
+    // erstmal den string zerlegen
+    std::vector<std::string> parts;  // Liste mit den String teilen
+    std::size_t pos;
+    int i = 0;
+
+    std::string partstring = getStringPart(s,key, pos);
+
+
+    while (  pos != s.npos && i < 20) {
+
+        parts.push_back( partstring) ;
+
+        partstring = getStringPart(s,key, pos);
+
+        i++;
+    }
+
+    parts.push_back( partstring) ;
+
+
+    // ---------------------------------------
+    // Testausgabe für string liste
+    //----------------------------------------
+    for (int i = 0; i < parts.size(); i ++)  {
+        loginfo("Parts Liste: " + parts.at(i), "stringPart");
+    }
+
+
+    // Falls i ==  entweder kein "key" im text oder string ist leer
+    // wir sind schon wieder fertig
+    if ( i == 0 )
+        return s;
+
+    std::string returnstring = "";
+    for ( int j = 0; j < parts.size();j++) {
+        if ( j == which-1)   {
+            returnstring = parts.at(j);
+            break;
+        }
+    }
+
+    return returnstring;
+
+
+
+
+
 }
 
 bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> cfg){
     if (cfg.size() >= CFG_3D_SIZE ) {
+
+        //+---------------------------------------------------------------------+
+        //+     VORGEHEN :                                                      |
+        //+     Liste abarbeiten, Teilstring bis " " ermitteln,                 |
+        //+     Variablen name = Teilstring --> 2. Teilstring in Wert wandeln   |
+        //+     und in der s3DStruct zuweisen                                   |
+        //+---------------------------------------------------------------------+
 
         d3s.origin.x    = StringToFloat(getValueItem(cfg[0], "originX "));
         d3s.origin.y    = StringToFloat(getValueItem(cfg[1], "originY "));
@@ -237,9 +342,7 @@ bool CEngine::initButtonStruct(sButtonStruct &bs, std::vector<std::string> cfg) 
         return false;
 }
 
-std::string &CEngine::getValueItem(std::string &s, std::string erasestring) {
-    return s.erase(0,erasestring.length() ) ;
-}
+
 
 
 
