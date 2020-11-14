@@ -15,6 +15,8 @@
 #include "../logs/logs.h"
 using namespace std;
 
+const int MAXLINES = 10000;
+
 fileUtil::fileUtil() {
     clear();
 }
@@ -80,7 +82,7 @@ bool fileUtil::readLine(string datei,std::vector<std::string> &lines) {
     //vector<string> stringlist;
     int i =0;
     if ( is.is_open()) {
-        while ( ! is.eof() && i < 40 ) {  // sicherheitsabbruch !!!
+        while ( ! is.eof() && i < MAXLINES ) {  // sicherheitsabbruch !!!
             char buffer[512];
             std::string st;
             is.getline(buffer,512);
@@ -91,7 +93,6 @@ bool fileUtil::readLine(string datei,std::vector<std::string> &lines) {
 
             }
             i++;
-            logwarn("line : " + st + " i " + IntToString(i), "fileutil");
         }
         loginfo("Loaded " + IntToString(i) + " entries" );
         loginfo ("Reading Data from file " + datei + " ... done","fileUtil");

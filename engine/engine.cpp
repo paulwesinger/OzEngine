@@ -85,35 +85,55 @@ void CEngine::Init3D(){
    fileUtil * fileutil = new fileUtil();
    bool ok;
 
-   // stringpart testen
-   std::string st = "Heute istroter Oktober";
-   stringPart(st," ",3);
-
-
    ok = fileutil->readLine(OBJECT3D_CFG + "Objects3DList.cfg", object3DList);
    if (ok) {
        loginfo("Lade Datei |ObjectList3D.cfg|","CEngine::Init3D");
 
-       // Liste mit Objekten abarbeiten :
-       for (unsigned int i = 0; i < object3DList.size(); i++) {
-           std::string path = OBJECT3D_CFG + object3DList[i];
+        // Liste mit Objekten abarbeiten :
+        for (unsigned int i = 0; i < object3DList.size(); i++) {
 
-           loginfo("Erstelle Object: .......< " + path+ " >","Engine::Init3D");
+            std::string path = OBJECT3D_CFG + object3DList[i];
+
+            loginfo("Erstelle Object: .......< " + path+ " >","Engine::Init3D");
+
+            fileUtil * objreader = new fileUtil;
+            std::vector<std::string> objconfig;
+            objreader->readLine(path, objconfig);
+
+            if( ! objconfig.empty() ) {
+
+                s3DStruct s3D;
+
+                if (init3DStruct(s3D,objconfig)) {
+                    BaseObject * obj = new BaseObject;
+                    glm::vec4 v4;
+
+                    obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
 
 
-           fileUtil * objreader = new fileUtil;
-           std::vector<std::string> objconfig;
-           objreader->readLine(path, objconfig);
 
-           if( ! objconfig.empty() ) {
-               loginfo(path + ".... Done", "Engine::Init3D");
-               logEmptyLine();
-               s3DStruct s3D;
+
+
+                    loginfo("s3D initialisisert ","CEngine::init3D");
+                }
+                else
+                    logwarn("konnte s3D nicht initialisieren !!", "CEngine::init3D" );
+                   // Hier die neuen stringpart functions einbauen
+
+                logEmptyLine();
+                loginfo("Prepare for next Object: ","CEngine::init3D");
+
            }
        }
    }
    else
        logwarn("Fehler: Datei | config/Object3DList.cfg nicht gefunden ! |");
+
+   logEmptyLine() ;
+   loginfo("----------------------------");
+   loginfo(" Init 3D Objects ");
+   loginfo("     READY");
+   loginfo("----------------------------");
 }
 
 
@@ -141,7 +161,6 @@ void CEngine::loadButtons() {
         loginfo("Lade Datei |ButtonList.cfg|","CEngine::loadbuttons");
         logEmptyLine();
 
-        //std::string st = BUTTONS_CFG + btnList[0];
         for (unsigned int i = 0; i < btnList.size(); i++  ){
 
             std::string path = BUTTONS_CFG + btnList[i];
@@ -155,7 +174,6 @@ void CEngine::loadButtons() {
             if ( ! btnconfig.empty() ) {
 
                 loginfo("Erstelle Button: .......< " + path+ " >", "Engine::loadButtons");
-
 
                 sButtonStruct btnStruct;
                 if  (initButtonStruct(btnStruct,btnconfig) ) {
@@ -188,9 +206,17 @@ void CEngine::loadButtons() {
 
         }
 
+
     }
     else
         logwarn("Fehler: Datei | config/ButtonList nicht gefunden ! |");
+
+
+    logEmptyLine() ;
+    loginfo("----------------------------");
+    loginfo(" Load Button Objects ");
+    loginfo("        READY");
+    loginfo("----------------------------");
 
 }
 
@@ -214,7 +240,7 @@ std::string &CEngine::getValueItem(std::string &s, std::string erasestring) {
     return s.erase(0,erasestring.length() ) ;
 }
 
-std::string CEngine::stringPart(std::string &s, std::string key,int which) { // Achtung which beginnt bei 1 !!!
+std::string CEngine::stringPart(std::string &s, std::string key,int which,  std::vector<std::string> & parts) { // Achtung which beginnt bei 1 !!!
     // --------------------------------------------------------------------
     // Argument which = 1. 2. oder n. teilstreing im String..
     // key = trennszeichen zwschen den string part,
@@ -222,7 +248,6 @@ std::string CEngine::stringPart(std::string &s, std::string key,int which) { // 
     //----------------------------------------------------------------------
 
     // erstmal den string zerlegen
-    std::vector<std::string> parts;  // Liste mit den String teilen
     std::size_t pos;
     int i = 0;
 
@@ -241,14 +266,6 @@ std::string CEngine::stringPart(std::string &s, std::string key,int which) { // 
     parts.push_back( partstring) ;
 
 
-    // ---------------------------------------
-    // Testausgabe für string liste
-    //----------------------------------------
-    for (int i = 0; i < parts.size(); i ++)  {
-        loginfo("Parts Liste: " + parts.at(i), "stringPart");
-    }
-
-
     // Falls i ==  entweder kein "key" im text oder string ist leer
     // wir sind schon wieder fertig
     if ( i == 0 )
@@ -263,14 +280,9 @@ std::string CEngine::stringPart(std::string &s, std::string key,int which) { // 
     }
 
     return returnstring;
-
-
-
-
-
 }
 
-bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> cfg){
+bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
     if (cfg.size() >= CFG_3D_SIZE ) {
 
         //+---------------------------------------------------------------------+
@@ -280,19 +292,102 @@ bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> cfg){
         //+     und in der s3DStruct zuweisen                                   |
         //+---------------------------------------------------------------------+
 
-        d3s.origin.x    = StringToFloat(getValueItem(cfg[0], "originX "));
-        d3s.origin.y    = StringToFloat(getValueItem(cfg[1], "originY "));
-        d3s.origin.z    = StringToFloat(getValueItem(cfg[2], "originZ "));
+        if ( !cfg.empty() )
+        {
 
-        d3s.color.x     = StringToFloat(getValueItem(cfg[3], "colorRed "));
-        d3s.color.y     = StringToFloat(getValueItem(cfg[4], "colorGreen "));
-        d3s.color.z     = StringToFloat(getValueItem(cfg[5], "colorBlue "));
-        d3s.color.w     = StringToFloat(getValueItem(cfg[6], "colorAlpha "));
+            for (int i=0; i < cfg.size(); i++ ) {
 
-        d3s.hasLight    = StringToInt(getValueItem(cfg[7], "hasLight "));
+                std::string s = cfg.at(i);
+                std::vector<std::string> partlist;
+                std::string part = stringPart(s,SPACE, 1, partlist); // Config zeile, schlüssel = " " , Which = 1 )
 
-        // Irgendwie anders machen --> dynamischer !!!
+                //-----------------------
+                // Origin
+                //-----------------------
+                if (part == "originX" )
+                   d3s.origin.x    = StringToFloat(partlist[1]);// Value
+
+
+                if (part == "originY" )
+                   d3s.origin.y    = StringToFloat(partlist[1]);// Value
+
+                if (part == "originZ" )
+                   d3s.origin.z    = StringToFloat(partlist[1]);// Value
+
+                // ----------------------
+                // color
+                // ----------------------
+                if (part == "colorRed" )
+                   d3s.color.x    = StringToFloat(partlist[1]);// Value
+
+                if (part == "colorGreen" )
+                   d3s.color.x    = StringToFloat(partlist[1]);// Value
+
+                if (part == "colorBlue" )
+                   d3s.color.z    = StringToFloat(partlist[1]);// Value
+
+                if (part == "colorAlpha" )
+                   d3s.color.w    = StringToFloat(partlist[1]);// Value
+
+                //------------------------
+                // haslight
+                // -----------------------
+                if (part == "hasLight" )
+                   d3s.hasLight    = StringToInt(partlist[1]);// Value
+
+                // -----------------------
+                // texture(s)
+                //------------------------
+                if (part == "textures" ){
+                    //datei name auslesen:
+                    fileUtil * fu = new fileUtil();
+                    std::vector<std::string> textures;
+                    if (fu->readLine(part,textures) )
+                        d3s.textures = textures;
+
+                }
+
+                //------------------------
+                //translate
+                //------------------------
+
+                if (part == "translateX")
+                    d3s.trans.translate.x = StringToFloat(partlist[1]);
+
+                if (part == "translateY")
+                    d3s.trans.translate.y = StringToFloat(partlist[1]);
+
+                if (part == "translateZ")
+                    d3s.trans.translate.z = StringToFloat(partlist[1]);
+
+
+                if (part == "rotateX")
+                    d3s.trans.rotate.x = StringToFloat(partlist[1]);
+
+                if (part == "rotateY")
+                    d3s.trans.rotate.y = StringToFloat(partlist[1]);
+
+                if (part == "rotateZ")
+                    d3s.trans.rotate.z = StringToFloat(partlist[1]);
+
+
+                if (part == "scaleX")
+                    d3s.trans.scale.x = StringToFloat(partlist[1]);
+
+                if (part == "scaleY")
+                    d3s.trans.scale.y = StringToFloat(partlist[1]);
+
+                if (part == "scaleZ")
+                    d3s.trans.scale.z = StringToFloat(partlist[1]);
+
+                //-------------------------
+                //   firstTranslate
+                //-------------------------
+                if (part == "firstTranslate")
+                     d3s.firstTranslate = StringToInt(partlist[1]);
+            }
         return true;
+        }
     }
     return false;
 }
@@ -304,37 +399,26 @@ bool CEngine::initButtonStruct(sButtonStruct &bs, std::vector<std::string> cfg) 
         loginfo("Image Path: "+ bs.path);
 
         bs.PosX = StringToFloat(getValueItem(cfg[1],"PositionX: "));
-        loginfo("PosX: "+ cfg[1] );
 
         bs.PosY = StringToFloat(getValueItem(cfg[2],"PositionY: "));
-        loginfo("PosY: "+ cfg[2]);
 
         bs.SizeX =  StringToFloat(getValueItem(cfg[3],"SizeX: "));
-        loginfo("SizeX: "+ cfg[3]);
 
         bs.SizeY =  StringToFloat(getValueItem(cfg[4],"SizeY: "));
-        loginfo("SizeY: "+ cfg[4]);
 
         bs.Enable = StringToInt(getValueItem(cfg[5],"Enable: "));
-        loginfo("Enabled: "+ cfg[5]);
 
         bs.ImageRed = StringToFloat(getValueItem(cfg[6],"BGRed: "));
-        loginfo("Image Red: "+ cfg[6]);
 
         bs.ImageGreen = StringToFloat(getValueItem(cfg[7],"BGGreen: "));
-        loginfo("ImageGreen: "+ cfg[7]);
 
         bs.ImageBlue = StringToFloat(getValueItem(cfg[8],"BGBlue: "));
-        loginfo("ImageBLue " + cfg[8]);
 
         bs.TextRed = StringToFloat(getValueItem(cfg[9],"TextColorRed: "));
-        loginfo("Textred: "+ cfg[9]);
 
         bs.TextGreen = StringToFloat(getValueItem(cfg[10],"TextColorGreen: "));
-        loginfo("TextGreen: "+ cfg[10]);
 
         bs.TextBlue = StringToFloat(getValueItem(cfg[11],"TextColorBlue: "));
-        loginfo("TextBlue: "+ cfg[11]);
 
         return true;
     }
