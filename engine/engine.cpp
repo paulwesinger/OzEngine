@@ -100,19 +100,30 @@ void CEngine::Init3D(){
             std::vector<std::string> objconfig;
             objreader->readLine(path, objconfig);
 
+
             if( ! objconfig.empty() ) {
 
                 s3DStruct s3D;
 
                 if (init3DStruct(s3D,objconfig)) {
-                    BaseObject * obj = new BaseObject;
-                    glm::vec4 v4;
+                    CCube * obj = new CCube(glm::vec3(0.0,0.0,0.0),glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w),projection->GetPerspective());
 
-                    obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
+                    //obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
+                    obj->SetHasTextures( ! s3D.textures.empty());
+                    obj->SetFirstTranslate( ( s3D.firstTranslate == 1) ? true: false);
+
+                    obj->Rotate(glm::vec3(s3D.trans.rotate.x, s3D.trans.rotate.y, s3D.trans.rotate.z) );
+
+                    loginfo("translate "+ FloatToString(s3D.trans.translate.x) );
+                    loginfo("translate "+ FloatToString(s3D.trans.translate.y) );
+                    loginfo("translate "+ FloatToString(s3D.trans.translate.z) );
+                    logEmptyLine();
 
 
-
-
+                    obj->Translate(glm::vec3(s3D.trans.translate.x, s3D.trans.translate.y, s3D.trans.translate.z));
+                    obj->Scale(glm::vec3(s3D.trans.scale.x, s3D.trans.scale.y, s3D.trans.scale.z));
+                    obj->addTexture(s3D.textures,"");
+                    add3Dobject(obj);
 
                     loginfo("s3D initialisisert ","CEngine::init3D");
                 }

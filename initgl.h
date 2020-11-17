@@ -95,7 +95,7 @@ protected:
     //----------------------------------
     // Object creation
     // ---------------------------------
-    void add3Dobject(BaseObject * obj);
+    void add3Dobject(CCube * obj);
     void add2Dobject(Base2D * obj);
     void addButton(CButton* obj);
 
@@ -126,7 +126,7 @@ protected:
 
 
     // Liste die alle 3D objekte enthält
-    std::vector<BaseObject *> objects3D;
+    std::vector<CCube *> objects3D;
     // Liste für die 2D Objekte
     std::vector<Base2D *> objects2D;
     // Eine Button liste

@@ -483,6 +483,7 @@ void InitGL::InitEngineObject() {
     cube->initShader(LIGHT_SHADER, cubeshaderprog_normals);
     cube->setActiveShader(TEXTURE_SHADER);
 
+
     cube->addLight(ambientLight);
 
 
@@ -528,6 +529,26 @@ void InitGL::InitEngineObject() {
     else
         logwarn("Init::Cube3 konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
     cubeimages.clear();
+
+
+    //----------------------------------------------------
+    // engine objects testen
+    //- --------------------------------------------------
+
+    for (int i = 0; i< objects3D.size(); i ++) {
+        objects3D.at(i) -> initShader(COLOR_SHADER,cubeshaderprog_color);
+        objects3D.at(i) -> initShader(TEXTURE_SHADER,cubeshaderprog_tex);
+        objects3D.at(i) -> initShader(LIGHT_SHADER,cubeshaderprog_normals);
+        objects3D.at(i) -> SetProjection(projection->GetPerspective());
+
+        //if (objects3D.at(i)->HasTextures() )
+        //    objects3D.at(i)->addTexture()
+
+        objects3D.at(i)->setActiveShader(LIGHT_SHADER);
+        objects3D.at(i)->addLight(ambientLight);
+    }
+
+
     // Transformations
  //   cube->Translate(vec3(0,0,20));wird
  //   cube3->Translate(vec3(0,0,-2));
@@ -554,7 +575,7 @@ void InitGL::InitEngineObject() {
 // --------------------------------------------
 // Adding's
 // --------------------------------------------
-void InitGL::add3Dobject(BaseObject *obj) {
+void InitGL::add3Dobject(CCube *obj) {
     objects3D.push_back(obj);
 }
 
@@ -783,10 +804,10 @@ void InitGL::Run() {
         * Alle mit 3 / wieder enklammern !!!
         */
         cube->SetFirstTranslate(true);
-        cube ->Draw( camera, currentShader);
+     //   cube ->Draw( camera, currentShader);
 
         cube2 -> SetColor(vec4(1.0,1.0, 1.0,1.0));
-        cube2 -> Calc( rot_y + 0.3f,tx + 0.05f);
+     //   cube2 -> Calc( rot_y + 0.3f,tx + 0.05f);
         if ( left ) {
             dummy.x -= steptrans.x;
             //printf(" dymmy v. cube2  %f \n",dummy.x );
@@ -802,10 +823,14 @@ void InitGL::Run() {
         ///dummy.y += steprotate.y;TEXTURE
         cube2->SetFirstTranslate(false);
         cube2->StepRotate(dummy);
-        cube2->Draw( camera, currentShader);
+        //cube2->Draw( camera, currentShader);
 
         cube3 -> SetColor(vec4(0.0,1.0,0.0,1.0));
-        cube3 -> Calc( rot_y + 0.4,0.4);
+
+
+
+
+     //   cube3 -> Calc( rot_y + 0.4,0.4);
         //      dummy = steprotate;
 
         dummy = vec3(1.5,3.0,0.0);
@@ -857,8 +882,15 @@ void InitGL::Run() {
         skybox->Draw(camera->GetView());
 
         if (! objects3D.empty() ) {
-            for (unsigned int i=0;i < objects3D.size(); i++ )
+            for (unsigned int i=0;i < objects3D.size(); i++ ) {
+                dummy = vec3(1.0,2.0,3.0);
+                objects3D[i]->SetProjection(projection->GetOrtho());
+
+                objects3D[i]->Translate(dummy);
+                objects3D[i]->StepRotate(dummy);
                 objects3D[i]->Draw(camera,currentShader);
+
+            }
         }
 
         // ===================================
