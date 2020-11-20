@@ -125,6 +125,10 @@ void CEngine::Init3D(){
                     obj->addTexture(s3D.textures,"");
                     add3Dobject(obj);
 
+                    for ( int j= 0; j< s3D.textures.size(); j ++) {
+                        logimage("Texture path: " + s3D.textures.at(j));
+                    }
+
                     loginfo("s3D initialisisert ","CEngine::init3D");
                 }
                 else
@@ -251,7 +255,7 @@ std::string &CEngine::getValueItem(std::string &s, std::string erasestring) {
     return s.erase(0,erasestring.length() ) ;
 }
 
-std::string CEngine::stringPart(std::string &s, std::string key,int which,  std::vector<std::string> & parts) { // Achtung which beginnt bei 1 !!!
+void CEngine::stringPart(std::string &s, std::string key,  std::vector<std::string> & parts) { // Achtung which beginnt bei 1 !!!
     // --------------------------------------------------------------------
     // Argument which = 1. 2. oder n. teilstreing im String..
     // key = trennszeichen zwschen den string part,
@@ -275,22 +279,6 @@ std::string CEngine::stringPart(std::string &s, std::string key,int which,  std:
     }
 
     parts.push_back( partstring) ;
-
-
-    // Falls i ==  entweder kein "key" im text oder string ist leer
-    // wir sind schon wieder fertig
-    if ( i == 0 )
-        return s;
-
-    std::string returnstring = "";
-    for ( int j = 0; j < parts.size();j++) {
-        if ( j == which-1)   {
-            returnstring = parts.at(j);
-            break;
-        }
-    }
-
-    return returnstring;
 }
 
 bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
@@ -310,7 +298,17 @@ bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
 
                 std::string s = cfg.at(i);
                 std::vector<std::string> partlist;
-                std::string part = stringPart(s,SPACE, 1, partlist); // Config zeile, schlüssel = " " , Which = 1 )
+                std::string  part;
+                stringPart(s,SPACE, partlist); // Config zeile, schlüssel = " " , liste mit teilstrings )
+
+                part = partlist.at(0);
+                logwarn(" s |" + s + "|");
+                if ( ! partlist.empty())
+                    logimage("part 1 |" + partlist.at(0) + "|");
+
+                logEmptyLine();
+
+
 
                 //-----------------------
                 // Origin
@@ -328,8 +326,12 @@ bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
                 // ----------------------
                 // color
                 // ----------------------
-                if (part == "colorRed" )
+                if (part == "colorRed" ) {
                    d3s.color.x    = StringToFloat(partlist[1]);// Value
+                   loginfo("Part color.x " + partlist[i]);
+                   loginfo("s3D.color.x " + FloatToString(d3s.color.x) );
+
+                }
 
                 if (part == "colorGreen" )
                    d3s.color.x    = StringToFloat(partlist[1]);// Value

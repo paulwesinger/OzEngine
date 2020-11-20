@@ -44,7 +44,7 @@ private:
     bool init3DStruct(s3DStruct & d3s, std::vector<std::string> &cfg);
     std::string &getValueItem(std::string &s, std::string erasestring);
     std::string getStringPart(std::string &s,std::string key,std::size_t &p);
-    std::string stringPart(std::string &s, std::string key,int which,  std::vector<std::string> & parts);
+    void stringPart(std::string &s, std::string key, std::vector<std::string> & parts);
 
     TextRender * textrenderer;
     fileUtil * fu;
