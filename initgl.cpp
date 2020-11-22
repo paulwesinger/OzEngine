@@ -576,6 +576,13 @@ void InitGL::InitEngineObject() {
 // Adding's
 // --------------------------------------------
 void InitGL::add3Dobject(CCube *obj) {
+
+    obj->initShader(COLOR_SHADER,cubeshaderprog_color);
+    obj->initShader(TEXTURE_SHADER,cubeshaderprog_tex);
+    obj->initShader(LIGHT_SHADER, cubeshaderprog_normals);
+    obj->setActiveShader(TEXTURE_SHADER);
+
+    obj->addLight(ambientLight);
     objects3D.push_back(obj);
 }
 
@@ -660,6 +667,27 @@ void InitGL::Run() {
     textrender->SetHasBackground(true);
     textrender->SetHasTexture(true);
     textrender->SetAlignRight(false);
+
+
+
+    for (int i = 0; i < objects3D.size(); i++ ) {
+        loginfo("TranslateX: " + FloatToString(objects3D.at(i)->GetTranslate().x));
+        loginfo("TranslateY: " + FloatToString(objects3D.at(i)->GetTranslate().y));
+        loginfo("TranslateZ: " + FloatToString(objects3D.at(i)->GetTranslate().z));
+        logEmptyLine();
+        loginfo("Color Red: " + FloatToString(objects3D.at(i)->GetColor().x));
+        loginfo("Color Green : " + FloatToString(objects3D.at(i)->GetColor().y));
+        loginfo("Color Blue: " + FloatToString(objects3D.at(i)->GetColor().z));
+        loginfo("Color Alpha: " + FloatToString(objects3D.at(i)->GetColor().w));
+        logEmptyLine(2);
+    }
+
+
+
+
+
+
+
 
     while ( ! quit) {
         elapsed = tickend - tickstart;
@@ -883,8 +911,8 @@ void InitGL::Run() {
 
         if (! objects3D.empty() ) {
             for (unsigned int i=0;i < objects3D.size(); i++ ) {
-                dummy = vec3(1.0,2.0,3.0);
-                objects3D[i]->SetProjection(projection->GetOrtho());
+                dummy = vec3(1.0 * (float) i ,2.0,3.0);
+                objects3D[i]->SetProjection(projection->GetPerspective());
 
                 objects3D[i]->Translate(dummy);
                 objects3D[i]->StepRotate(dummy);

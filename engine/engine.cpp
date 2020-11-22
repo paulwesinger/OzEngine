@@ -109,26 +109,35 @@ void CEngine::Init3D(){
                     CCube * obj = new CCube(glm::vec3(0.0,0.0,0.0),glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w),projection->GetPerspective());
 
                     //obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
-                    obj->SetHasTextures( ! s3D.textures.empty());
+                    if ( s3D.textures == "" )
+                        obj->SetHasTextures( false);
+                    else
+                        obj->SetHasTextures( true);
+
                     obj->SetFirstTranslate( ( s3D.firstTranslate == 1) ? true: false);
-
                     obj->Rotate(glm::vec3(s3D.trans.rotate.x, s3D.trans.rotate.y, s3D.trans.rotate.z) );
-
-                    loginfo("translate "+ FloatToString(s3D.trans.translate.x) );
-                    loginfo("translate "+ FloatToString(s3D.trans.translate.y) );
-                    loginfo("translate "+ FloatToString(s3D.trans.translate.z) );
-                    logEmptyLine();
-
-
                     obj->Translate(glm::vec3(s3D.trans.translate.x, s3D.trans.translate.y, s3D.trans.translate.z));
                     obj->Scale(glm::vec3(s3D.trans.scale.x, s3D.trans.scale.y, s3D.trans.scale.z));
-                    obj->addTexture(s3D.textures,"");
-                    add3Dobject(obj);
 
-                    for ( int j= 0; j< s3D.textures.size(); j ++) {
-                        logimage("Texture path: " + s3D.textures.at(j));
+                    //----------------------------------------
+                    // Add textures , if we have some
+                    // ---------------------------------------
+                    bool texturesok;
+                    std::vector<std::string> images;
+
+                    std::string path = s3D.textures;
+
+                    if ( s3D.textures != "" ) {
+                        fileUtil fu;
+
+                        texturesok =  fu.readLine(path, images);
+                        if (texturesok)
+                            obj->addTexture(images,"InitGL::add3DObject");
+                        else
+                            logwarn("Init::Cube2 :  konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
                     }
 
+                    add3Dobject(obj);
                     loginfo("s3D initialisisert ","CEngine::init3D");
                 }
                 else
@@ -235,7 +244,7 @@ void CEngine::loadButtons() {
 
 }
 
-std::string CEngine::getStringPart(std::string &s,std::string key, std::size_t &p){
+void CEngine::getStringPart(std::string &s,std::string key, std::size_t &p, std::string & part){
 
     //std::string temp = s;
     p = s.find(key,0);
@@ -246,9 +255,11 @@ std::string CEngine::getStringPart(std::string &s,std::string key, std::size_t &
         s.erase(0,p);
         s.erase(0,1);
 
-        return (std::string) buf;
+        part = (std::string) buf;
+
     }
-    return  s;
+    else
+        part = s;
 }
 
 std::string &CEngine::getValueItem(std::string &s, std::string erasestring) {
@@ -265,20 +276,22 @@ void CEngine::stringPart(std::string &s, std::string key,  std::vector<std::stri
     // erstmal den string zerlegen
     std::size_t pos;
     int i = 0;
+    std::string part;
 
-    std::string partstring = getStringPart(s,key, pos);
-
+    std::string partstring = "";
+    getStringPart(s,key, pos,partstring);
 
     while (  pos != s.npos && i < 20) {
 
-        parts.push_back( partstring) ;
+        //parts.push_back(partstring);
+        parts.push_back( s) ;
 
-        partstring = getStringPart(s,key, pos);
+        getStringPart(s,key, pos, partstring);
 
         i++;
     }
 
-    parts.push_back( partstring) ;
+    parts.push_back( s) ;
 }
 
 bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
@@ -291,116 +304,112 @@ bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
         //+     und in der s3DStruct zuweisen                                   |
         //+---------------------------------------------------------------------+
 
-        if ( !cfg.empty() )
-        {
+        for (int i=0; i < cfg.size(); i++ ) {
 
-            for (int i=0; i < cfg.size(); i++ ) {
+            std::string s = cfg.at(i);
+            std::vector<std::string> partlist;
+            std::string  part;
+            stringPart(s,SPACE, partlist); // Config zeile, schlüssel = " " , liste mit teilstrings )
 
-                std::string s = cfg.at(i);
-                std::vector<std::string> partlist;
-                std::string  part;
-                stringPart(s,SPACE, partlist); // Config zeile, schlüssel = " " , liste mit teilstrings )
-
+            if ( ! partlist.empty() )     {
                 part = partlist.at(0);
-                logwarn(" s |" + s + "|");
-                if ( ! partlist.empty())
-                    logimage("part 1 |" + partlist.at(0) + "|");
 
-                logEmptyLine();
-
-
-
-                //-----------------------
-                // Origin
-                //-----------------------
-                if (part == "originX" )
-                   d3s.origin.x    = StringToFloat(partlist[1]);// Value
-
-
-                if (part == "originY" )
-                   d3s.origin.y    = StringToFloat(partlist[1]);// Value
-
-                if (part == "originZ" )
-                   d3s.origin.z    = StringToFloat(partlist[1]);// Value
-
-                // ----------------------
-                // color
-                // ----------------------
-                if (part == "colorRed" ) {
-                   d3s.color.x    = StringToFloat(partlist[1]);// Value
-                   loginfo("Part color.x " + partlist[i]);
-                   loginfo("s3D.color.x " + FloatToString(d3s.color.x) );
-
-                }
-
-                if (part == "colorGreen" )
-                   d3s.color.x    = StringToFloat(partlist[1]);// Value
-
-                if (part == "colorBlue" )
-                   d3s.color.z    = StringToFloat(partlist[1]);// Value
-
-                if (part == "colorAlpha" )
-                   d3s.color.w    = StringToFloat(partlist[1]);// Value
-
-                //------------------------
-                // haslight
-                // -----------------------
-                if (part == "hasLight" )
-                   d3s.hasLight    = StringToInt(partlist[1]);// Value
-
-                // -----------------------
-                // texture(s)
-                //------------------------
-                if (part == "textures" ){
-                    //datei name auslesen:
-                    fileUtil * fu = new fileUtil();
-                    std::vector<std::string> textures;
-                    if (fu->readLine(part,textures) )
-                        d3s.textures = textures;
-
-                }
-
-                //------------------------
-                //translate
-                //------------------------
-
-                if (part == "translateX")
-                    d3s.trans.translate.x = StringToFloat(partlist[1]);
-
-                if (part == "translateY")
-                    d3s.trans.translate.y = StringToFloat(partlist[1]);
-
-                if (part == "translateZ")
-                    d3s.trans.translate.z = StringToFloat(partlist[1]);
-
-
-                if (part == "rotateX")
-                    d3s.trans.rotate.x = StringToFloat(partlist[1]);
-
-                if (part == "rotateY")
-                    d3s.trans.rotate.y = StringToFloat(partlist[1]);
-
-                if (part == "rotateZ")
-                    d3s.trans.rotate.z = StringToFloat(partlist[1]);
-
-
-                if (part == "scaleX")
-                    d3s.trans.scale.x = StringToFloat(partlist[1]);
-
-                if (part == "scaleY")
-                    d3s.trans.scale.y = StringToFloat(partlist[1]);
-
-                if (part == "scaleZ")
-                    d3s.trans.scale.z = StringToFloat(partlist[1]);
-
-                //-------------------------
-                //   firstTranslate
-                //-------------------------
-                if (part == "firstTranslate")
-                     d3s.firstTranslate = StringToInt(partlist[1]);
             }
-        return true;
+
+            else
+                part = "";
+
+
+
+            //-----------------------
+            // Origin
+            //-----------------------
+            if (part == "originX" )
+               d3s.origin.x    = StringToFloat(partlist[1]);// Value
+
+
+            if (part == "originY" )
+               d3s.origin.y    = StringToFloat(partlist[1]);// Value
+
+            if (part == "originZ" )
+               d3s.origin.z    = StringToFloat(partlist[1]);// Value
+
+            // ----------------------
+            // color
+            // ----------------------
+            if (part == "colorRed" )
+               d3s.color.x    = StringToFloat(partlist[1]);// Value
+
+            if (part == "colorGreen" )
+               d3s.color.x    = StringToFloat(partlist[1]);// Value
+
+            if (part == "colorBlue" )
+               d3s.color.z    = StringToFloat(partlist[1]);// Value
+
+            if (part == "colorAlpha" )
+               d3s.color.w    = StringToFloat(partlist[1]);// Value
+
+            //------------------------
+            // haslight
+            // -----------------------
+
+            logimage("part " + part);
+            if (part == "hasLight" )
+               d3s.hasLight    = StringToInt(partlist[1]);// Value
+
+
+            // -----------------------
+            // texture(s)
+            //------------------------
+            if (part == "textures" ){
+                //datei name auslesen:
+                if (partlist.size() > 2)
+                    d3s.textures = partlist[1];
+                else
+                    d3s.textures = "";
+            }
+
+            //------------------------
+            //translate
+            //------------------------
+
+            if (part == "translateX")
+                d3s.trans.translate.x = StringToFloat(partlist[1]);
+
+            if (part == "translateY")
+                d3s.trans.translate.y = StringToFloat(partlist[1]);
+
+            if (part == "translateZ")
+                d3s.trans.translate.z = StringToFloat(partlist[1]);
+
+
+            if (part == "rotateX")
+                d3s.trans.rotate.x = StringToFloat(partlist[1]);
+
+            if (part == "rotateY")
+                d3s.trans.rotate.y = StringToFloat(partlist[1]);
+
+            if (part == "rotateZ")
+                d3s.trans.rotate.z = StringToFloat(partlist[1]);
+
+
+            if (part == "scaleX")
+                d3s.trans.scale.x = StringToFloat(partlist[1]);
+
+            if (part == "scaleY")
+                d3s.trans.scale.y = StringToFloat(partlist[1]);
+
+            if (part == "scaleZ")
+                d3s.trans.scale.z = StringToFloat(partlist[1]);
+
+            //-------------------------
+            //   firstTranslate
+            //-------------------------
+            if (part == "firstTranslate")
+                 d3s.firstTranslate = StringToInt(partlist[1]);
         }
+        return true;
+
     }
     return false;
 }

@@ -191,7 +191,7 @@ typedef struct {
     TRANSFORM trans;
     FLOAT3 origin;
     FLOAT4 color;
-    std::vector<std::string> textures;
+    std::string textures;
 }s3DStruct;
 #endif /* DEFINES_H */
 
