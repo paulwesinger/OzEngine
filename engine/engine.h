@@ -46,6 +46,8 @@ private:
     void getStringPart(std::string &s,std::string key,std::size_t &p, std::string & part);
     void stringPart(std::string &s, std::string key, std::vector<std::string> & parts);
 
+    void getStringParts(std::string inputString, std::string key, std::vector<std::string> &partlist);
+
     TextRender * textrenderer;
     fileUtil * fu;
 };
