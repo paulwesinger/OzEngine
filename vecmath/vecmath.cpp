@@ -83,6 +83,43 @@ void calccircle(float radius, float angle, glm::vec2 & point) {
 
 
 
+void checkdegree(glm::vec3 & angle) {
+    if (angle.x == 0.0f )
+        return;
+    if (angle.y == 0.0 )
+        return;
+    if (angle.z == 0.0 )
+        return;
+
+
+    if ( angle.x > 360.0f) {
+        angle.x -= 360.0f;
+        return;
+    }
+    if ( angle.y > 360.0f) {
+        angle.y -= 360.0f;
+        return;
+    }
+    if ( angle.z > 360.0f) {
+        angle.z -= 360.0f;
+        return;
+    }
+
+
+    if (angle.x < -360.0f ) {
+        angle.x += 360;
+        return;
+    }
+    if (angle.y < -360.0f ) {
+        angle.y += 360;
+        return;
+    }
+    if (angle.z < -360.0f ) {
+        angle.z += 360;
+
+    }
+}
+
 void checkdegree(float & angle) {
     if (angle == 0.0f )
         return;

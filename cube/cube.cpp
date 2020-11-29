@@ -343,6 +343,10 @@ void CCube::Draw( Camera * cam, GLuint shaderprog ) {
 
         Model = glm::translate(Model,GetTranslate());
     }
+
+    Model = glm::scale(Model,GetScale());
+
+
     if (_IsOrtho) {
         glm::mat4 view = glm::lookAt(vec3(0.0f,0.0f,0.1f),glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 mvp =  GetProjection() * view * Model;
@@ -374,10 +378,6 @@ void CCube::Draw( Camera * cam, GLuint shaderprog ) {
 
     glUniformMatrix4fv(projectionloc,1,GL_FALSE,glm::value_ptr(GetProjection()));
     glUniformMatrix4fv(viewloc,1,GL_FALSE,glm::value_ptr(cam->GetView()));
-
-
-
-
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D,_Textures[1]);

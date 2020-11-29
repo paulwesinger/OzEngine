@@ -31,6 +31,7 @@ void calccircle(float radius, float angle,glm::vec2 &point);
 
 // other transforms later, if needed  ! 
 
+void checkdegree(glm::vec3 & angle);
 void checkdegree( float & angle); 
 void checkdegree( double & angle); 
 

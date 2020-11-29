@@ -111,14 +111,15 @@ void CEngine::Init3D(){
                 s3DStruct s3D;
 
                 if (init3DStruct(s3D,objconfig)) {
-                    CCube * obj = new CCube(glm::vec3(0.0,0.0,0.0),glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w),projection->GetPerspective());
 
+                    CCube * obj = new CCube();
                     //obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
                     if ( s3D.textures == "" )
                         obj->SetHasTextures( false);
                     else
                         obj->SetHasTextures( true);
 
+                    obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
                     obj->SetFirstTranslate( ( s3D.firstTranslate == 1) ? true: false);
                     obj->Rotate(glm::vec3(s3D.trans.rotate.x, s3D.trans.rotate.y, s3D.trans.rotate.z) );
                     obj->Translate(glm::vec3(s3D.trans.translate.x, s3D.trans.translate.y, s3D.trans.translate.z));

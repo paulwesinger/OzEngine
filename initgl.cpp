@@ -621,12 +621,9 @@ void InitGL::Run() {
     cube3->Translate(vec3(0.0,-2.0,0.0));
     sphere1->Translate(vec3(0.0,-4.0,0.0));
 
-
-
-
-  //  cube->Rotate(vec3(15.0,0.0,0.0));
-  //  cube2->Rotate(vec3(0.0,45,0.0));
-  //  cube3->Rotate(vec3(0.0,60.0,0.0));
+    //  cube->Rotate(vec3(15.0,0.0,0.0));
+    //  cube2->Rotate(vec3(0.0,45,0.0));
+    //  cube3->Rotate(vec3(0.0,60.0,0.0));
     // timetest
     Uint32 tickstart = SDL_GetTicks();
     Uint32 tickend   = tickstart;
@@ -667,27 +664,6 @@ void InitGL::Run() {
     textrender->SetHasBackground(true);
     textrender->SetHasTexture(true);
     textrender->SetAlignRight(false);
-
-
-
-    for (int i = 0; i < objects3D.size(); i++ ) {
-        loginfo("TranslateX: " + FloatToString(objects3D.at(i)->GetTranslate().x));
-        loginfo("TranslateY: " + FloatToString(objects3D.at(i)->GetTranslate().y));
-        loginfo("TranslateZ: " + FloatToString(objects3D.at(i)->GetTranslate().z));
-        logEmptyLine();
-        loginfo("Color Red: " + FloatToString(objects3D.at(i)->GetColor().x));
-        loginfo("Color Green : " + FloatToString(objects3D.at(i)->GetColor().y));
-        loginfo("Color Blue: " + FloatToString(objects3D.at(i)->GetColor().z));
-        loginfo("Color Alpha: " + FloatToString(objects3D.at(i)->GetColor().w));
-        logEmptyLine(2);
-    }
-
-
-
-
-
-
-
 
     while ( ! quit) {
         elapsed = tickend - tickstart;
@@ -914,8 +890,20 @@ void InitGL::Run() {
                 dummy = vec3(1.0 * (float) i ,2.0,3.0);
                 objects3D[i]->SetProjection(projection->GetPerspective());
 
-                objects3D[i]->Translate(dummy);
-                objects3D[i]->StepRotate(dummy);
+                float hlp = (float) (i+1);
+                glm::vec3 rv(hlp * 0.5);
+
+                glm::vec3 vt(0.001,0.002,0.003);
+                objects3D[i]->StepTranslate(vt);
+                objects3D[i]->StepRotate(rv);
+
+
+                vt.x =0.01;
+                vt.y =0.0;
+                vt.z =0.0;
+
+                objects3D[i]->StepScale(vt);
+
                 objects3D[i]->Draw(camera,currentShader);
 
             }
