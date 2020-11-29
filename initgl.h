@@ -102,8 +102,6 @@ protected:
 
     void safeDelete(BaseObject * bo);
 
-    CCube * cube;
-    CCube * cube2;
     CCube * cube3;
 
     //CMeshObject *me;
@@ -168,8 +166,6 @@ private:
     SDL_Window * window ;
     SDL_GLContext maincontext;
 
-    double angleX,angleY ; //  Testwinkel für camerabewegung
-    double moveZ;          // Kamera entlag der Z achse verschieben
 };
 
 // -------------------------------------

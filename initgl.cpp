@@ -35,8 +35,6 @@ InitGL::InitGL (const std::string titel){
     _Mouse.x     = 0;
     _Mouse.y     = 0;
 
-    cube    = NULL;
-    cube2   = NULL;
     cube3   = NULL;
     sphere1 = NULL;
     lightSource = NULL;
@@ -60,8 +58,7 @@ InitGL::InitGL(const InitGL& orig) {
 }
 
 InitGL::~InitGL() {
-    safeDelete(cube);
-    safeDelete(cube2);
+
     safeDelete(cube3);
 
     safeDelete(sphere1);
@@ -475,44 +472,8 @@ void InitGL::InitEngineObject() {
 
     std::vector<std::string> cubeimages;
     fileUtil fu;
-
-    cube  = new CCube(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,1.0,1.0,1.0), projection->GetPerspective());   // no scale
-    // Cube Shader init
-    cube->initShader(COLOR_SHADER,cubeshaderprog_color);
-    cube->initShader(TEXTURE_SHADER,cubeshaderprog_tex);
-    cube->initShader(LIGHT_SHADER, cubeshaderprog_normals);
-    cube->setActiveShader(TEXTURE_SHADER);
-
-
-    cube->addLight(ambientLight);
-
-
-
     // Texture loading
     bool texturesok =  fu.readLine("config/cubetextures.cfg",cubeimages);
-    if (texturesok)
-        cube->addTexture(cubeimages,"IniGL::  cube");
-    else
-        logwarn("Init::Cube :  konnte Textures nicht laden ! ","InitGL::Init::cube::AddTexture");
-
-    cubeimages.clear();
-
-    // Cube 2 init
-
-    cube2 = new CCube(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,1.0,1.0,1.0), projection->GetPerspective());
-    cube2->initShader(COLOR_SHADER,cubeshaderprog_color);
-    cube2->initShader(TEXTURE_SHADER,cubeshaderprog_tex);
-    cube2->initShader(LIGHT_SHADER,cubeshaderprog_normals);
-
-    cube2->setActiveShader(LIGHT_SHADER);
-    cube2->addLight(ambientLight);
-
-    texturesok =  fu.readLine("config/cube2textures.cfg",cubeimages);
-    if (texturesok)
-        cube2->addTexture(cubeimages,"InitGL::cube2");
-    else
-        logwarn("Init::Cube2 :  konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
-    cubeimages.clear();
 
     // Cube3 init
     cube3 = new CCube(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,1.0,1.0,1.0), projection->GetPerspective());
@@ -535,7 +496,7 @@ void InitGL::InitEngineObject() {
     // engine objects testen
     //- --------------------------------------------------
 
-    for (int i = 0; i< objects3D.size(); i ++) {
+    for (uint i = 0; i< objects3D.size(); i ++) {
         objects3D.at(i) -> initShader(COLOR_SHADER,cubeshaderprog_color);
         objects3D.at(i) -> initShader(TEXTURE_SHADER,cubeshaderprog_tex);
         objects3D.at(i) -> initShader(LIGHT_SHADER,cubeshaderprog_normals);
@@ -548,10 +509,6 @@ void InitGL::InitEngineObject() {
         objects3D.at(i)->addLight(ambientLight);
     }
 
-
-    // Transformations
- //   cube->Translate(vec3(0,0,20));wird
- //   cube3->Translate(vec3(0,0,-2));
     // Sphere
     loginfo("Erstelle Sphere .........done");
     sphere1  = new CSphere(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,0.0,0.0,1.0), projection->GetPerspective(),12,(GLfloat)4.0,shader);
@@ -563,13 +520,7 @@ void InitGL::InitEngineObject() {
     loginfo("Serstell LichtQuelle als wiesse spere....","InitGL::InitEngineObjects");
     lightSource = new CSphere(ambientLight->getPos(),glm::vec4(0.0,0.0,1.0,1.0),projection->GetPerspective(),24,(GLfloat)2.0,shader );
 
-
-
     loginfo("Done 3D Objects .............");
-
-    angleX = 0.0f;
-    angleY = 0.0f;
-    moveZ = 0.0f;
 }
 
 // --------------------------------------------
@@ -596,10 +547,7 @@ void InitGL::addButton(CButton* obj) {
 
 void InitGL::Run() {
 
-
     bool quit = false;
-    static float rot_y = 1.0f;
-    static float tx = 0.05f;
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -616,8 +564,6 @@ void InitGL::Run() {
     steprotate = vec3(0.5,0.8,0.0);
     stepscale  = vec3(0.0,0.0,0.0);
 
-    cube->Translate(vec3(8.5,0.0,0.0));
-    cube2->Translate(vec3(-8.0,-3.0,0.0));
     cube3->Translate(vec3(0.0,-2.0,0.0));
     sphere1->Translate(vec3(0.0,-4.0,0.0));
 
@@ -797,59 +743,23 @@ void InitGL::Run() {
        glEnable(GL_DEPTH_TEST);
        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-       vec3 dummy = steptrans;
-     //  cube->StepTranslate(dummy);
+       vec3 dummy;
 
-        dummy=steprotate;
-
-        cube->StepRotate(steprotate);
-        cube->SetColor(vec4(1.0,0.0,0.0,1.0));
-        /**
-        * Alle mit 3 / wieder enklammern !!!
-        */
-        cube->SetFirstTranslate(true);
-     //   cube ->Draw( camera, currentShader);
-
-        cube2 -> SetColor(vec4(1.0,1.0, 1.0,1.0));
-     //   cube2 -> Calc( rot_y + 0.3f,tx + 0.05f);
-        if ( left ) {
-            dummy.x -= steptrans.x;
-            //printf(" dymmy v. cube2  %f \n",dummy.x );
-            if (dummy.x < 1.0)
-                left = false;
-        }
-        else{
-            dummy.x += steptrans.x;
-            //printf(" dymmy v. cube2  %f \n",dummy.x );
-            if (dummy.x > 1.0 )
-                left = true;
-        }
-        ///dummy.y += steprotate.y;TEXTURE
-        cube2->SetFirstTranslate(false);
-        cube2->StepRotate(dummy);
-        //cube2->Draw( camera, currentShader);
-
-        cube3 -> SetColor(vec4(0.0,1.0,0.0,1.0));
-
-
-
+       cube3 -> SetColor(vec4(0.0,1.0,0.0,1.0));
 
      //   cube3 -> Calc( rot_y + 0.4,0.4);
         //      dummy = steprotate;
 
         dummy = vec3(1.5,3.0,0.0);
-        //dummy.y += steprotate.y;//0.07;
         cube3->StepRotate(dummy);
 
         dummy = steptrans;
-        //dummy.y += steptrans.y;//0.05;
-        //cube3->StepTranslate(dummy);
+
         cube3->Translate(dummy);
         cube3->StepRotate(dummy);
 
         cube3->SetFirstTranslate(false);
         cube3->Draw ( camera, currentShader);
-        //glUseProgram(0);
 
         dummy = vec3(1.0,2.0,3.0);
         sphere1->SetFirstTranslate(true);
@@ -870,20 +780,17 @@ void InitGL::Run() {
         lightSource->SetFirstTranslate(true);
         lightSource ->StepRotate(dummy);
 
-
-
-        //sphere1->SetColor(vec4(1.0,0.4,0.8,1.0));
-       // sphere1->StepTranslate(glm::vec3(2.0,0.5,0.0));
-        //sphere1->Translate(glm::vec3(dummy));
-        //currentShader = sphereshader_color;
-        sphere1->Draw(camera);//,sphereshader_color);
-        // lightsource
+        sphere1->Draw(camera);
         lightSource->Draw(camera);
 
         // ===================================
         // Das beste zum Schluss : Skybox
         // ===================================
         skybox->Draw(camera->GetView());
+
+        // ===================================
+        // Engine Objekte
+        // ===================================
 
         if (! objects3D.empty() ) {
             for (unsigned int i=0;i < objects3D.size(); i++ ) {
