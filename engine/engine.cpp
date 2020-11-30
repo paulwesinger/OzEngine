@@ -85,10 +85,12 @@ void CEngine::Init3D(){
    fileUtil * fileutil = new fileUtil();
    bool ok;
 
-   std::string str = "Teststring zum testen";
-   std::vector<std::string> parts;
-   std::string key = " ";
-   getStringParts(str,key,parts);
+   std::string str = "TranslateX: 2.0";
+   std::vector<std::string> parts = split(str," ");
+
+   for (int i = 0; i< parts.size(); i++)
+       loginfo(parts.at(i));
+
 
    ok = fileutil->readLine(OBJECT3D_CFG + "Objects3DList.cfg", object3DList);
    if (ok) {
@@ -250,99 +252,26 @@ void CEngine::loadButtons() {
 
 }
 
-void CEngine::getStringPart(std::string &s,std::string key, std::size_t &p, std::string & part){
-
-    //std::string temp = s;
-    p = s.find(key,0);
-    if ( p != s.npos  ) {
-        char buf[50];
-        s.copy(buf,p );
-
-        s.erase(0,p);
-        s.erase(0,1);
-
-        part = (std::string) buf;
-
-    }
-    else
-        part = s;
-}
-
 std::string &CEngine::getValueItem(std::string &s, std::string erasestring) {
     return s.erase(0,erasestring.length() ) ;
 }
 
-void CEngine::stringPart(std::string &s, std::string key,  std::vector<std::string> & parts) { // Achtung which beginnt bei 1 !!!
-    // --------------------------------------------------------------------
-    // Argument which = 1. 2. oder n. teilstreing im String..
-    // key = trennszeichen zwschen den string part,
-    // bsp.: 'Heute ist nebel': Der 3. TeilString "nebel" nach dem 2. "space"
-    //----------------------------------------------------------------------
 
-    // erstmal den string zerlegen
-    std::size_t pos;
-    int i = 0;
-    std::string part;
 
-    std::string partstring = "";
-    getStringPart(s,key, pos,partstring);
+std::vector<std::string> CEngine::split(std::string const& input, std::string const& separator = " ")
+{
+  std::vector<std::string> result;
+  std::string::size_type position, start = 0;
 
-    while (  pos != s.npos && i < 20) {
+  while (std::string::npos != (position = input.find(separator, start)))
+  {
+    result.push_back(input.substr(start, position-start));
+    start = position + separator.size();
+  }
 
-        //parts.push_back(partstring);
-        parts.push_back( s) ;
-
-        getStringPart(s,key, pos, partstring);
-
-        i++;
-    }
-
-    parts.push_back( s) ;
+  result.push_back(input.substr(start));
+  return result;
 }
-
-
-
-
-
-void CEngine::getStringParts(std::string inputString, std::string key, std::vector<std::string>& partlist){
-
-
-    std::size_t pos = inputString.find(key);
-
-    int j = 0;
-
-    pos = inputString.find(key);
-
-
-    while (pos != inputString.npos && j < 10) {
-
-        char buf[30];
-
-        inputString.copy(buf,pos-1);
-        inputString.erase(0,pos);
-
-        std::string s(buf);
-        partlist.push_back(s);
-
-        j ++;
-
-        logimage("neue stringfunction: " + s);
-        logimage("neue stringfunction: " + inputString );
-        loginfo("J  : " + IntToString(j));
-        logEmptyLine();
-        pos = inputString.find(key);
-    }
-    partlist.push_back(inputString);
-
-    for (uint i=0; i< partlist.size(); i++)
-        logimage("neue stringfunction: " + partlist.at(i));
-
-
-
-}
-
-
-
 
 bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
     if (cfg.size() >= CFG_3D_SIZE ) {
@@ -354,34 +283,68 @@ bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
         //+     und in der s3DStruct zuweisen                                   |
         //+---------------------------------------------------------------------+
 
-        loginfo("List.textures:  " + cfg[8]);
+        for (uint i = 0; i < cfg.size(); i++) {
+            std::vector<std::string> parts = split(cfg.at(i));
 
-        d3s.origin.x = StringToFloat(getValueItem(cfg[0],"originX "));
-        d3s.origin.y = StringToFloat(getValueItem(cfg[1],"originY "));
-        d3s.origin.z = StringToFloat(getValueItem(cfg[2],"originZ "));
+            if (parts.at(0) == "originX")
+                d3s.origin.x = StringToFloat(parts.at(1));
 
-        d3s.color.x = StringToFloat(getValueItem(cfg[3],"colorRed "));
-        d3s.color.y = StringToFloat(getValueItem(cfg[4],"colorGreen "));
-        d3s.color.z = StringToFloat(getValueItem(cfg[5],"colorBlue "));
-        d3s.color.w = StringToFloat(getValueItem(cfg[6],"colorAlpha "));
+            if (parts.at(0) == "originY")
+                d3s.origin.y = StringToFloat(parts.at(1));
 
-        d3s.hasLight = StringToInt(getValueItem(cfg[7],"hasLight "));
-        d3s.textures = getValueItem(cfg[8], "textures ");
+            if (parts.at(0) == "originZ")
+                d3s.origin.z = StringToFloat(parts.at(1));
 
-        d3s.trans.translate.x = StringToFloat(getValueItem(cfg[9],"translateX "));
-        d3s.trans.translate.y = StringToFloat(getValueItem(cfg[10],"translateY "));
-        d3s.trans.translate.z = StringToFloat(getValueItem(cfg[11],"translateZ "));
+            if (parts.at(0) == "colorRed")
+                d3s.color.x = StringToFloat(parts.at(1));
 
-        d3s.trans.rotate.x = StringToFloat(getValueItem(cfg[12],"rotateX "));
-        d3s.trans.rotate.y = StringToFloat(getValueItem(cfg[13],"rotateY "));
-        d3s.trans.rotate.z = StringToFloat(getValueItem(cfg[14],"rotateZ "));
+            if (parts.at(0) == "colorGreen")
+                d3s.color.y = StringToFloat(parts.at(1));
 
-        d3s.trans.scale.x = StringToFloat(getValueItem(cfg[15],"scaleX "));
-        d3s.trans.scale.y = StringToFloat(getValueItem(cfg[16],"scaleY "));
-        d3s.trans.scale.z = StringToFloat(getValueItem(cfg[17],"scaleZ "));
+            if (parts.at(0) == "colorBlue")
+                d3s.color.z = StringToFloat(parts.at(1));
 
-        d3s.firstTranslate = StringToInt(getValueItem(cfg[18],"firstTranslate "));
+            if (parts.at(0) == "colorAlpha")
+                d3s.color.w = StringToFloat(parts.at(1));
 
+            if (parts.at(0) == "hasLight")
+                d3s.hasLight = StringToInt(parts.at(1));
+
+            if (parts.at(0) == "textures")
+                d3s.textures = parts.at(1);
+
+            if (parts.at(0) == "translateX")
+                d3s.trans.translate.x = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "translateY")
+                d3s.trans.translate.y = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "translateZ")
+                d3s.trans.translate.z = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "rotateX")
+                d3s.trans.rotate.x = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "rotateY")
+                d3s.trans.rotate.y = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "rotateZ")
+                d3s.trans.rotate.z = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "scaleX")
+                d3s.trans.scale.x = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "scaleY")
+                d3s.trans.scale.y = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "scaleZ")
+                d3s.trans.scale.z = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "firstTranslate")
+                d3s.firstTranslate = StringToInt(parts.at(1));
+
+
+        }
         return true;
 
     }

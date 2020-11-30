@@ -43,10 +43,8 @@ private:
     bool initButtonStruct(sButtonStruct & bs,std::vector<std::string> cfg);
     bool init3DStruct(s3DStruct & d3s, std::vector<std::string> &cfg);
     std::string &getValueItem(std::string &s, std::string erasestring);
-    void getStringPart(std::string &s,std::string key,std::size_t &p, std::string & part);
-    void stringPart(std::string &s, std::string key, std::vector<std::string> & parts);
 
-    void getStringParts(std::string inputString, std::string key, std::vector<std::string> &partlist);
+    std::vector<std::string> split(std::string const& input, std::string const& separator);
 
     TextRender * textrenderer;
     fileUtil * fu;
