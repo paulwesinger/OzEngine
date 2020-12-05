@@ -62,6 +62,9 @@ public:
     void SetAlignRight(bool align);
     void SetScale(GLfloat scale);
 
+    uint getStringCount();
+    void setText(uint index, std::string newString);  // starts qt 0 !!
+
 
     void Render(GLfloat x, GLfloat y);
 

@@ -111,7 +111,6 @@ protected:
     CSphere *lightSource;   // Damit wir wissen wo die ichtquekke wirjkich  ist
 
     Base2D * base2d;
-    Base2D * cockpit;
     Camera * camera;  // = View !!
     SkyBox * skybox;
 
@@ -136,6 +135,12 @@ protected:
     MOUSE _Mouse;
 
     irrklang::ISoundEngine * soundengine;
+    irrklang::ISoundEngine * soundengine1;
+    irrklang::ISoundEngine * soundengine2;
+    irrklang::ISoundEngine * soundengine3;
+
+
+
     // Test Shader
     Shader * shader;
     GLuint cubeshaderprog_color;

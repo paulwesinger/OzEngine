@@ -148,6 +148,17 @@ TextRender::~TextRender() {
 // -----------------------------------------------------------------------
 // Look and feel
 // -----------------------------------------------------------------------
+uint TextRender::getStringCount() { return _StringList.size(); }
+void TextRender::setText(uint index, std::string newString) {
+    try {
+        _StringList.at(index) = newString;
+    }
+    catch (const std::exception& e) { // reference to the base of a polymorphic object
+        loginfo(e.what());
+    }
+}
+
+
 void TextRender::SetHasBottom(bool hasbottom) {_RenderBottom = hasbottom;}
 void TextRender::SetHasHeader(bool hasheader) {_RenderHeader = hasheader;}
 void TextRender::SetHasBackground(bool hasbg) {_HasBackground = hasbg; }
@@ -158,6 +169,8 @@ void TextRender::SetHasTexture(bool hasTex) { _HasTexture = hasTex; }
 void TextRender::AddString(std::string s) { _StringList.push_back(s); }
 void TextRender::SetAlignRight(bool align) {_AlignRight = align; }
 void TextRender::SetScale(GLfloat scale){ _Scale = scale; }
+
+
 
 
 bool TextRender::Init(int resx, int resy) {

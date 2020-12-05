@@ -59,6 +59,8 @@ InitGL::InitGL(const InitGL& orig) {
 
 InitGL::~InitGL() {
 
+    if (soundengine)
+        soundengine->drop();
     safeDelete(cube3);
 
     safeDelete(sphere1);
@@ -68,8 +70,8 @@ InitGL::~InitGL() {
         delete skybox;
     if (base2d != NULL  )
         delete base2d;
-    if (cockpit != NULL)
-        delete cockpit;
+//    if (cockpit != NULL)
+//        delete cockpit;
 
     if (ambientLight != nullptr)
         delete  ambientLight;
@@ -567,36 +569,32 @@ void InitGL::Run() {
     cube3->Translate(vec3(0.0,-2.0,0.0));
     sphere1->Translate(vec3(0.0,-4.0,0.0));
 
-    //  cube->Rotate(vec3(15.0,0.0,0.0));
-    //  cube2->Rotate(vec3(0.0,45,0.0));
-    //  cube3->Rotate(vec3(0.0,60.0,0.0));
     // timetest
     Uint32 tickstart = SDL_GetTicks();
     Uint32 tickend   = tickstart;
     Uint32 elapsed = 0;
     Uint32 second  = 0; // Zähler für elapsed bis 1000 ms
     int event = 0;
-    if (soundengine) {
-      /*
 
-    irrklang::ISound * snd = soundengine -> play2D("sounds/getout.ogg");
-       if (snd) {
-           snd ->setVolume(40);
-          // snd->drop();
-       }
+    soundengine = irrklang::createIrrKlangDevice();
+    //soundengine1 = irrklang::createIrrKlangDevice();
+    //if (soundengine) {
 
-       if (snd )
-           snd ->drop();
-        */
+
+
+    irrklang::vec3df position(23,70,200);
+
+    // start the sound paused:
+    irrklang::ISound* snd = soundengine->play3D("sounds/media/explosion.wav", position, false, true);
+
+    if (snd)
+
+    {
+       irrklang::vec3df velPerSecond(0,0,0);    // only relevant for doppler effects
+       snd ->setVolume( 100);
+       snd->setMinDistance(30.0f); // a loud sound
+       snd->setIsPaused(false); // unpause the sound
     }
-
-
-    // TEstfunction
-
-//    FP fp = TestFunction;
-//       base2d->setHandler(fp);
-
-    // Test Zeilen für Text Fenster
 
     std::vector<std::string> texts;
     textrender->AddString("Das ist die 1. Zeile");
@@ -611,8 +609,35 @@ void InitGL::Run() {
     textrender->SetHasTexture(true);
     textrender->SetAlignRight(false);
 
+
+    //--------------------------------------------------
+    // framerate berechene
+    //--------------------------------------------------
+    int frames = 0;
+    int framerateOut = 0;
+    Uint32 ms = 0;
+
+
     while ( ! quit) {
+
+
+
+         //     snd ->setVolume(40);
+         // snd->drop();
+
+
         elapsed = tickend - tickstart;
+
+        ms += elapsed;
+        frames++;
+
+        if (ms > 1000) {
+            framerateOut = frames;
+            frames = 0;
+            ms = 0;
+            textrender->setText(1,"Frames pers sec: " + IntToString(framerateOut) );
+         }
+
 
         tickstart = tickend;
         // -------------------------------
@@ -667,7 +692,6 @@ void InitGL::Run() {
        SDL_Event testEvent = e;
 
        HandleEvent(testEvent);
-
 
 
 
