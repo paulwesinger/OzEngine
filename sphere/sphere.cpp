@@ -192,8 +192,15 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glBindVertexArray(_Vao);
     glBindBuffer(GL_ARRAY_BUFFER, _VertexBuffer);
 
+    // Alle indices binden:
+    // Nordpol
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_npol);
     glDrawElements( GL_TRIANGLE_FAN, _CountPoints * 2 + 2 , GL_UNSIGNED_SHORT, 0);
+
+    // Südpol
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_spol);
+    glDrawElements( GL_TRIANGLE_FAN, _CountPoints * 2 + 2 , GL_UNSIGNED_SHORT, 0);
+
 
     glPointSize(8.0f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
@@ -308,9 +315,6 @@ for (int i = 0; i < _CountPoints - 2; i++) {
     Add2GPU(v, index, GetColor().x, GetColor().y, GetColor().z);
     Add2GPU(v, index, glm::vec2(1.0,1.0));
     countVertex++;
-
-    logimage("Calc index: " + IntToString(index));
-    logimage("Countvertex: " + IntToString(countVertex));
 }
 void CSphere::setUp() {
 
@@ -327,12 +331,7 @@ void CSphere::setUp() {
     int count = countverts * 8;   // pro vertex 3 float vektor, 3float color, 2 float textur
     GLfloat verts[count];
 
-    logimage("Anzahl floats pro SPHERE : " + IntToString(count));
-
     calc(verts);
-
-
-
 
     glGenVertexArrays(1,&_Vao);
     glBindVertexArray(_Vao);
@@ -354,18 +353,44 @@ void CSphere::setUp() {
     glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8 * sizeof(float), (void*)(6 *sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    //-------------------------------------------
     // Element buffer  --> NordPol - Triangle Fan
+    //-------------------------------------------
     GLushort npol_indices[_CountPoints * 2 + 2];
 
     for (GLushort i = 0; i < _CountPoints * 2 + 1; i++)
         npol_indices[i] = i;
     npol_indices[_CountPoints * 2 + 1] = 1;
-
+    // und in den buffer...
     glGenBuffers(1,&_Ebo_npol);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo_npol);
     glBufferData (GL_ELEMENT_ARRAY_BUFFER,
                   sizeof (npol_indices),
                   npol_indices,
+                  GL_DYNAMIC_DRAW);
+
+    //-------------------------------------------
+    // Element buffer südpol  zum aufwärmen:
+    //-------------------------------------------
+
+
+    logimage("Countvertex: " + IntToString(countVertex));
+
+
+    GLushort spol_indices[_CountPoints * 2 + 2];
+
+    spol_indices[0] = countVertex-1;
+
+    for (GLushort i = 1; i < _CountPoints * 2 +2; i++)
+        spol_indices[i] = countVertex - i;
+
+    spol_indices[_CountPoints * 2 + 1] = countVertex - 2;
+    // ab in den Buffer..
+    glGenBuffers(1,&_Ebo_spol);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo_spol);
+    glBufferData (GL_ELEMENT_ARRAY_BUFFER,
+                  sizeof (spol_indices),
+                  spol_indices,
                   GL_DYNAMIC_DRAW);
 
     // Alles reseten
@@ -374,71 +399,4 @@ void CSphere::setUp() {
     glBindVertexArray(0);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-
-
-
-    //                                                                         3 float color +
-    //                                           3 float vertex+ 3 float col   3 float vertex
-    //               Längengrad        BreitenGrad    Vertex+color              pro pol
-    int count = (((_CountPoints)  * (_CountPoints -1) * 2) *  6)          +         (2*6);
-    GLfloat verts[count];
-    loginfo("Sizeof count :        " + IntToString(count));
-    loginfo("Size of Sphere verts: " + IntToString(sizeof(verts)) );
-    loginfo("Sizeof GLfloat        " + IntToString(sizeof(GLfloat)));
-
-    calc(verts);
-    // Nur zur Info : verts hat jetzt einen Nordpol und den 1.breitengrad-
-    // Das ganze mal in die Buffer stecken und rendern lassen.....
-    glGenVertexArrays(1,&_Vao);
-    glBindVertexArray(_Vao);
-    // Vertex Buffer
-    glGenBuffers(1,&_VertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, _VertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(verts),
-                verts,
-                GL_DYNAMIC_DRAW);
-
-    // Vertex
-    glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, 6*sizeof(float),(void*)0);
-    glEnableVertexAttribArray(0);
-    //Color
-    glVertexAttribPointer(1,3,GL_FLOAT, GL_FALSE, 6*sizeof(float),(void*)3);
-    glEnableVertexAttribArray(1);
-
-    // Element buffer  --> NordPol - Triangle Fan
-    GLushort npol_indices[_CountPoints * 2 + 2];
-
-    for (GLushort i = 0; i < _CountPoints * 2 + 1; i++)
-        npol_indices[i] = i;
-    npol_indices[_CountPoints * 2 + 1] = 1;
-
-    glGenBuffers(1,&_Ebo_npol);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo_npol);
-    glBufferData (GL_ELEMENT_ARRAY_BUFFER,
-                  sizeof (npol_indices),
-                  npol_indices,
-                  GL_DYNAMIC_DRAW);
-
-    // Alles reseten
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-    glBindBuffer(GL_ARRAY_BUFFER,0);
-    glBindVertexArray(0);
-
-    */
 }

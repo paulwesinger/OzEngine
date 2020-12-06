@@ -56,7 +56,7 @@ protected:
 private:
     // Buffers for Opengl
 
-    GLuint  _Vao, _VertexBuffer,_Ebo_npol;
+    GLuint  _Vao, _VertexBuffer,_Ebo_npol, _Ebo_spol;
     GLint   mv_location;
     GLint   color_location;
     GLuint shaderprogram;

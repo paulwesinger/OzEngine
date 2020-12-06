@@ -501,7 +501,7 @@ void InitGL::InitEngineObject() {
     // Lightsource as a spere
     //-----------------------------------------
     loginfo("Serstell LichtQuelle als wiesse spere....","InitGL::InitEngineObjects");
-    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(0.0,0.0,1.0,1.0),projection->GetPerspective(),12,(GLfloat)8.0,shader );
+    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(0.0,0.0,1.0,1.0),projection->GetPerspective(),8,(GLfloat)8.0,shader );
 
     loginfo("Done 3D Objects .............");
 }
@@ -580,9 +580,6 @@ void InitGL::Run() {
     std::vector<std::string> texts;
     textrender->AddString("Das ist die 1. Zeile");
     textrender->AddString("Das ist die 2. Zeile");
-    //texts.push_back("Das ist die 3. Zeile");
-    //texts.push_back("Da ist nochwas");
-    //.push_back("Da ist noch Zeile 5");
 
     textrender->SetHasBottom(true);
     textrender->SetHasHeader(true);
@@ -673,8 +670,6 @@ void InitGL::Run() {
        SDL_Event testEvent = e;
 
        HandleEvent(testEvent);
-
-
 
        switch ( event) {
            case KEY_Esc  : quit = true;    break;
