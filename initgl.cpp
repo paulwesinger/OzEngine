@@ -436,25 +436,6 @@ void InitGL::InitEngineObject() {
     // Init 2D Objects
     // ===============================
 
-
-
-
-    //  Diesen Block auslagern zur Engine
-
-    /*
-
-    loginfo("============================");
-    loginfo("Erstelle 2D Objekte.........");
-    loginfo("============================");
-    logimage("Erstelle TestIcon..........");
-    base2d = new Base2D(_ResX, _ResY,"icons/ibus-setup-hangul.png");
-    logimage("Erstelle Cockpt............");
-*/
-    //cockpit= new Base2D(_ResX, _ResY,"images/blackWidowAlpha1920x1200.png");
-
-
-
-
     logimage("Erstelle Text Renderer.....");
     textrender = new TextRender(_ResX, _ResY);
     loginfo("Erstelle Shaders........");
@@ -520,7 +501,7 @@ void InitGL::InitEngineObject() {
     // Lightsource as a spere
     //-----------------------------------------
     loginfo("Serstell LichtQuelle als wiesse spere....","InitGL::InitEngineObjects");
-    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(0.0,0.0,1.0,1.0),projection->GetPerspective(),24,(GLfloat)2.0,shader );
+    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(0.0,0.0,1.0,1.0),projection->GetPerspective(),12,(GLfloat)8.0,shader );
 
     loginfo("Done 3D Objects .............");
 }
@@ -800,7 +781,7 @@ void InitGL::Run() {
 
 
         // lightsource
-        dummy = vec3(1.0,0.0,0.0);
+        dummy = vec3(0.3,0.0,0.0);
         lightSource->SetFirstTranslate(true);
         lightSource ->StepRotate(dummy);
 

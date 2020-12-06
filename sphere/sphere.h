@@ -51,6 +51,7 @@ protected:
     // einen Vektor für den GPU-Mem vorbereiten
     void Add2GPU(float*v, int &index, GLfloat vx, GLfloat vy, GLfloat vz);
     void Add2GPU(float*v, int &index,glm::vec3 vec);
+    void Add2GPU(float*v, int &index,glm::vec2 vec);
 
 private:
     // Buffers for Opengl

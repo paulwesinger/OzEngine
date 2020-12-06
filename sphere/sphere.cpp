@@ -30,14 +30,17 @@ static const GLchar * vs_source = {
 "#version 440 core                              \n"
 "layout (location=0) in vec3 vertex;            \n"
 "layout (location=1) in vec3 color;             \n"
+"layout (location=2) in vec2 tex;               \n"
 
 "uniform mat4 mv;                               \n"
 "out vec4 outcolor;                             \n"
+"out vec2 texKoord;                             \n"
 
 "void main(void) {                              \n"
 "    gl_Position = mv * vec4(vertex,1.0);       \n"
 "    //vs_out.color = vec4(color,1.0);          \n"
 "    outcolor = vec4(color,1.0);                \n"
+"    texKoord = tex;                            \n"
 "}"
 };
 
@@ -221,11 +224,19 @@ void CSphere::Add2GPU(float* v, int &index, glm::vec3 vec) {
     index +=3;
 }
 
+void CSphere::Add2GPU(float* v, int &index, glm::vec2 vec) {
+    v[index]    = vec.x;
+    v[index+1]  = vec.y;
+    index +=2;
+}
+
+
+
 void CSphere::calc(GLfloat * v) {
 
 // Erstmal NordPol festlegen
 glm::vec3 npol = glm::vec3(0.0,_Radius ,0.0);
-float winkel_laenge = 180.0f / (_CountPoints) ;
+float winkel_laenge = 180.0f / (_CountPoints -1 ) ;
 float winkel_breite = 360.0f / (_CountPoints * 2) ;
 float laengenwinkel = 90.0f - winkel_laenge;
 float breitenwinkel = winkel_breite;
@@ -234,11 +245,18 @@ float breitenwinkel = winkel_breite;
 int index = 0;
 Add2GPU(v,index, npol);
 Add2GPU(v,index, GetColor().x, GetColor().y, GetColor().z);
+// Dummy für Texture
+Add2GPU(v,index, glm::vec2(1.0,1.0));
+
 countVertex = 1;
 // Erstmal eine 2D-Sehne für den Längengrad erstellen und in ein array eintragen
 // Entspricht x und y koordinate
-glm::vec2 laengensehne[_CountPoints];  // +1
-glm::vec2 breitensehne[_CountPoints*2];  // *2+1
+glm::vec2 laengensehne[_CountPoints-1];  //
+glm::vec2 breitensehne[_CountPoints*2];  //
+
+//glm::vec2 laengensehne[_CountPoints];  //
+//glm::vec2 breitensehne[_CountPoints*2];  // *2+1
+
 
 //laengensehne[0].x = 0.0;
 //laengensehne[0].y = _Radius;
@@ -246,7 +264,7 @@ glm::vec2 breitensehne[_CountPoints*2];  // *2+1
 glm::vec3 laengengrad;
 glm::vec3 breitengrad;
 
-for (int i = 0; i < _CountPoints-1; i++) {
+for (int i = 0; i < _CountPoints - 2; i++) {
     calccircle(_Radius, laengenwinkel, laengensehne[i]);
     laengenwinkel -= winkel_laenge;
     if ( laengenwinkel < 0.0f )
@@ -258,6 +276,7 @@ for (int i = 0; i < _CountPoints-1; i++) {
 
     Add2GPU(v, index, laengengrad);
     Add2GPU(v, index, GetColor().x, GetColor().y, GetColor().z);
+    Add2GPU(v,index,glm::vec2(1.0,1.0));
 
     countVertex ++;
    // ========================================================
@@ -277,6 +296,8 @@ for (int i = 0; i < _CountPoints-1; i++) {
 
         Add2GPU(v, index, breitengrad);
         Add2GPU(v, index, GetColor().x, GetColor().y, GetColor().z);
+        Add2GPU(v, index, glm::vec2(1.0,1.0));
+
         countVertex ++;
    }
 
@@ -285,7 +306,11 @@ for (int i = 0; i < _CountPoints-1; i++) {
 
     Add2GPU(v,index,0.0, -(_Radius),0.0);  // "Südpol"
     Add2GPU(v, index, GetColor().x, GetColor().y, GetColor().z);
+    Add2GPU(v, index, glm::vec2(1.0,1.0));
     countVertex++;
+
+    logimage("Calc index: " + IntToString(index));
+    logimage("Countvertex: " + IntToString(countVertex));
 }
 void CSphere::setUp() {
 
@@ -294,6 +319,79 @@ void CSphere::setUp() {
     vs = shader->compileVertexShader(vs_source);
     fs = shader->compileFragmentShader(fs_source);
     shaderprogram = shader->CreateProgram(vs,fs);
+
+
+    //            Nordpol und südpol abziehen          letzer breitegrad = 1. breiten grad , + nord und südpol
+    int countverts =         ((_CountPoints - 2)         *      (_CountPoints * 2 ))  + 2 ;
+
+    int count = countverts * 8;   // pro vertex 3 float vektor, 3float color, 2 float textur
+    GLfloat verts[count];
+
+    logimage("Anzahl floats pro SPHERE : " + IntToString(count));
+
+    calc(verts);
+
+
+
+
+    glGenVertexArrays(1,&_Vao);
+    glBindVertexArray(_Vao);
+    // Vertex Buffer
+    glGenBuffers(1,&_VertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, _VertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER,
+                 sizeof(verts),
+                verts,
+                GL_DYNAMIC_DRAW);
+
+    // Vertex
+    glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, 8*sizeof(float),(void*)0);
+    glEnableVertexAttribArray(0);
+    //Color
+    glVertexAttribPointer(1,3,GL_FLOAT, GL_FALSE, 8*sizeof(float),(void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8 * sizeof(float), (void*)(6 *sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    // Element buffer  --> NordPol - Triangle Fan
+    GLushort npol_indices[_CountPoints * 2 + 2];
+
+    for (GLushort i = 0; i < _CountPoints * 2 + 1; i++)
+        npol_indices[i] = i;
+    npol_indices[_CountPoints * 2 + 1] = 1;
+
+    glGenBuffers(1,&_Ebo_npol);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo_npol);
+    glBufferData (GL_ELEMENT_ARRAY_BUFFER,
+                  sizeof (npol_indices),
+                  npol_indices,
+                  GL_DYNAMIC_DRAW);
+
+    // Alles reseten
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    glBindVertexArray(0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+
+
+
     //                                                                         3 float color +
     //                                           3 float vertex+ 3 float col   3 float vertex
     //               Längengrad        BreitenGrad    Vertex+color              pro pol
@@ -341,4 +439,6 @@ void CSphere::setUp() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
     glBindVertexArray(0);
+
+    */
 }
