@@ -57,11 +57,16 @@ private:
     // Buffers for Opengl
 
     GLuint  _Vao, _VertexBuffer,_Ebo_npol, _Ebo_spol;
+    GLuint _BodyPoints;
+    std::vector<GLushort> body;
+
     GLint   mv_location;
     GLint   color_location;
     GLuint shaderprogram;
     int countVertex;
-   // GLushort * npol_indices;
+
+
+
 
     Shader * shader;
     GLfloat _Radius;

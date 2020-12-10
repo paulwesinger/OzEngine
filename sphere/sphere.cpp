@@ -37,9 +37,13 @@ static const GLchar * vs_source = {
 "out vec2 texKoord;                             \n"
 
 "void main(void) {                              \n"
+"    float alpha = 1.0f;                         \n"
 "    gl_Position = mv * vec4(vertex,1.0);       \n"
+"    if (vertex.z < 0 ) {                       \n"
+"       alpha = 0.3f;                           \n"
+"    }                                          \n"
 "    //vs_out.color = vec4(color,1.0);          \n"
-"    outcolor = vec4(color,1.0);                \n"
+"    outcolor = vec4(color,alpha);                \n"
 "    texKoord = tex;                            \n"
 "}"
 };
@@ -201,10 +205,28 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_spol);
     glDrawElements( GL_TRIANGLE_FAN, _CountPoints * 2 + 2 , GL_UNSIGNED_SHORT, 0);
 
+    // Body
+
+    glUniform4f(color_location,1.0,0.0,GetColor().b,0.3);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
+    glDrawElements(GL_TRIANGLE_STRIP,body.size(),GL_UNSIGNED_SHORT,0);
+
 
     glPointSize(8.0f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
     glDrawArrays(GL_POINTS, 0 , countVertex);
+
+    glUniform4f(color_location,1.0,0.0,GetColor().b,GetColor().a);
+
+    glPointSize(16.0f);
+   // glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
+    glDrawArrays(GL_POINTS, 0 , 4);
+
+    glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
+    glDrawArrays(GL_POINTS, 25 , 2);
+
+
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindVertexArray(0);
@@ -349,7 +371,7 @@ void CSphere::setUp() {
     //Color
     glVertexAttribPointer(1,3,GL_FLOAT, GL_FALSE, 8*sizeof(float),(void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
+    // Texture
     glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8 * sizeof(float), (void*)(6 *sizeof(float)));
     glEnableVertexAttribArray(2);
 
@@ -372,13 +394,7 @@ void CSphere::setUp() {
     //-------------------------------------------
     // Element buffer südpol  zum aufwärmen:
     //-------------------------------------------
-
-
-    logimage("Countvertex: " + IntToString(countVertex));
-
-
     GLushort spol_indices[_CountPoints * 2 + 2];
-
     spol_indices[0] = countVertex-1;
 
     for (GLushort i = 1; i < _CountPoints * 2 +2; i++)
@@ -392,6 +408,45 @@ void CSphere::setUp() {
                   sizeof (spol_indices),
                   spol_indices,
                   GL_DYNAMIC_DRAW);
+
+
+    // -------------------------------------
+    // Sphere body
+    //--------------------------------------
+/*
+    body.push_back(25);
+    body.push_back(49);
+    body.push_back(26);
+    body.push_back(50);
+    body.push_back(27);
+    body.push_back(51);
+    body.push_back(28);
+    body.push_back(52);
+  */
+
+    int hlp = _CountPoints * 2;
+    int step = hlp;
+    //-----------------------------------------
+    // "Testkranz"
+    //-----------------------------------------
+    for (int i= 0; i< hlp; i++ ) {
+        body.push_back(i+step + 1);
+        body.push_back(i + step*2 +1);
+    }
+    // anschliessen an die erstenbeiden
+    body.push_back(step+1);
+    body.push_back(step*2 +1);
+    //------------------------------------------
+
+    glGenBuffers(1,&_BodyPoints);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                        body.size() * sizeof(GLushort),
+                        &body[0],
+                        GL_STATIC_DRAW);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indicesEBO.size() * sizeof(<data type>), &m_indicesEBO[0], GL_STATIC_DRAW);
+
+
 
     // Alles reseten
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);

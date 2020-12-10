@@ -501,7 +501,7 @@ void InitGL::InitEngineObject() {
     // Lightsource as a spere
     //-----------------------------------------
     loginfo("Serstell LichtQuelle als wiesse spere....","InitGL::InitEngineObjects");
-    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(0.0,0.0,1.0,1.0),projection->GetPerspective(),8,(GLfloat)8.0,shader );
+    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(0.0,0.0,1.0,1.0),projection->GetPerspective(),12,(GLfloat)8.0,shader );
 
     loginfo("Done 3D Objects .............");
 }
