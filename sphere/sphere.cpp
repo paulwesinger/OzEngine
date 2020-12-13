@@ -212,6 +212,7 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
     glDrawElements(GL_TRIANGLE_STRIP,body.size(),GL_UNSIGNED_SHORT,0);
 
+    glUniform4f(color_location,0.0,0.0,0.0,1.0);
 
     glPointSize(8.0f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
@@ -413,30 +414,26 @@ void CSphere::setUp() {
     // -------------------------------------
     // Sphere body
     //--------------------------------------
-/*
-    body.push_back(25);
-    body.push_back(49);
-    body.push_back(26);
-    body.push_back(50);
-    body.push_back(27);
-    body.push_back(51);
-    body.push_back(28);
-    body.push_back(52);
-  */
+    int x = 0;
+    int step = _CountPoints * 2;
+    int hlp = step;
 
-    int hlp = _CountPoints * 2;
-    int step = hlp;
-    //-----------------------------------------
-    // "Testkranz"
-    //-----------------------------------------
-    for (int i= 0; i< hlp; i++ ) {
-        body.push_back(i+step + 1);
-        body.push_back(i + step*2 +1);
+    int i, j;
+
+    for (j = 0; j < _CountPoints -3; j++) {
+
+        for (i= 0; i < hlp; i++){
+            body.push_back(i + 1 + x);
+            body.push_back(i+x+step+1);
+        }
+        // CountPoints* 2 * y + x....
+
+        body.push_back(_CountPoints * 2 * j + 1);
+        body.push_back(_CountPoints * 2 * j + step +1);
+
+        x += step;
     }
-    // anschliessen an die erstenbeiden
-    body.push_back(step+1);
-    body.push_back(step*2 +1);
-    //------------------------------------------
+
 
     glGenBuffers(1,&_BodyPoints);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);

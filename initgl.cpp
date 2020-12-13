@@ -801,15 +801,15 @@ void InitGL::Run() {
                 glm::vec3 rv(hlp * 0.5);
 
                 glm::vec3 vt(0.001,0.002,0.003);
-                objects3D[i]->StepTranslate(vt);
-                objects3D[i]->StepRotate(rv);
+//                objects3D[i]->StepTranslate(vt);
+//                objects3D[i]->StepRotate(rv);
 
 
                 vt.x =0.01;
                 vt.y =0.0;
                 vt.z =0.0;
 
-                objects3D[i]->StepScale(vt);
+//                objects3D[i]->StepScale(vt);
 
                 objects3D[i]->Draw(camera,currentShader);
 
