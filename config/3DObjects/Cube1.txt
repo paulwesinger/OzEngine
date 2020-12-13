@@ -6,7 +6,7 @@ colorGreen 0.0
 colorBlue 0.0
 colorAlpha 1.0
 hasLight 1
-textures config/cubetextures.cfg
+textures config/cube2textures.cfg
 translateX 2.0
 translateY 1.0
 translateZ 2.0

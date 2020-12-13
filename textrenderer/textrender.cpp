@@ -243,7 +243,8 @@ bool TextRender::Init(int resx, int resy) {
     else
         loginfo("Freetype2 initialisiert ","TextRender::Init");
 
-    if (FT_New_Face(ft, "/usr/share/fonts/liberation-mono/LiberationMono-Regular.ttf", 0, &face))
+    if (FT_New_Face(ft, "/usr/share/fonts/google-droid/DroidSans.ttf", 0, &face))
+    //if (FT_New_Face(ft, "/usr/share/fonts/liberation-mono/LiberationMono-Regular.ttf", 0, &face))
         logwarn("Konnte Freetype2 Face nicht initialisieren","RenderText::Init");
     else
         loginfo("Freetype2 Face initialisiert ... ","TextRender::Init");

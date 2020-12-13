@@ -33,8 +33,11 @@ static const GLchar * vs_source = {
 "layout (location=2) in vec2 tex;               \n"
 
 "uniform mat4 mv;                               \n"
-"out vec4 outcolor;                             \n"
-"out vec2 texKoord;                             \n"
+
+"out VS_OUT{                                    \n"
+"       vec4 color;                             \n"
+"       vec2 TexCoord;                          \n"
+"} vs_out;                                      \n"
 
 "void main(void) {                              \n"
 "    float alpha = 1.0f;                         \n"
@@ -43,20 +46,29 @@ static const GLchar * vs_source = {
 "       alpha = 0.3f;                           \n"
 "    }                                          \n"
 "    //vs_out.color = vec4(color,1.0);          \n"
-"    outcolor = vec4(color,alpha);                \n"
-"    texKoord = tex;                            \n"
+"    vs_out.color = vec4(color,alpha);          \n"
+"    vs_out.TexCoord =  tex;                    \n"
 "}"
 };
 
 static const GLchar * fs_source = {
 "#version 440 core                              \n"
 
-"in vec4 outcolor;                              \n"
+"layout(binding=0) uniform sampler2D texture1;  \n"
+"layout(binding=1) uniform sampler2D texture2;  \n"
+
 "out vec4 fragcolor;                            \n"
 "uniform vec4 changecolor;                      \n"
 
+"in VS_OUT {                                    \n"
+"   vec4 color;                                 \n"
+"   vec2 TexCoord;                                   \n"
+"}fs_in;                                        \n"
+
 "void main(void) {                              \n"
-"    fragcolor =  changecolor;                  \n"
+"   // fragcolor =  changecolor;                \n"
+"   fragcolor = mix(texture(texture1, fs_in.TexCoord), texture(texture2, fs_in.TexCoord), 0.8);"
+"   fragcolor = fragcolor * changecolor;        \n"
 "}                                              "
 };
 CSphere::CSphere() :
@@ -196,6 +208,13 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glBindVertexArray(_Vao);
     glBindBuffer(GL_ARRAY_BUFFER, _VertexBuffer);
 
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D,_Textures[1]);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, _Textures[0]);
+
+
     // Alle indices binden:
     // Nordpol
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_npol);
@@ -207,7 +226,7 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
 
     // Body
 
-    glUniform4f(color_location,1.0,0.0,GetColor().b,0.3);
+    //glUniform4f(color_location,1.0,0.0,GetColor().b,0.3);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
     glDrawElements(GL_TRIANGLE_STRIP,body.size(),GL_UNSIGNED_SHORT,0);
@@ -227,6 +246,9 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
     glDrawArrays(GL_POINTS, 25 , 2);
 
+
+    glBindTexture(GL_TEXTURE_2D,0);
+    glActiveTexture(GL_TEXTURE0);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
@@ -276,7 +298,7 @@ int index = 0;
 Add2GPU(v,index, npol);
 Add2GPU(v,index, GetColor().x, GetColor().y, GetColor().z);
 // Dummy für Texture
-Add2GPU(v,index, glm::vec2(1.0,1.0));
+Add2GPU(v,index, glm::vec2(0.5,1.0));
 
 countVertex = 1;
 // Erstmal eine 2D-Sehne für den Längengrad erstellen und in ein array eintragen
@@ -294,6 +316,12 @@ glm::vec2 breitensehne[_CountPoints*2];  //
 glm::vec3 laengengrad;
 glm::vec3 breitengrad;
 
+float texCoordU = 1.0f / (_CountPoints * 2) ;
+float texCoordV = 1.0f / (_CountPoints);
+float texU;
+float texV;
+
+
 for (int i = 0; i < _CountPoints - 2; i++) {
     calccircle(_Radius, laengenwinkel, laengensehne[i]);
     laengenwinkel -= winkel_laenge;
@@ -306,7 +334,10 @@ for (int i = 0; i < _CountPoints - 2; i++) {
 
     Add2GPU(v, index, laengengrad);
     Add2GPU(v, index, GetColor().x, GetColor().y, GetColor().z);
-    Add2GPU(v,index,glm::vec2(1.0,1.0));
+    //Add2GPU(v,index,glm::vec2(1.0,1.0));
+    texU = 0.0f;
+    texV = i * texCoordV;
+    Add2GPU(v,index,glm::vec2(texU,texV));
 
     countVertex ++;
    // ========================================================
@@ -326,8 +357,9 @@ for (int i = 0; i < _CountPoints - 2; i++) {
 
         Add2GPU(v, index, breitengrad);
         Add2GPU(v, index, GetColor().x, GetColor().y, GetColor().z);
-        Add2GPU(v, index, glm::vec2(1.0,1.0));
-
+        //Add2GPU(v, index, glm::vec2(1.0,1.0));
+        texU = j * texCoordU;
+        Add2GPU(v,index,glm::vec2(texU,texV));
         countVertex ++;
    }
 
@@ -336,7 +368,7 @@ for (int i = 0; i < _CountPoints - 2; i++) {
 
     Add2GPU(v,index,0.0, -(_Radius),0.0);  // "Südpol"
     Add2GPU(v, index, GetColor().x, GetColor().y, GetColor().z);
-    Add2GPU(v, index, glm::vec2(1.0,1.0));
+    Add2GPU(v, index, glm::vec2(0.5,0.0));
     countVertex++;
 }
 void CSphere::setUp() {

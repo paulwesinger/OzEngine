@@ -209,8 +209,9 @@ bool Base2D::Init(int resx, int resy) {
 
         SDL_Surface * surface = CLoadImage::getSurface( _ImagePath,"Base2D");
 
-        char * data;
+        char * data = nullptr;
         if ( surface ) {
+
 
             data = static_cast<char*>( surface ->pixels);
             dimensions.width  = surface-> w;

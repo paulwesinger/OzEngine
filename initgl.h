@@ -133,6 +133,8 @@ protected:
     SDL_Event e;
     // Members for navigating with the  mouse...
     MOUSE _Mouse;
+    float MouseResX;
+    float MouseResY;
 
     irrklang::ISoundEngine * soundengine;
     irrklang::ISoundEngine * soundengine1;
@@ -153,6 +155,7 @@ protected:
     // Global Resolution vars
     int _ResX;
     int _ResY;
+
     std::string caption;
 
     GLFLOAT4 _ClearColor;
@@ -168,8 +171,13 @@ private:
     void DeleteMatrices();
     void DeleteShaders();
 
+    MOUSE convertMouse(int x, int y);
+
     SDL_Window * window ;
     SDL_GLContext maincontext;
+
+    SDL_DisplayMode DesktopDisplayMode;
+    SDL_DisplayMode newDisplayMode;
 
 };
 

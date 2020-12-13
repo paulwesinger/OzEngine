@@ -17,8 +17,8 @@
 
 #define SD_WIDTH    1920//1280.0f//1024
 #define SD_HEIGHT   1200//768.0f//768
-#define FULLSCREEN_WIDTH   3840//1680.0f//1920.0f
-#define FULLSCREEN_HEIGHT  2160//1050.0f//1200.0f
+#define FULLSCREEN_WIDTH  3840//1680.0f//1920.0f
+#define FULLSCREEN_HEIGHT 2160//1050.0f//1200.0f
 
 using namespace irrklang;
 
@@ -28,7 +28,7 @@ InitGL::InitGL (const std::string titel){
     window = nullptr;
     maincontext = nullptr;
 
-    _FullScreen = false;
+    _FullScreen = true;
 
     _Mouse.lastx = 0;
     _Mouse.lasty = 0;
@@ -58,6 +58,9 @@ InitGL::InitGL(const InitGL& orig) {
 }
 
 InitGL::~InitGL() {
+
+    // Alten Videomode wiederherstellen
+    SDL_SetWindowDisplayMode(window,&DesktopDisplayMode);
 
     if (soundengine)
         soundengine->drop();
@@ -239,7 +242,7 @@ bool InitGL::InitSDL2()  {
     loginfo("Num Display modes: " + IntToString(numDisplaymodes), "InitGL::Init");
 
     // Alle Display modes auflisten:
-    int currentdisplay = 1;
+    int currentdisplay = 0;
     for (int i = 0; i < numDisplaymodes; i++ ) {
         SDL_DisplayMode dpm;
         SDL_GetDisplayMode(currentdisplay,i,&dpm);
@@ -259,7 +262,7 @@ bool InitGL::InitSDL2()  {
 
 
     SDL_DisplayMode dm;
-    SDL_GetDesktopDisplayMode(0, &dm );
+    SDL_GetDesktopDisplayMode(0, &DesktopDisplayMode );
 
     _ResX = FULLSCREEN_WIDTH;
     _ResY = FULLSCREEN_HEIGHT;
@@ -271,18 +274,9 @@ bool InitGL::InitSDL2()  {
                 0,//SDL_WINDOWPOS_UNDEFINED,
                 0,//SDL_WINDOWPOS_UNDEFINED,
                 _ResX,_ResY,
-                SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_OPENGL
-                //SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
+                //SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_OPENGL
+                SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
             );
-
-        // Test für andreren Mode
-
-        //dm.h = 600;
-        //dm.w = 800;
-        //if (SDL_SetWindowDisplayMode(window,&dm) == 0 )
-        //    printf("Neuer Mode : %i x % i", dm.w,dm.h);
-        //else
-        //    printf(" Failed to set Mode !!! %s", SDL_GetError());
 
     }
     else {
@@ -294,14 +288,7 @@ bool InitGL::InitSDL2()  {
                 SDL_WINDOWPOS_UNDEFINED,
                 _ResX,_ResY,
                 SDL_WINDOW_OPENGL
-    );
-
-     //   dm.h = 720;
-     //   dm.w = 1280;
-     //   if (SDL_SetWindowDisplayMode(window,&dm) == 0 )
-     //       printf("Neuer Mode : %i x % i", dm.w,dm.h);
-     //   else
-     //       printf(" Failed to set Mode !!! %s", SDL_GetError());
+            );
     }
 
     if ( window == NULL)  {
@@ -336,13 +323,23 @@ bool InitGL::InitSDL2()  {
            default: loginfo("Undefined");
        }
 
+    //loginfo("Erstelle Viewport " + IntToString(_ResX) + " x " + IntToString(_ResY),"InitGL::InitEngineObject");
+    //glViewport(0,0, _ResX , _ResY );
 
     glewExperimental = GL_TRUE;
     glewInit();
     // Use v-sync
     SDL_GL_SetSwapInterval(1);
 
-    // Testweise Displaymode ermitteln
+    newDisplayMode.w = _ResX;
+    newDisplayMode.h = _ResY;
+    newDisplayMode.format = SDL_PIXELFORMAT_RGBX8888;
+
+
+//    if (_FullScreen)
+//        SDL_SetWindowDisplayMode(window,&newDisplayMode);  // Only in fullscreen available
+
+     // Testweise Displaymode ermitteln
     SDL_DisplayMode current;
     int error = SDL_GetCurrentDisplayMode(0, &current);
     if ( error == 0) {
@@ -350,6 +347,12 @@ bool InitGL::InitSDL2()  {
     }
     else
         printf ("InitGL -- RES_X,RES_Y :  %i x %i h \n",_ResX,_ResY);
+
+    MouseResX = (float)_ResX / (float)current.w;
+    MouseResY = (float)_ResY / (float)current.h;
+
+    logwarn("MouseRes X " + FloatToString(MouseResX));
+    logwarn("MouseRes Y " + FloatToString(MouseResY));
 
     InitEngineObject();
 
@@ -389,10 +392,6 @@ void InitGL::InitEngineObject() {
 // ===============================================================
 // Hier werden alle Objeckte initialisiert
 // ===============================================================
-
-    loginfo("Erstelle Viewport " + IntToString(_ResX) + " x " + IntToString(_ResY),"InitGL::InitEngineObject");
-    glViewport(0,0, _ResX , _ResY );
-
     loginfo("Setze ClearColor auf Schwartz ...... done","InitGL::InitEngineObject");
     _ClearColor.x = 0.0f; _ClearColor.y = 0.0f; _ClearColor.z = 0.0f; _ClearColor.w = 1.0f;
     glClearColor(_ClearColor.x, _ClearColor.y, _ClearColor.z, _ClearColor.w);
@@ -494,14 +493,34 @@ void InitGL::InitEngineObject() {
 
     // Sphere
     loginfo("Erstelle Sphere .........done");
-    sphere1  = new CSphere(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,0.0,0.0,1.0), projection->GetPerspective(),12,(GLfloat)4.0,shader);
-    sphere1->SetColor(glm::vec4(1.0,0.0,0.5,1.0));
+    sphere1  = new CSphere(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,1.0,1.0,1.0), projection->GetPerspective(),12,(GLfloat)4.0,shader);
+    sphere1->SetColor(glm::vec4(1.0,1.0,0.5,1.0));
+
+    // Texture loading
+    cubeimages.clear();
+    texturesok =  fu.readLine("config/cube2textures.cfg",cubeimages);
+    if (texturesok)
+        sphere1->addTexture(cubeimages,"InitGL::Sphere");
+    else
+        logwarn("Init::Sphere1 konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
+    cubeimages.clear();
+
+
 
     //-----------------------------------------
     // Lightsource as a spere
     //-----------------------------------------
     loginfo("Serstell LichtQuelle als wiesse spere....","InitGL::InitEngineObjects");
-    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(0.0,0.0,1.0,1.0),projection->GetPerspective(),12,(GLfloat)8.0,shader );
+    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(1.0,1.0,1.0,1.0),projection->GetPerspective(),12,(GLfloat)5.0,shader );
+    lightSource->SetColor(glm::vec4(1.0,1.0,1.0,0.4));
+    //Texture loading
+    cubeimages.clear();
+    texturesok =  fu.readLine("config/cubetextures.cfg",cubeimages);
+    if (texturesok)
+        lightSource->addTexture(cubeimages,"InitGL::Sphere");
+    else
+        logwarn("Init::Sphere1 konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
+    cubeimages.clear();
 
     loginfo("Done 3D Objects .............");
 }
@@ -613,9 +632,11 @@ void InitGL::Run() {
             framerateOut = frames;
             frames = 0;
             ms = 0;
-            textrender->setText(1,"Frames pers sec: " + IntToString(framerateOut) );
+          //  textrender->setText(1,"Frames pers sec: " + IntToString(framerateOut) );
          }
 
+        textrender->setText(0,"Mouse X " + IntToString(_Mouse.x) );
+        textrender->setText(1,"Mouse Y " + IntToString(_Mouse.y) );
 
         tickstart = tickend;
         // -------------------------------
@@ -776,7 +797,11 @@ void InitGL::Run() {
 
 
         // lightsource
+
+        lightSource->SetColor(glm::vec4(1.0,1.0,1.0,1.0));
+
         dummy = vec3(0.3,0.0,0.0);
+
         lightSource->SetFirstTranslate(true);
         lightSource ->StepRotate(dummy);
 
@@ -801,8 +826,8 @@ void InitGL::Run() {
                 glm::vec3 rv(hlp * 0.5);
 
                 glm::vec3 vt(0.001,0.002,0.003);
-//                objects3D[i]->StepTranslate(vt);
-//                objects3D[i]->StepRotate(rv);
+                objects3D[i]->StepTranslate(vt);
+                objects3D[i]->StepRotate(rv);
 
 
                 vt.x =0.01;
@@ -884,14 +909,27 @@ uint InitGL::HandleEvent(SDL_Event e) {
 //-------------------------------------------------
 // Mouse events
 //-------------------------------------------------
-void InitGL::OnMouseMove(int &x, int &y, uint buttonstate) {
 
+MOUSE InitGL::convertMouse(int x, int y) {
+
+    MOUSE m;
+    float fx = (float)x * MouseResX;
+    float fy = (float)y * MouseResY;
+
+    m.x = (int) fx;
+    m.y = (int) fy;
+
+    return  m;
+}
+void InitGL::OnMouseMove(int &x, int &y, uint buttonstate) {
+    _Mouse = convertMouse(x,y);
 }
 void InitGL::OnLeftMouseButtonClick(int &x, int &y) {
 
+    MOUSE m = convertMouse(x,y);
     if ( ! buttons.empty() ) {
         for (uint i = 0; i < buttons.size(); i++) {
-            if (buttons[i]->intersect(x, y) )
+            if (buttons[i]->intersect(m.x, m.y) )
                 buttons[i]->OnClick();
         }
     }
