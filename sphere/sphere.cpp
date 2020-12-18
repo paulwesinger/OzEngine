@@ -359,6 +359,8 @@ for (int i = 0; i < _CountPoints - 2; i++) {
    breitenwinkel = winkel_breite;
 }
 
+
+
     Add2GPU(v,index,0.0, -(_Radius),0.0);  // "Südpol"
     Add2GPU(v, index, GetColor().x, GetColor().y, GetColor().z);
     Add2GPU(v, index, glm::vec2(0.5,0.0));
