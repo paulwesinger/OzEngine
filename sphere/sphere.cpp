@@ -289,7 +289,7 @@ void CSphere::calc(GLfloat * v) {
 // Erstmal NordPol festlegen
 glm::vec3 npol = glm::vec3(0.0,_Radius ,0.0);
 float winkel_laenge = 180.0f / (_CountPoints -1 ) ;
-float winkel_breite = 360.0f / (_CountPoints * 2) ;
+float winkel_breite = 360.0f / ((_CountPoints  * 2) - 1 )  ;
 float laengenwinkel = 90.0f - winkel_laenge;
 float breitenwinkel = winkel_breite;
 // Nordpol ins array für vertexbuffer eintragen
@@ -306,17 +306,10 @@ countVertex = 1;
 glm::vec2 laengensehne[_CountPoints-1];  //
 glm::vec2 breitensehne[_CountPoints*2];  //
 
-//glm::vec2 laengensehne[_CountPoints];  //
-//glm::vec2 breitensehne[_CountPoints*2];  // *2+1
-
-
-//laengensehne[0].x = 0.0;
-//laengensehne[0].y = _Radius;
-
 glm::vec3 laengengrad;
 glm::vec3 breitengrad;
 
-float texCoordU = 1.0f / (_CountPoints * 2) ;
+float texCoordU = 1.0f / ((_CountPoints * 2) -1 ) ;
 float texCoordV = 1.0f / (_CountPoints);
 float texU;
 float texV;
@@ -344,8 +337,8 @@ for (int i = 0; i < _CountPoints - 2; i++) {
    // Jetzt den Breitengrad für jeden längengrad punkt rechnen
    // diesmal CountPoints * 2
    //---------------------------------------------------------
-   for (int j = 0; j < _CountPoints * 2 - 1; j++) {
-        // sehne  :
+   for (int j = 0; j < _CountPoints * 2  -1;  j++) {
+       // sehne  :
         calccircle(laengengrad.x,breitenwinkel,breitensehne[j]);
         breitenwinkel += winkel_breite;
 
@@ -381,8 +374,7 @@ void CSphere::setUp() {
 
 
     //            Nordpol und südpol abziehen          letzer breitegrad = 1. breiten grad , + nord und südpol
-    int countverts =         ((_CountPoints - 2)         *      (_CountPoints * 2 ))  + 2 ;
-
+    int countverts =         ((_CountPoints - 2)         *      (_CountPoints * 2 ) )  + 2;
     int count = countverts * 8;   // pro vertex 3 float vektor, 3float color, 2 float textur
     GLfloat verts[count];
 

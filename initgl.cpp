@@ -515,7 +515,7 @@ void InitGL::InitEngineObject() {
     lightSource->SetColor(glm::vec4(1.0,1.0,1.0,0.4));
     //Texture loading
     cubeimages.clear();
-    texturesok =  fu.readLine("config/cubetextures.cfg",cubeimages);
+    texturesok =  fu.readLine("config/cube2textures.cfg",cubeimages);
     if (texturesok)
         lightSource->addTexture(cubeimages,"InitGL::Sphere");
     else
