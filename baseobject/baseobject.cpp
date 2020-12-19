@@ -23,10 +23,7 @@ BaseObject::BaseObject() {
     StepTranslate(v);
     StepRotate(v);
     StepScale(v);
-
-    _IsOrtho = false;
-    _FirstTranslate = true;
-    _HasTextures = false;
+    init();
 }
 
 BaseObject::BaseObject(const BaseObject& orig) {
@@ -39,12 +36,22 @@ BaseObject::BaseObject(vec3 pos,vec3 rotate,vec3 scale , vec4 col) {
     Scale(scale);
     SetColor(col);
 
-    _IsOrtho = false;
-    _FirstTranslate = true;
-    _HasTextures = false;
+    init();
 }
 
 BaseObject::~BaseObject() {
+}
+
+void BaseObject::init( ) {
+    _IsOrtho = false;
+    _FirstTranslate = true;
+    _HasTextures = false;
+    _HasAlpha = false;
+
+    // Standard wert für Alpha: Black
+    _AlphaColor.r = 0.0;
+    _AlphaColor.g = 0.0;
+    _AlphaColor.b = 0.0;
 }
 
 void BaseObject::Draw( Camera * cam, GLuint shaderprog){}
@@ -147,4 +154,10 @@ void BaseObject::setActiveShader(ShaderType t){
 
  bool BaseObject::HasTextures()              { return  _HasTextures; }
  void BaseObject::SetHasTextures(bool hasATexture) { _HasTextures = hasATexture; }
+
+ void BaseObject::SetHasAlpha(bool yes) { _HasAlpha = yes;  }
+ bool BaseObject::HasAlpha() {return _HasAlpha; }
+
+ void BaseObject::SetAlphaColor(glm::vec3 alphacol) { _AlphaColor = alphacol; }
+ glm::vec3 BaseObject::AlphaColor() {return _AlphaColor; }
 

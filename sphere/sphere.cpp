@@ -234,9 +234,10 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
     glDrawElements(GL_TRIANGLE_STRIP,body.size(),GL_UNSIGNED_SHORT,0);
 
+
     glUniform4f(color_location,0.0,0.0,0.0,1.0);
 
-    glPointSize(8.0f);
+    glPointSize(1.0f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
     glDrawArrays(GL_POINTS, 0 , countVertex);
 
@@ -244,11 +245,16 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
 
     glPointSize(16.0f);
    // glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
-    glDrawArrays(GL_POINTS, 0 , 4);
+    glDrawArrays(GL_POINTS, 1 , 1);
+
 
     glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 25 , 2);
-
+    glDrawArrays(GL_POINTS, 25 , 1);
+    glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
+    glDrawArrays(GL_POINTS, 49 , 1);
+    glDrawArrays(GL_POINTS, 50 , 1);
+    glDrawArrays(GL_POINTS, 73 , 1);
+    glDrawArrays(GL_POINTS, 95 , 1);
 
     glBindTexture(GL_TEXTURE_2D,0);
     glActiveTexture(GL_TEXTURE0);
@@ -294,9 +300,9 @@ void CSphere::calc(GLfloat * v) {
 // Erstmal NordPol festlegen
 glm::vec3 npol = glm::vec3(0.0,_Radius ,0.0);
 float winkel_laenge = 180.0f / (_CountPoints -1 ) ;
-float winkel_breite = 360.0f / ((_CountPoints  * 2) - 1 )  ;
+float winkel_breite = 360.0f / ((_CountPoints  * 2) -1 )  ;
 float laengenwinkel = 90.0f - winkel_laenge;
-float breitenwinkel = winkel_breite;
+float breitenwinkel = -winkel_breite;
 // Nordpol ins array für vertexbuffer eintragen
 // Vertex
 int index = 0;
@@ -342,7 +348,7 @@ for (int i = 0; i < _CountPoints - 2; i++) {
    // Jetzt den Breitengrad für jeden längengrad punkt rechnen
    // diesmal CountPoints * 2
    //---------------------------------------------------------
-   for (int j = 0; j < _CountPoints * 2  -1;  j++) {
+   for (int j = 0; j < _CountPoints * 2 - 1;  j++) {//                   -1;  j++) {
        // sehne  :
         calccircle(laengengrad.x,breitenwinkel,breitensehne[j]);
         breitenwinkel += winkel_breite;
@@ -381,7 +387,7 @@ void CSphere::setUp() {
 
 
     //            Nordpol und südpol abziehen          letzer breitegrad = 1. breiten grad , + nord und südpol
-    int countverts =         ((_CountPoints - 2)         *      (_CountPoints * 2 ) )  + 2;
+    int countverts =         ((_CountPoints - 2)         *      (_CountPoints * 2 ) )  + 2 ;
     int count = countverts * 8;   // pro vertex 3 float vektor, 3float color, 2 float textur
     GLfloat verts[count];
 
@@ -451,7 +457,7 @@ void CSphere::setUp() {
 
     int i, j;
 
-    for (j = 0; j < _CountPoints -3; j++) {
+    for (j = 0; j < _CountPoints - 3; j++) {
 
         for (i= 0; i < hlp; i++){
             body.push_back(i + 1 + x);
@@ -459,8 +465,8 @@ void CSphere::setUp() {
         }
         // CountPoints* 2 * y + x....
 
-        body.push_back(_CountPoints * 2 * j + 1);
-        body.push_back(_CountPoints * 2 * j + step +1);
+        body.push_back( 1+x);  // _CountPoints * 2 * j + 1);
+        body.push_back( 1+x+step);//_CountPoints * 2 * j + step +1);
 
         x += step;
     }

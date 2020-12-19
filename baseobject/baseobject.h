@@ -58,6 +58,11 @@ public:
     bool GetFirstTranslate();
     bool HasTextures();
     void SetHasTextures(bool hasATexture);
+    void SetHasAlpha(bool yes);
+    bool HasAlpha();
+    void SetAlphaColor(glm::vec3 alphacol);
+    glm::vec3 AlphaColor();
+
 
     void SetProjection(glm::mat4 pro,bool orthomode = false);
     glm::mat4 & GetProjection();
@@ -82,9 +87,14 @@ protected:
     glm::mat4 _Projection;
     bool _IsOrtho;
     bool _HasTextures;
+    bool _HasAlpha;
+    glm::vec3 _AlphaColor;
 
     uint _CountTextures;  // die Anzehl = Listen länge
     GLuint  _Textures[5];
+
+private:
+    void init();
 
 
 };

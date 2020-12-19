@@ -495,10 +495,11 @@ void InitGL::InitEngineObject() {
     loginfo("Erstelle Sphere .........done");
     sphere1  = new CSphere(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,1.0,1.0,1.0), projection->GetPerspective(),12,(GLfloat)4.0,shader);
     sphere1->SetColor(glm::vec4(1.0,1.0,0.5,1.0));
+    sphere1->SetHasAlpha(true);
 
     // Texture loading
     cubeimages.clear();
-    texturesok =  fu.readLine("config/cube2textures.cfg",cubeimages);
+    texturesok =  fu.readLine("config/SphereWorldTextures.cfg",cubeimages);
     if (texturesok)
         sphere1->addTexture(cubeimages,"InitGL::Sphere");
     else
@@ -782,7 +783,7 @@ void InitGL::Run() {
         cube3->SetFirstTranslate(false);
         cube3->Draw ( camera, currentShader);
 
-        dummy = vec3(1.0,2.0,3.0);
+        dummy = vec3(1.0,1.0,0.5);
         sphere1->SetFirstTranslate(true);
         sphere1 ->StepRotate(dummy);
 
