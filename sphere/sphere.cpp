@@ -238,8 +238,9 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glUniform4f(color_location,0.0,0.0,0.0,1.0);
 
     glPointSize(1.0f);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
-    glDrawArrays(GL_POINTS, 0 , countVertex);
+    glLineWidth(3.0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
+    glDrawArrays(GL_LINES, 0 , countVertex);
 
     glUniform4f(color_location,1.0,0.0,GetColor().b,GetColor().a);
 
