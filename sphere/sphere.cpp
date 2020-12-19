@@ -205,6 +205,9 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glm::mat4 mvp = GetProjection() * cam->GetView() * Model;
     glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mvp));
 
+
+    glFrontFace(GL_CW);
+
     glBindVertexArray(_Vao);
     glBindBuffer(GL_ARRAY_BUFFER, _VertexBuffer);
 
@@ -254,6 +257,8 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
+
+    glFrontFace(GL_CCW);
 }
 
 // ===============================================
@@ -329,7 +334,7 @@ for (int i = 0; i < _CountPoints - 2; i++) {
     Add2GPU(v, index, GetColor().x, GetColor().y, GetColor().z);
     //Add2GPU(v,index,glm::vec2(1.0,1.0));
     texU = 0.0f;
-    texV = i * texCoordV;
+    texV = (i+1) * texCoordV;
     Add2GPU(v,index,glm::vec2(texU,texV));
 
     countVertex ++;
@@ -424,10 +429,10 @@ void CSphere::setUp() {
     GLushort spol_indices[_CountPoints * 2 + 2];
     spol_indices[0] = countVertex-1;
 
-    for (GLushort i = 1; i < _CountPoints * 2 +2; i++)
+    for (GLushort i = 1; i < _CountPoints * 2 + 2;i ++)    //2; i++)
         spol_indices[i] = countVertex - i;
 
-    spol_indices[_CountPoints * 2 + 1] = countVertex - 2;
+    spol_indices[_CountPoints * 2 + 2] = countVertex - 2;//2;
     // ab in den Buffer..
     glGenBuffers(1,&_Ebo_spol);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo_spol);
