@@ -19,6 +19,7 @@ SOURCES += \
         lights/light.cpp \
         logs/logs.cpp \
         main.cpp \
+        menu/menu.cpp \
         meshobject/meshobject.cpp \
         objectclasses/object.cpp \
         objloader.cpp \
@@ -69,6 +70,7 @@ HEADERS += \
     initgl.h \
     lights/light.h \
     logs/logs.h \
+    menu/menu.h \
     meshobject.h \
     meshobject/meshobject.h \
     objectclasses/object.h \

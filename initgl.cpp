@@ -259,9 +259,6 @@ bool InitGL::InitSDL2()  {
         }
 
     }
-
-
-    SDL_DisplayMode dm;
     SDL_GetDesktopDisplayMode(0, &DesktopDisplayMode );
 
     _ResX = FULLSCREEN_WIDTH;
@@ -336,8 +333,8 @@ bool InitGL::InitSDL2()  {
     newDisplayMode.format = SDL_PIXELFORMAT_RGBX8888;
 
 
-//    if (_FullScreen)
-//        SDL_SetWindowDisplayMode(window,&newDisplayMode);  // Only in fullscreen available
+    if (_FullScreen)
+        SDL_SetWindowDisplayMode(window,&newDisplayMode);  // Only in fullscreen available
 
      // Testweise Displaymode ermitteln
     SDL_DisplayMode current;
@@ -783,7 +780,7 @@ void InitGL::Run() {
         cube3->SetFirstTranslate(false);
         cube3->Draw ( camera, currentShader);
 
-        dummy = vec3(1.0,1.0,0.5);
+        dummy = vec3(0.0,0.2,0.0);
         sphere1->SetFirstTranslate(true);
         sphere1 ->StepRotate(dummy);
 
@@ -801,10 +798,10 @@ void InitGL::Run() {
 
         lightSource->SetColor(glm::vec4(1.0,1.0,1.0,1.0));
 
-        dummy = vec3(0.3,0.0,0.0);
+        //dummy = vec3(0.0,0.2,0.0);
 
         lightSource->SetFirstTranslate(true);
-        lightSource ->StepRotate(dummy);
+        lightSource ->StepRotate( glm::vec3(0.0,0.2,0.2));    //dummy);
 
         sphere1->Draw(camera);
         lightSource->Draw(camera);

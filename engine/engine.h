@@ -29,7 +29,6 @@ public:
 
 protected:
     void loadButtons();
-
     // Lists for all objects:
     std::vector<std::string> btnList;
     std::vector<std::string> object2DList;
@@ -39,9 +38,11 @@ private:
     void InitButtons();
     void Init2D();
     void Init3D();
+    void initMenu();
 
     bool initButtonStruct(sButtonStruct & bs,std::vector<std::string> cfg);
     bool init3DStruct(s3DStruct & d3s, std::vector<std::string> &cfg);
+
     std::string &getValueItem(std::string &s, std::string erasestring);
 
     std::vector<std::string> split(std::string const& input, std::string const& separator);

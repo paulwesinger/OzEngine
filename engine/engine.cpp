@@ -36,6 +36,7 @@ void CEngine::Done() {
 
 void CEngine::Run() {
 
+    initMenu();
     Init2D();
     Init3D();
     InitButtons();
@@ -61,6 +62,10 @@ void CEngine::EngineTestFunc3() {
 // --------------------------------------------------------------
 // Init Methods for Engines
 // --------------------------------------------------------------
+void CEngine::initMenu(){
+
+}
+
 void CEngine::Init2D() {
 
     //================================
