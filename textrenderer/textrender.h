@@ -63,6 +63,7 @@ public:
     void SetScale(GLfloat scale);
 
     uint getStringCount();
+    int getTextAreaHeight();
     void setText(uint index, std::string newString);  // starts qt 0 !!
 
 

@@ -36,12 +36,16 @@
 #include "textrenderer/textrender.h"
 #include "baseobject/baseobject.h"
 
+#include "menu/menu.h"
+
 #include "meshobject/meshobject.h"
 #include "objloader/objloader.h"
 
 
 #include "buttons/button.h"
 #include "lights/light.h"
+
+
 
 
 typedef struct {
@@ -98,6 +102,13 @@ protected:
     void add3Dobject(CCube * obj);
     void add2Dobject(Base2D * obj);
     void addButton(CButton* obj);
+
+    //----------------------------------
+    // Main Menu
+    // ---------------------------------
+    CMenu* MainMenu;
+
+
 
 
     void safeDelete(BaseObject * bo);

@@ -149,6 +149,8 @@ TextRender::~TextRender() {
 // Look and feel
 // -----------------------------------------------------------------------
 uint TextRender::getStringCount() { return _StringList.size(); }
+
+
 void TextRender::setText(uint index, std::string newString) {
     try {
         _StringList.at(index) = newString;
@@ -156,6 +158,10 @@ void TextRender::setText(uint index, std::string newString) {
     catch (const std::exception& e) { // reference to the base of a polymorphic object
         loginfo(e.what());
     }
+}
+
+int TextRender::getTextAreaHeight(){
+    return _StringList.size() * _Scale * _Pixelsize + _MarginY * 2;
 }
 
 

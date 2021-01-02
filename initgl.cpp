@@ -389,7 +389,14 @@ void InitGL::InitEngineObject() {
 // ===============================================================
 // Hier werden alle Objeckte initialisiert
 // ===============================================================
-    loginfo("Setze ClearColor auf Schwartz ...... done","InitGL::InitEngineObject");
+
+    loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
+    MainMenu = new CMenu(_ResX, _ResY, 450, 900, glm::vec4(0.1,0.1,0.6,0.5), glm::vec4(0.9,0.9,0.9,1.0));
+
+
+
+
+    loginfo("Setze ClearColor auf Schwarz ...... done","InitGL::InitEngineObject");
     _ClearColor.x = 0.0f; _ClearColor.y = 0.0f; _ClearColor.z = 0.0f; _ClearColor.w = 1.0f;
     glClearColor(_ClearColor.x, _ClearColor.y, _ClearColor.z, _ClearColor.w);
 
@@ -846,6 +853,14 @@ void InitGL::Run() {
         Prepare2D();
 
         //cockpit->Render(0.0f,0.0f,camera);
+
+        //------------------------------------
+        // MainMenu rendern
+        // -----------------------------------
+
+        if (MainMenu)
+            MainMenu ->Render();
+
 
         textrender -> Render(100.0f, 400.0f);
 
