@@ -13,6 +13,7 @@ class CControllContainer
 {
 public:
     CControllContainer(CControllContainer *parent = nullptr);
+    ~CControllContainer();
 
     void addContainer(CControllContainer *container);
     bool removeContainer(CControllContainer *container);
@@ -26,11 +27,13 @@ public:
     bool addButton(CButton * btn);
     bool addText(std::string text,int resx, int resy);
 private:
+
+    void releaseConterItems();
     CControllContainer * _Child;
     CControllContainer * _Parent;
     std::vector<Base2D *> controlls2D;
     std::vector<BaseObject*> controlls3D;
-    std::vector<CButton* > buttons;
+    std::vector<CButton *> buttons;
     std::vector<TextRender*> texts;
     std::string _Name;
 

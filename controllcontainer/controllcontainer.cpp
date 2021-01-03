@@ -11,6 +11,10 @@ CControllContainer::CControllContainer( CControllContainer* parent) {
     _Height = 0;
 }
 
+CControllContainer::~CControllContainer() {
+    releaseConterItems();
+}
+
 void CControllContainer::addContainer(CControllContainer * parent) {
     CControllContainer * child = new CControllContainer(parent);
     this->_Child = child;
@@ -19,6 +23,40 @@ void CControllContainer::addContainer(CControllContainer * parent) {
 bool CControllContainer::removeContainer(CControllContainer *container) {
     // do somthing later
     return true;
+}
+
+// Remove items and give allocated memory free
+void CControllContainer::releaseConterItems() {
+
+    if ( ! controlls2D.empty()) {
+        for (uint i=0; i< controlls2D.size(); i++) {
+            delete controlls2D.at(i);
+        }
+        controlls2D.clear();
+    }
+
+    if (! controlls3D.empty() ) {
+        for (uint i=0; i< controlls3D.size(); i++) {
+            delete controlls3D.at(i);
+        }
+        controlls3D.clear();
+    }
+
+    if (! buttons.empty() ) {
+        for (uint i=0; i< buttons.size(); i++) {
+            delete buttons.at(i);
+        }
+        buttons.clear();
+    }
+
+    if (! texts.empty() ) {
+        for (uint i=0; i< texts.size(); i++) {
+            delete texts.at(i);
+        }
+        texts.clear();
+    }
+
+
 }
 
 void CControllContainer::enableChilds() {
