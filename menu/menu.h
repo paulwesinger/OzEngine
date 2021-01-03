@@ -7,10 +7,19 @@
 #include "../base2d/base2d.h"
 #include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
+#include "../defines.h"
+
+#include <vector>
 
 
 const int MENU_WIDTH  = 150;
 const int MENU_HEIGHT = 500;
+
+typedef struct {
+    sRect Pos;
+    TextRender * text;
+} sMenuStruct ;
+
 
 class CMenu
 {
@@ -21,6 +30,10 @@ public:
     void Render();
     void addEntry(std::string text);
     void addButton(CButton * btn);
+
+    void setMenuHeader(std::string name);
+    void addMenuItem(std::string text);
+
     void AlignLeft();
     void AlignRight();
 protected:
@@ -40,6 +53,10 @@ protected:
 
     bool alignright;
     bool alignleft;
+
+    std::vector<sMenuStruct> menuItems;
+
+
 private:
     void init();
     int _resX;

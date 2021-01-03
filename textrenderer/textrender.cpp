@@ -164,6 +164,9 @@ int TextRender::getTextAreaHeight(){
     return _StringList.size() * _Scale * _Pixelsize + _MarginY * 2;
 }
 
+int TextRender::getWidth() {
+    return _Textfeld.w;
+}
 
 void TextRender::SetHasBottom(bool hasbottom) {_RenderBottom = hasbottom;}
 void TextRender::SetHasHeader(bool hasheader) {_RenderHeader = hasheader;}

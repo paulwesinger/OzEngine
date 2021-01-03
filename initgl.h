@@ -107,6 +107,7 @@ protected:
     // Main Menu
     // ---------------------------------
     CMenu* MainMenu;
+    bool showMenu;
 
 
 

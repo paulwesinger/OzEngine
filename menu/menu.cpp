@@ -65,6 +65,15 @@ void CMenu::Render() {
     menuBackground ->Render();
 }
 
+void CMenu::setMenuHeader(std::string name) {
+    sMenuStruct ms;
+    ms.text = new TextRender(_resX,_resY);
+    ms.text->AddString(name);
+    // Position des header textes ist mittig
+
+}
+
+
 void CMenu::addEntry(std::string text) {
 
 }

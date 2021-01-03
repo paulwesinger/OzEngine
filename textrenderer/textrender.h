@@ -64,6 +64,7 @@ public:
 
     uint getStringCount();
     int getTextAreaHeight();
+    int getWidth();
     void setText(uint index, std::string newString);  // starts qt 0 !!
 
 

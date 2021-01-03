@@ -162,13 +162,15 @@ enum Events{
     KEY_W,
     KEY_T,
     KEY_C,
+    // Show-Hide Menu
+    KEY_M,
 
     MOUSE_Move_Right = 100,              
     MOUSE_Move_Left ,         
     MOUSE_Move_Up,      
     MOUSE_Move_Down,
     
-    MOUISE_BTN_Left_Clk   = 10000 ,    
+    MOUSE_BTN_Left_Clk   = 10000 ,
     MOUSE_BTN_Right_Clk ,    
     MOUSE_BTN_MiddLe_Clk,    
 

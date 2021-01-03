@@ -45,6 +45,9 @@ InitGL::InitGL (const std::string titel){
    // soundengine = NULL;
     projection = nullptr;
 
+    MainMenu = nullptr;
+    showMenu = false;
+
     InitUtils();
     InitMatrices();
 
@@ -619,6 +622,7 @@ void InitGL::Run() {
     int framerateOut = 0;
     Uint32 ms = 0;
 
+    showMenu = true;
 
     while ( ! quit) {
 
@@ -699,6 +703,14 @@ void InitGL::Run() {
 
        switch ( event) {
            case KEY_Esc  : quit = true;    break;
+
+           case KEY_M :{
+               if (showMenu == true)
+                    showMenu = false;
+                else showMenu = true;
+               break;
+           }
+
 
            case KEY_A: camera->MoveLeft(elapsed); break;
            case KEY_Left : camera->YawCameraLeft(elapsed); break;
@@ -858,7 +870,7 @@ void InitGL::Run() {
         // MainMenu rendern
         // -----------------------------------
 
-        if (MainMenu)
+        if (MainMenu && showMenu)
             MainMenu ->Render();
 
 
@@ -983,6 +995,7 @@ int InitGL::HandleInput(SDL_Event e, uint &mox, uint &moy) {
                 case SDLK_o         : return KEY_O;  // Orthomode
                 case SDLK_c         : return KEY_C;  // Colored Draw
                 case SDLK_t         : return KEY_T;  // Textured Draw
+                case SDLK_m         : return KEY_M;
 
                 default : return NO_INPUT;
             }
@@ -990,7 +1003,7 @@ int InitGL::HandleInput(SDL_Event e, uint &mox, uint &moy) {
         // Mouse Buttons
         case SDL_MOUSEBUTTONUP : {
             switch (e.button.button) {
-                case SDL_BUTTON_LEFT    :   return MOUISE_BTN_Left_Clk;
+                case SDL_BUTTON_LEFT    :   return MOUSE_BTN_Left_Clk;
                 case SDL_BUTTON_MIDDLE  :   return MOUSE_BTN_MiddLe_Clk;
                 case SDL_BUTTON_RIGHT   :   return MOUSE_BTN_Right_Clk;
             }

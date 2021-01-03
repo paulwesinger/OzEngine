@@ -7,6 +7,8 @@ CControllContainer::CControllContainer( CControllContainer* parent) {
         _Parent = parent;
 
     _Child = nullptr;
+
+    _Height = 0;
 }
 
 void CControllContainer::addContainer(CControllContainer * parent) {
@@ -44,5 +46,12 @@ bool CControllContainer::addControll2D(Base2D *controll) {
 bool CControllContainer::addControll3D(BaseObject *baseobject)
 {
     controlls3D.push_back(baseobject);
+    return  true;
+}
+
+bool CControllContainer::addText(std::string text, int resx, int resy){
+    TextRender * t = new TextRender(resx,resy);
+    t->AddString(text);
+    _Height += t->getTextAreaHeight();
     return  true;
 }
