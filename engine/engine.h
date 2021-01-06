@@ -7,6 +7,8 @@
 #include "../fileutils/fileutil.h"
 #include "../defines.h"
 #include <vector>
+#include "../controllcontainer/controllcontainer.h"
+#include "../menu/menu.h"
 
 const std::string BUTTONS_CFG = "config/Buttons/";
 const std::string OBJECT3D_CFG =  "config/3DObjects/";
@@ -26,6 +28,7 @@ public:
     static void EngineTestFunc1();   // Stellvertretend für alle zukünftigen funcs ->zum testen
     static void EngineTestFunc2();
     static void EngineTestFunc3();
+    static void EngineTestFunc4();
 
 protected:
     void loadButtons();

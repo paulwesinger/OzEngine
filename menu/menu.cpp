@@ -38,6 +38,7 @@ CMenu::CMenu(int resX, int resY, int width, int height, glm::vec4 bg, glm::vec4 
 
     _resY = resY;
     _resX = resX;
+    _currentY = 0;
 
     PosX = 0;
     PosY = 0;
@@ -52,7 +53,6 @@ CMenu::CMenu(int resX, int resY, int width, int height, glm::vec4 bg, glm::vec4 
 }
 
 void CMenu::init() {
-    controlls = new CControllContainer();
 
     menuBackground = new Base2D(_resX, _resY);
     menuBackground->setPos(PosX, PosY);
@@ -63,24 +63,50 @@ void CMenu::init() {
 }
 void CMenu::Render() {
     menuBackground ->Render();
+    if (! containerList.empty() ) {
+        for(int i=0; i < containerList.size(); i++) {
+
+            if ( ! containerList.at(i) ->buttons.empty()) {
+                for (int j=0; j < containerList.at(i)->buttons.size(); j++){
+                    containerList.at(i)->buttons.at(j) ->Render();
+                }
+            }
+        }
+    }
+
 }
 
 void CMenu::setMenuHeader(std::string name) {
     sMenuStruct ms;
     ms.text = new TextRender(_resX,_resY);
     ms.text->AddString(name);
-    // Position des header textes ist mittig
 
+    _currentY += ms.text->getTextAreaHeight();
 }
 
 
-void CMenu::addEntry(std::string text) {
+void CMenu::addButton(CControllContainer* con, CButton *btn) {
 
+    if ( con == nullptr  || btn == nullptr )
+        return;
+
+    con->addButton(btn);
 }
 
-void CMenu::addButton(CButton *btn) {
-   // controlls->addButton(btn);
+void CMenu::addConatiner(CControllContainer *con) {
+    if ( con == nullptr )
+        return;
+
+    containerList.push_back(con);
 }
+
+void CMenu::addTextItem(CControllContainer *con, std::string text) {
+    if ( con == nullptr)
+        return;
+
+    // Hier eigentlich header text..! container anpassen !!
+}
+
 
 void CMenu::AlignLeft() {
 

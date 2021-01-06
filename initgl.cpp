@@ -443,7 +443,10 @@ void InitGL::InitEngineObject() {
     // ===============================
 
     logimage("Erstelle Text Renderer.....");
-    textrender = new TextRender(_ResX, _ResY);
+    sPoint p;
+    p.x =   100;
+    p.y =   400;
+    textrender = new TextRender(_ResX, _ResY, p);
     loginfo("Erstelle Shaders........");
     InitShaders();
     loginfo("..... done all");
@@ -870,11 +873,13 @@ void InitGL::Run() {
         // MainMenu rendern
         // -----------------------------------
 
-        if (MainMenu && showMenu)
+        if (MainMenu && showMenu) {
             MainMenu ->Render();
 
+        }
 
-        textrender -> Render(100.0f, 400.0f);
+
+        textrender -> Render();
 
 
         if ( !  objects2D.empty() ) {
@@ -956,6 +961,21 @@ void InitGL::OnLeftMouseButtonClick(int &x, int &y) {
         for (uint i = 0; i < buttons.size(); i++) {
             if (buttons[i]->intersect(m.x, m.y) )
                 buttons[i]->OnClick();
+        }
+    }
+
+    if ( ! MainMenu->containerList.empty()) {
+        loginfo("container Not Empty");
+        for ( uint i = 0; i< MainMenu->containerList.size(); i++) {
+            if ( ! MainMenu->containerList.at(i)->buttons.empty()) {
+                 loginfo("buttons Not Empty");
+                for (uint j=0; j< MainMenu->containerList.at(i)->buttons.size(); j ++) {
+                    if (MainMenu->containerList.at(i)->buttons.at(j)->intersect(m.x, m.y) ) {
+                        MainMenu->containerList.at(i)->buttons.at(j)->OnClick();
+                        loginfo("onclick Not Empty");
+                    }
+                }
+            }
         }
     }
 }

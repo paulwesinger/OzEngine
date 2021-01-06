@@ -10,7 +10,7 @@
 #include <SDL2/SDL_image.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-//#include <glm/ext/matrix_transform.hpp>
+
 #include "../logs/logs.h"
 #include "../utils/utils.h"
 #include "../imageloader/loadimage.h"
@@ -137,6 +137,14 @@ TextRender::TextRender(int resx, int resy) {
     Init(resx, resy);
 }
 
+TextRender::TextRender(int resx, int resy, sPoint pos) {
+
+    posX = (GLfloat) pos.x;
+    posY = (GLfloat) pos.y;
+    Init(resx, resy);
+}
+
+
 TextRender::TextRender(const TextRender& orig) {
 }
 
@@ -158,6 +166,11 @@ void TextRender::setText(uint index, std::string newString) {
     catch (const std::exception& e) { // reference to the base of a polymorphic object
         loginfo(e.what());
     }
+}
+
+void TextRender::setPos(sPoint pos) {
+    posX = (GLfloat)pos.x;
+    posY = (GLfloat)pos.y;
 }
 
 int TextRender::getTextAreaHeight(){
@@ -493,7 +506,12 @@ void TextRender::RenderFrame(GLfloat x, GLfloat y, uint tex) {
 // param in [x] - X Position in screencoords
 // param in [y] - y Position in screnecoords
 // ---------------------------------------------------
-void TextRender::Render( GLfloat x, GLfloat y) {
+void TextRender::Render() {
+
+    GLfloat _x = posX;
+    GLfloat _y = posY;
+
+
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -526,7 +544,7 @@ void TextRender::Render( GLfloat x, GLfloat y) {
     if ( _AlignRight )
          newX = _ResX - _Textfeld.w;
     else
-        newX = x;
+        newX = _x;
 
     // --------------------------------
     // Erstmal alles fürs TextFenster
@@ -556,14 +574,14 @@ void TextRender::Render( GLfloat x, GLfloat y) {
         glBindBuffer(GL_ARRAY_BUFFER,_bgVBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_bgEBO);
 
-        RenderPaintarea(newX, y + 16, feldhoehe);
+        RenderPaintarea(newX, _y + 16, feldhoehe);
 
         // Alles Rendern
         if (_RenderHeader)
-            RenderFrame(newX, y + 16.0f, texHeadline );
+            RenderFrame(newX, _y + 16.0f, texHeadline );
 
         if (_RenderBottom)
-            RenderFrame(newX, y - feldhoehe, texBottom );
+            RenderFrame(newX, _y - feldhoehe, texBottom );
         // ... und aushängen
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -571,9 +589,9 @@ void TextRender::Render( GLfloat x, GLfloat y) {
     }
 
 
-    x = newX + _MarginLeft;
-    GLfloat startX  = x;
-    GLfloat row     = y - _MarginY * 2;
+    _x = newX + _MarginLeft;
+    GLfloat startX  = _x;
+    GLfloat row     = _y - _MarginY * 2;
     //--------------------
     // Text Rendern
     //--------------------
@@ -599,7 +617,7 @@ void TextRender::Render( GLfloat x, GLfloat y) {
         {
             Character ch = Characters[*c];
 
-            GLfloat xpos = x + ch.Bearing.x * _Scale;
+            GLfloat xpos = _x + ch.Bearing.x * _Scale;
             GLfloat ypos = row - ((ch.Size.y - ch.Bearing.y) * _Scale) ;
             row = ypos;
 
@@ -626,9 +644,9 @@ void TextRender::Render( GLfloat x, GLfloat y) {
             glDrawElements( GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_SHORT, 0);
             //glDrawArrays(GL_TRIANGLES, 0, 6);
             // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-            x += (ch.Advance >> 6) * _Scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+            _x += (ch.Advance >> 6) * _Scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
         }
-        x =     startX;
+        _x =     startX;
         row -=  18.0f;  // 16
     }
     // Aufräumen

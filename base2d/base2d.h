@@ -43,6 +43,9 @@ public:
     virtual void setPos(int x, int y);
     virtual void setColor(glm::vec4 col);
 
+    virtual int Height();
+    virtual int Width();
+
     glm::vec4 color();
     virtual bool  intersect(int x, int y);
 
@@ -52,7 +55,7 @@ public:
 protected:
     glm::vec4 _Color;
 
-    sPOINT _Pos;
+    sPoint _Pos;
     _2DStruct dimensions;
 
 private:

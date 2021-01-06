@@ -143,6 +143,13 @@ void Base2D::setWidth(int w) {
     dimensions.width = w;
 }
 
+int Base2D::Width(){
+    return dimensions.width;
+}
+
+int Base2D::Height() {
+    return dimensions.height;
+}
 void Base2D::setHeight(int h) {
     dimensions.height = h;
 }

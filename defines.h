@@ -52,7 +52,7 @@ typedef struct {
 typedef struct{
   int x;
   int y;
-} sPOINT;
+} sPoint;
 
 struct sSize {
     int w;

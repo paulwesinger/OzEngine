@@ -21,12 +21,9 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
 #include <glm/glm.hpp>
-//#include <glm/vec2.hpp>
-//#include <glm/vec3.hpp>
-//#include <glm/vec4.hpp>
-//#include <glm/mat4x4.hpp>
-//#include <glm/detail/type_mat4x4.hpp>
+
 #include "../shaders/shader.h"
+#include "../defines.h"
 
 
 struct Character {
@@ -47,6 +44,8 @@ struct sTextfeld{
 class TextRender {
 public:
     TextRender(int resx, int resy);
+    TextRender(int resx, int resy, sPoint pos);
+
     TextRender(const TextRender& orig);
     virtual ~TextRender();
 
@@ -65,10 +64,13 @@ public:
     uint getStringCount();
     int getTextAreaHeight();
     int getWidth();
+
     void setText(uint index, std::string newString);  // starts qt 0 !!
+    void setPos(sPoint pos);
 
 
-    void Render(GLfloat x, GLfloat y);
+
+    void Render();
 
 protected:
     void RenderPaintarea(GLfloat x, GLfloat y, GLfloat height);
@@ -89,6 +91,9 @@ private:
 
     int _ResX;
     int _ResY;
+
+    GLfloat posX;
+    GLfloat posY;
 
     GLuint _VAO;
     GLuint _VBO;

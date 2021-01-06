@@ -59,11 +59,29 @@ void CEngine::EngineTestFunc3() {
     loginfo("TestFunc3","Engine:: EngineTestFunc 3");
 }
 
+void CEngine::EngineTestFunc4() {
+    loginfo("TestFunc4","Engine:: EngineTestFunc 4");
+}
+
 // --------------------------------------------------------------
 // Init Methods for Engines
 // --------------------------------------------------------------
 void CEngine::initMenu(){
 
+    // -------------------------------------
+    // Standard Menu ist in Initgl vorhanden
+    // jetzt  befüllen
+    //--------------------------------------
+
+    CControllContainer * testContainer = new CControllContainer();
+
+    CButton * btn = new CDefaultButton(_ResX, _ResY);
+    btn->setSize(150,50);
+    btn->setPos(0,0);
+    btn->AddHandler(EngineTestFunc4);
+
+    testContainer->addButton(btn);
+    MainMenu->addConatiner(testContainer);
 }
 
 void CEngine::Init2D() {

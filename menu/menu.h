@@ -28,24 +28,29 @@ public:
     CMenu(int resX, int resY, int width, int height);
     CMenu(int resX, int resY, int width, int height, glm::vec4 bg, glm::vec4 fg);
     void Render();
-    void addEntry(std::string text);
-    void addButton(CButton * btn);
-
     void setMenuHeader(std::string name);
-    void addMenuItem(std::string text);
+
+    //----------------------------------------
+    // container functions
+    //----------------------------------------
+    void addConatiner( CControllContainer* con);
+    void addButton(CControllContainer * con, CButton * btn);
+    void addTextItem(CControllContainer * con, std::string text);
 
     void AlignLeft();
     void AlignRight();
-protected:
 
-    CControllContainer * controlls;
+    std::vector<sMenuStruct> menuItems;
+    std::vector<CControllContainer *> containerList;
+protected:
 
     Base2D * menuBackground;
 
     glm::vec4 backgroundColor;
     glm::vec4 foregroundColor;
 
-    int PosX;
+
+    int PosX;  // absolute zum bildschirm
     int PosY;
     int Width;
     int Height;
@@ -54,11 +59,13 @@ protected:
     bool alignright;
     bool alignleft;
 
-    std::vector<sMenuStruct> menuItems;
+
 
 
 private:
     void init();
+
+    int _currentY; //hilfsvariable für nächste freie y-positon im Menu - relativ zu bildschirm
     int _resX;
     int _resY;
 };

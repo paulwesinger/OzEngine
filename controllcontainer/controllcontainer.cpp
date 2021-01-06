@@ -9,6 +9,7 @@ CControllContainer::CControllContainer( CControllContainer* parent) {
     _Child = nullptr;
 
     _Height = 0;
+    _CurrentY = 0;
 }
 
 CControllContainer::~CControllContainer() {
@@ -59,6 +60,20 @@ void CControllContainer::releaseConterItems() {
 
 }
 
+void CControllContainer::setPos(sPoint pos) {
+    _Pos = pos;
+}
+sPoint CControllContainer::Pos() {
+    return _Pos;
+}
+
+void CControllContainer::setDimensions(sSize size) {
+    _Dimensions = size;
+}
+sSize CControllContainer::Dimensions() {
+    return _Dimensions;
+}
+
 void CControllContainer::enableChilds() {
 
 }
@@ -72,6 +87,10 @@ void CControllContainer::rename(std::string theNewName){
 }
 
 bool CControllContainer::addButton(CButton *btn) {
+
+
+    _Height += btn->Height();
+    _CurrentY = +btn->Height() + 1 ;
     buttons.push_back(btn);
     return  true;
 }
@@ -88,8 +107,16 @@ bool CControllContainer::addControll3D(BaseObject *baseobject)
 }
 
 bool CControllContainer::addText(std::string text, int resx, int resy){
-    TextRender * t = new TextRender(resx,resy);
+
+    sPoint p;
+    p.x = _Pos.x+ 1;
+    p.y = _CurrentY;
+
+    TextRender * t = new TextRender(resx,resy, p);
     t->AddString(text);
+
+
+    _CurrentY += t->getTextAreaHeight() + 1;
     _Height += t->getTextAreaHeight();
     return  true;
 }
