@@ -965,14 +965,14 @@ void InitGL::OnLeftMouseButtonClick(int &x, int &y) {
     }
 
     if ( ! MainMenu->containerList.empty()) {
-        loginfo("container Not Empty");
+
         for ( uint i = 0; i< MainMenu->containerList.size(); i++) {
             if ( ! MainMenu->containerList.at(i)->buttons.empty()) {
-                 loginfo("buttons Not Empty");
+
                 for (uint j=0; j< MainMenu->containerList.at(i)->buttons.size(); j ++) {
                     if (MainMenu->containerList.at(i)->buttons.at(j)->intersect(m.x, m.y) ) {
                         MainMenu->containerList.at(i)->buttons.at(j)->OnClick();
-                        loginfo("onclick Not Empty");
+
                     }
                 }
             }

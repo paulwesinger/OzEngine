@@ -9,7 +9,8 @@ CControllContainer::CControllContainer( CControllContainer* parent) {
     _Child = nullptr;
 
     _Height = 0;
-    _CurrentY = 0;
+    _CurrentY = 5;
+    _CurrentX = 5;
 }
 
 CControllContainer::~CControllContainer() {
@@ -88,9 +89,9 @@ void CControllContainer::rename(std::string theNewName){
 
 bool CControllContainer::addButton(CButton *btn) {
 
-
+    btn->setPos(_CurrentX,_CurrentY);
     _Height += btn->Height();
-    _CurrentY = +btn->Height() + 1 ;
+    _CurrentY += btn->Height() + 1 ;
     buttons.push_back(btn);
     return  true;
 }

@@ -102,7 +102,7 @@ CDefaultButton::CDefaultButton( int resx, int  resy) :
 CDefaultButton::CDefaultButton(int resx, int resy, std::string path):
     CButton(resx, resy, path){
 
-    textImage = new Base2D(resx, resy, "images/Add.png");
+    textImage = new Base2D(resx, resy,"images/Add.png");
     textImage->setColor(glm::vec4(BTN_COLOR_DEFAULT_TEXT,_AlphaText));
     textImage->setPos(0,0);
     // init stuff

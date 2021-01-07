@@ -75,12 +75,21 @@ void CEngine::initMenu(){
 
     CControllContainer * testContainer = new CControllContainer();
 
-    CButton * btn = new CDefaultButton(_ResX, _ResY);
-    btn->setSize(150,50);
-    btn->setPos(0,0);
-    btn->AddHandler(EngineTestFunc4);
+    CButton * btn0 = new CDefaultButton(_ResX, _ResY,"images/button_green.png");
+    btn0->setSize(150,50);
+    btn0->setPos(0,0);
+    btn0->AddHandler(EngineTestFunc4);
 
-    testContainer->addButton(btn);
+    testContainer->addButton(btn0);
+
+
+    CButton * btn1 = new CDefaultButton(_ResX, _ResY,"images/button_white.png");
+    btn1->setSize(150,50);
+    //btn1->setPos(0,50);
+    btn1->AddHandler(EngineTestFunc2);
+
+    testContainer->addButton(btn1);
+
     MainMenu->addConatiner(testContainer);
 }
 

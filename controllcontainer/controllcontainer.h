@@ -51,6 +51,8 @@ private:
 
     int _Height; // errechnete höhe
     int _CurrentY; //position für nächstes element
+    int _CurrentX;
+
     sSize _Dimensions; // von user seite
     sPoint _Pos; // absoluter wert
 
