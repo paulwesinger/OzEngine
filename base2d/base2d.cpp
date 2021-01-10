@@ -136,6 +136,21 @@ void Base2D::useShader(int type) {
 void Base2D::setColor(glm::vec4 col) {
     _Color = col;
 }
+void Base2D::setDisablecolor(glm::vec4 disCol) {
+    _DisableColor = disCol;
+}
+
+void Base2D::disable(){
+    _Enable = false;
+}
+void Base2D::enable(){
+    _Enable = true;
+}
+
+bool Base2D::IsEnabled(){
+    return _Enable;
+}
+
 glm::vec4 Base2D::color() { return  _Color; }
 
 
@@ -174,7 +189,12 @@ bool Base2D::Init(int resx, int resy) {
     // ---------------------------
     // Color Init
     //----------------------------
-    _Color = glm::vec4(1.0, 1.0, 1.0, 1.0);
+    _Color          = glm::vec4(1.0, 1.0, 1.0, 1.0);
+    _DisableColor   = glm::vec4(0.5, 0.5, 0.5, 0.5);
+
+    _Enable = true;
+
+
 
     // ---------------------------
     // Texture Shader init :
@@ -308,9 +328,10 @@ void Base2D::Render( ) {
 
     uniform_colorloc   = glGetUniformLocation(_CurrentShader,"col2D");
 
-   // _Color.r = 0.3f; _Color.g = 0.3f;  _Color.b = 0.3f;
-
-    glUniform4f(uniform_colorloc, _Color.r, _Color.g, _Color.b, _Color.a);
+    if (_Enable)
+       glUniform4f(uniform_colorloc, _Color.r, _Color.g, _Color.b, _Color.a);
+    else
+        glUniform4f(uniform_colorloc, _DisableColor.r, _DisableColor.g, _DisableColor.b, _DisableColor.a);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);

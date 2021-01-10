@@ -1,4 +1,6 @@
 #include "controllcontainer.h"
+#include "../logs/logs.h"
+#include "../utils/utils.h"
 
 CControllContainer::CControllContainer( CControllContainer* parent) {
     if (parent == nullptr)
@@ -20,6 +22,18 @@ CControllContainer::~CControllContainer() {
 void CControllContainer::addContainer(CControllContainer * parent) {
     CControllContainer * child = new CControllContainer(parent);
     this->_Child = child;
+}
+
+void CControllContainer::disableControll(Base2D *con){
+    if (con != nullptr) {
+        con->disable();
+    }
+
+}
+
+void CControllContainer::enableControll(Base2D *con){
+    if (con != nullptr)
+        con->enable();
 }
 
 bool CControllContainer::removeContainer(CControllContainer *container) {
@@ -90,9 +104,14 @@ void CControllContainer::rename(std::string theNewName){
 bool CControllContainer::addButton(CButton *btn) {
 
     btn->setPos(_CurrentX,_CurrentY);
+    // Gesammthöhe des container
     _Height += btn->Height();
+    // Nächste Position im Container
     _CurrentY += btn->Height() + 1 ;
+    _Dimensions.h = _Height;
     buttons.push_back(btn);
+
+    loginfo("Add Button to Container ...... Done ", "CControllcontainer::addbutton");
     return  true;
 }
 
@@ -113,7 +132,9 @@ bool CControllContainer::addText(std::string text, int resx, int resy){
     p.x = _Pos.x+ 1;
     p.y = _CurrentY;
 
-    TextRender * t = new TextRender(resx,resy, p);
+
+    TextRender * t = new TextRender(resx,resy);
+    t->setPos(p);
     t->AddString(text);
 
 

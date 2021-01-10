@@ -52,13 +52,18 @@ public:
     // ********************************************
     // set
     void setText(std::string t);
-    void setEnable();
-    void setDisable();
-    //get
+    void setPos(int x, int y);
+    void enable();
+    void disable();
+
+    int Height();
+    int Width();
+
     std::string Text();
     bool Enabled();
 
     FP clickFunc;  // aufzurufende func für Buttonclick
+  //  FPEnableBtn clickFuncEnable;
     void AddHandler(FP handler);
 
     //*********************************************
@@ -101,7 +106,7 @@ class CDefaultButton: public CButton {
     CDefaultButton( int resx, int resy);
     CDefaultButton( int resx, int resy, std::string path);
 
-    void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol);
+    void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) override;
 
     void Render()  override;
     void OnClick() override;

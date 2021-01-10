@@ -22,6 +22,23 @@ main(){
 */
 
 
+CButton* butn0;
+CButton* butn1;
+
+
+//------------------------------
+// Non classes , static
+//------------------------------
+void EnableButton1() {
+    if ( butn0 != nullptr)
+        butn0->enable();
+}
+void DisableButton1() {
+    if ( butn0 != nullptr)
+        butn0->disable();
+}
+
+
 
 CEngine::CEngine(std::string titel) :
         InitGL(titel)
@@ -63,9 +80,11 @@ void CEngine::EngineTestFunc4() {
     loginfo("TestFunc4","Engine:: EngineTestFunc 4");
 }
 
+
 // --------------------------------------------------------------
 // Init Methods for Engines
 // --------------------------------------------------------------
+
 void CEngine::initMenu(){
 
     // -------------------------------------
@@ -75,20 +94,18 @@ void CEngine::initMenu(){
 
     CControllContainer * testContainer = new CControllContainer();
 
-    CButton * btn0 = new CDefaultButton(_ResX, _ResY,"images/button_green.png");
-    btn0->setSize(150,50);
-    btn0->setPos(0,0);
-    btn0->AddHandler(EngineTestFunc4);
+    butn0 = new CDefaultButton(_ResX, _ResY,"images/button_green.png");
+    butn0->setSize(150,50);
+    butn0->AddHandler(EnableButton1);
 
-    testContainer->addButton(btn0);
+    testContainer->addButton(butn0);
 
 
-    CButton * btn1 = new CDefaultButton(_ResX, _ResY,"images/button_white.png");
-    btn1->setSize(150,50);
-    //btn1->setPos(0,50);
-    btn1->AddHandler(EngineTestFunc2);
+    butn1 = new CDefaultButton(_ResX, _ResY,"images/button_white.png");
+    butn1->setSize(150,50);
+    butn1->AddHandler(DisableButton1);
 
-    testContainer->addButton(btn1);
+    testContainer->addButton(butn1);
 
     MainMenu->addConatiner(testContainer);
 }
@@ -256,9 +273,9 @@ void CEngine::loadButtons() {
                         btn ->AddHandler(EngineTestFunc1);
                     }
                     if (btnStruct.Enable > 0 )
-                        btn->setEnable();
+                        btn->enable();
                     else
-                        btn->setDisable();
+                        btn->disable();
                     btn->setText("Edit");
                     addButton(btn);
 

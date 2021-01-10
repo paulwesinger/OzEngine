@@ -85,6 +85,7 @@ protected:
     //----------------------------------
     void SetClearColor(float r, float g, float b, float a);
     void setClearColor(float r, float g, float b);
+    void toogleFullScreen();
 
 
     // HandleInput wird wahrscheinlich überflussig....
@@ -185,7 +186,7 @@ private:
 
     MOUSE convertMouse(int x, int y);
 
-    SDL_Window * window ;
+    SDL_Window * window;
     SDL_GLContext maincontext;
 
     SDL_DisplayMode DesktopDisplayMode;

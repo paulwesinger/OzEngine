@@ -43,8 +43,14 @@ public:
     virtual void setPos(int x, int y);
     virtual void setColor(glm::vec4 col);
 
+    virtual void disable();
+    virtual void enable();
+
     virtual int Height();
     virtual int Width();
+
+    bool IsEnabled();
+    void setDisablecolor(glm::vec4 disCol);
 
     glm::vec4 color();
     virtual bool  intersect(int x, int y);
@@ -54,10 +60,12 @@ public:
 
 protected:
     glm::vec4 _Color;
+    glm::vec4 _DisableColor;
 
     sPoint _Pos;
     _2DStruct dimensions;
 
+    bool _Enable;
 private:
 
     int _ResX;

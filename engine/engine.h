@@ -18,6 +18,11 @@ const std::string SPACE = " ";
 const int CFG_BUTTON_SIZE = 11;
 const int CFG_3D_SIZE = 18;
 
+
+void static EnableButton1();
+void static DisableButton1();
+
+
 class CEngine : public InitGL
 {
 public:
@@ -30,7 +35,12 @@ public:
     static void EngineTestFunc3();
     static void EngineTestFunc4();
 
+
+
 protected:
+
+
+
     void loadButtons();
     // Lists for all objects:
     std::vector<std::string> btnList;

@@ -26,9 +26,10 @@ InitGL::InitGL (const std::string titel){
 
     caption = titel;
     window = nullptr;
+
     maincontext = nullptr;
 
-    _FullScreen = true;
+    _FullScreen = false;
 
     _Mouse.lastx = 0;
     _Mouse.lasty = 0;
@@ -289,7 +290,11 @@ bool InitGL::InitSDL2()  {
                 _ResX,_ResY,
                 SDL_WINDOW_OPENGL
             );
+
+            glViewport(0,0,_ResX, _ResY);
     }
+
+
 
     if ( window == NULL)  {
         sdl_die("Konnte Fenster nicht erzeugen");
@@ -336,7 +341,7 @@ bool InitGL::InitSDL2()  {
     newDisplayMode.format = SDL_PIXELFORMAT_RGBX8888;
 
 
-    if (_FullScreen)
+    //if (_FullScreen)
         SDL_SetWindowDisplayMode(window,&newDisplayMode);  // Only in fullscreen available
 
      // Testweise Displaymode ermitteln
@@ -558,6 +563,28 @@ void InitGL::addButton(CButton* obj) {
     buttons.push_back(obj);
 }
 
+void InitGL::toogleFullScreen (){
+    Uint32 FullscreenFlag = SDL_WINDOW_FULLSCREEN;
+    bool IsFullscreen = SDL_GetWindowFlags(window) & FullscreenFlag;
+    SDL_SetWindowFullscreen(window,IsFullscreen ? 0 : FullscreenFlag);
+
+    if (FullscreenFlag ) {
+
+        _ResX = FULLSCREEN_WIDTH;
+        _ResY = FULLSCREEN_HEIGHT;
+
+        glViewport(0,0,FULLSCREEN_WIDTH, FULLSCREEN_HEIGHT);
+
+
+    }
+    else {
+        _ResX = SD_WIDTH;
+        _ResY = SD_HEIGHT;
+
+        glViewport(0,0,_ResX, _ResY);
+    }
+}
+
 void InitGL::Run() {
 
     bool quit = false;
@@ -737,6 +764,10 @@ void InitGL::Run() {
            case KEY_T: {
                currentShader = cubeshaderprog_tex;
                break;
+           }
+
+           case KEY_F11: {
+                toogleFullScreen(); break;
            }
 
            // ORtho oder perspective mode:
@@ -943,11 +974,13 @@ uint InitGL::HandleEvent(SDL_Event e) {
 MOUSE InitGL::convertMouse(int x, int y) {
 
     MOUSE m;
-    float fx = (float)x * MouseResX;
-    float fy = (float)y * MouseResY;
+//    float fx = (float)x * MouseResX;
+//  float fy = (float)y * MouseResY;
 
-    m.x = (int) fx;
-    m.y = (int) fy;
+//    m.x = (int) fx;
+//    m.y = (int) fy;
+    m.x =  x;
+    m.y =  y;
 
     return  m;
 }
@@ -1016,6 +1049,8 @@ int InitGL::HandleInput(SDL_Event e, uint &mox, uint &moy) {
                 case SDLK_c         : return KEY_C;  // Colored Draw
                 case SDLK_t         : return KEY_T;  // Textured Draw
                 case SDLK_m         : return KEY_M;
+
+            case SDLK_F11           : return KEY_F11;
 
                 default : return NO_INPUT;
             }

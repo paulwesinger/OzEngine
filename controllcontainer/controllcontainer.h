@@ -23,6 +23,8 @@ public:
 
     void enableChilds();
     void disableChilds();
+    void disableControll(Base2D * con);
+    void enableControll(Base2D * con);
 
     bool addControll2D(Base2D *control);
     bool addControll3D(BaseObject * baseobject);

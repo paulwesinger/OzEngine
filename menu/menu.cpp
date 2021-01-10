@@ -1,4 +1,6 @@
 #include "menu.h"
+#include "../logs/logs.h"
+#include "../utils/utils.h"
 
 
 
@@ -94,10 +96,13 @@ void CMenu::addButton(CControllContainer* con, CButton *btn) {
 }
 
 void CMenu::addConatiner(CControllContainer *con) {
+
     if ( con == nullptr )
         return;
-
     containerList.push_back(con);
+    _currentY += con->Dimensions().h + 1;
+    loginfo("Add Controllcontainer to Menu .... Done"  ,"CMenu::addContainer");
+
 }
 
 void CMenu::addTextItem(CControllContainer *con, std::string text) {

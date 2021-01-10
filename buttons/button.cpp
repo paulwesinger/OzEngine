@@ -36,13 +36,15 @@ CButton::~CButton() {
 
 void CButton::setText(std::string t) { _Text = t; }
 
-void CButton::setEnable() {
+void CButton::enable() {
+    Base2D::disable();
     _Enabled = true;
     _AlphaText   = ALPHA_TEXT_ENABLED;
     _Alpha_Image = ALPHA_IMAGE_ENABLED;
 }
 
-void CButton::setDisable() {
+void CButton::disable() {
+    Base2D::disable();
     _Enabled = false;
     _AlphaText    = ALPHA_TEXT_DISABLED;
     _Alpha_Image  = ALPHA_IMAGE_DISABLED;
@@ -57,11 +59,24 @@ void CButton::AddHandler(FP handler) {
     clickFunc = handler;
 }
 
+
 void CButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) {
     _ImageCol = imagecol;
     _TextCol  = textcol;
 
     Base2D::setColor(glm::vec4(imagecol,_Alpha_Image));
+}
+
+int CButton::Height(){
+    return Base2D::Height();
+}
+
+int CButton::Width(){
+    return Base2D::Width();
+}
+
+void CButton::setPos(int x, int y){
+    Base2D::setPos(x,y);
 }
 // -----------------------------------------------
 // Event Handling
