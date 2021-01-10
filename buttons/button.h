@@ -74,10 +74,14 @@ public:
 
     //EventHandling
     virtual void OnClick() = 0 ;  // Muss überschrieben werden !!!!
+    virtual void OnRelease() = 0;
     virtual void OnFocus();
 
 
 protected:
+
+    virtual void animateClick();
+    virtual void releaseClick();
 
     bool _Enabled;
     std::string _Text;
@@ -110,8 +114,11 @@ class CDefaultButton: public CButton {
 
     void Render()  override;
     void OnClick() override;
+    void OnRelease() override;
 protected:
     void setSize(int w, int h) override;
+    void animateClick();
+    void releaseClick();
 
     Base2D * textImage;
     void  setPos(int x, int y) override;

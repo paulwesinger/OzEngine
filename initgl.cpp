@@ -957,6 +957,13 @@ void InitGL::Restore3D() {
 uint InitGL::HandleEvent(SDL_Event e) {
     switch (e.type) {
         case SDL_MOUSEMOTION : OnMouseMove(e.motion.x, e.motion.y, e.button.state); break;
+
+        case SDL_MOUSEBUTTONDOWN: {
+            if ( e.button.button == SDL_BUTTON_LEFT ) {
+                OnLeftMouseButtonUp(e.motion.x, e.motion.y);
+            }
+            break;
+         }
         case SDL_MOUSEBUTTONUP: {
             if ( e.button.button == SDL_BUTTON_LEFT ) {
                 OnLeftMouseButtonClick(e.motion.x, e.motion.y);
@@ -986,6 +993,25 @@ MOUSE InitGL::convertMouse(int x, int y) {
 }
 void InitGL::OnMouseMove(int &x, int &y, uint buttonstate) {
     _Mouse = convertMouse(x,y);
+}
+
+void InitGL::OnLeftMouseButtonUp(int &x, int &y) {
+
+    MOUSE m = convertMouse(x,y);
+    if ( ! MainMenu->containerList.empty()) {
+
+        for ( uint i = 0; i< MainMenu->containerList.size(); i++) {
+            if ( ! MainMenu->containerList.at(i)->buttons.empty()) {
+
+                for (uint j=0; j< MainMenu->containerList.at(i)->buttons.size(); j ++) {
+                    if (MainMenu->containerList.at(i)->buttons.at(j)->intersect(m.x, m.y) ) {
+                        MainMenu->containerList.at(i)->buttons.at(j)->OnRelease();
+
+                    }
+                }
+            }
+        }
+    }
 }
 void InitGL::OnLeftMouseButtonClick(int &x, int &y) {
 

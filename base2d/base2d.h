@@ -50,6 +50,7 @@ public:
     virtual int Width();
 
     bool IsEnabled();
+    sPoint Pos();
     void setDisablecolor(glm::vec4 disCol);
 
     glm::vec4 color();

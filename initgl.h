@@ -96,6 +96,7 @@ protected:
     // HandlerFuncs for Mouse
     virtual void OnMouseMove(int &x, int &y, uint buttonstate);
     virtual void OnLeftMouseButtonClick(int &x, int &y);
+    virtual void OnLeftMouseButtonUp(int &x, int &y);
 
     //----------------------------------
     // Object creation

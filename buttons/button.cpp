@@ -59,6 +59,12 @@ void CButton::AddHandler(FP handler) {
     clickFunc = handler;
 }
 
+void CButton::animateClick(){
+
+}
+void CButton::releaseClick() {}
+
+
 
 void CButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) {
     _ImageCol = imagecol;
@@ -84,6 +90,8 @@ void CButton::setPos(int x, int y){
 void CButton::OnClick() {
     clickFunc();
 }  // Must be overwritten
+
+void CButton::OnRelease(){}
 
 void CButton::OnFocus() {
     loginfo("OnFocus","CButton::OnFocus");
@@ -123,6 +131,22 @@ CDefaultButton::CDefaultButton(int resx, int resy, std::string path):
     // init stuff
 }
 
+void CDefaultButton::animateClick() {
+    if (textImage != nullptr) {
+        sPoint p;
+        p = textImage->Pos();
+        textImage->setPos(p.x-2, p.y -2);
+    }
+}
+
+void CDefaultButton::releaseClick() {
+    if (textImage != nullptr) {
+        sPoint p;
+        p = textImage->Pos();
+        textImage->setPos(p.x + 2, p.y + 2);
+    }
+}
+
 void CDefaultButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol)  {
 
     CButton::setbuttonColors(imagecol, textcol);
@@ -159,4 +183,8 @@ void CDefaultButton::Render() {
 
 void CDefaultButton::OnClick() {
     clickFunc();
+    animateClick();
+}
+void CDefaultButton::OnRelease(){
+    releaseClick();
 }

@@ -311,6 +311,10 @@ void Base2D::setImage(std::string path) {
     _ImagePath = path;
 }
 
+sPoint Base2D::Pos() {
+    return _Pos;
+}
+
 // ---------------------------------------------------
 // Render Function
 // param in [x] - X Position in screencoords
