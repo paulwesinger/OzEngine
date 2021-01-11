@@ -1,6 +1,5 @@
 #include "engine.h"
 #include "../utils/utils.h"
-
 /*
 
 #include <stdio.h>
@@ -22,21 +21,26 @@ main(){
 */
 
 
+//------------------------------------------------------------------
+// static functions for Button Handler
+//------------------------------------------------------------------
+
 CButton* butn0;
 CButton* butn1;
 
 
-//------------------------------
-// Non classes , static
-//------------------------------
-void EnableButton1() {
+static void EnableButton1() {
     if ( butn0 != nullptr)
         butn0->enable();
 }
-void DisableButton1() {
+static void DisableButton1() {
     if ( butn0 != nullptr)
         butn0->disable();
 }
+
+// more ....
+
+
 
 
 
@@ -94,15 +98,19 @@ void CEngine::initMenu(){
 
     CControllContainer * testContainer = new CControllContainer();
 
-    butn0 = new CDefaultButton(_ResX, _ResY,"images/button_green.png");
-    butn0->setSize(150,50);
+    butn0 = new CDefaultButton(_ResX, _ResY,"images/darkgray.png",  "Btn1");
+    butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
+    butn0->setColor(BTN_ENABLE);
+    butn0->setDisablecolor(BTN_DISABLE);
     butn0->AddHandler(EnableButton1);
 
     testContainer->addButton(butn0);
 
 
-    butn1 = new CDefaultButton(_ResX, _ResY,"images/button_white.png");
-    butn1->setSize(150,50);
+    butn1 = new CDefaultButton(_ResX, _ResY,"images/darkgray.png", "Btn 2");
+    butn1->setColor(BTN_ENABLE);
+    butn1->setDisablecolor(BTN_DISABLE);
+    butn1->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn1->AddHandler(DisableButton1);
 
     testContainer->addButton(butn1);
@@ -259,7 +267,7 @@ void CEngine::loadButtons() {
                 sButtonStruct btnStruct;
                 if  (initButtonStruct(btnStruct,btnconfig) ) {
 
-                    CButton * btn = new CDefaultButton(_ResX,_ResY ,btnStruct.path);//   btnStruct.path);
+                    CButton * btn = new CDefaultButton(_ResX,_ResY ,btnStruct.path,"");//   btnStruct.path);
                     btn->setPos(btnStruct.PosX,btnStruct.PosY);
                     btn->setSize(btnStruct.SizeX, btnStruct.SizeY);
                     btn->setbuttonColors(glm::vec3(btnStruct.ImageRed,btnStruct.ImageGreen,btnStruct.ImageBlue),

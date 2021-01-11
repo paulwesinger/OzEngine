@@ -67,6 +67,7 @@ public:
 
     void setText(uint index, std::string newString);  // starts qt 0 !!
     void setPos(sPoint pos);
+    sPoint Pos();
 
 
 
@@ -91,6 +92,8 @@ private:
 
     int _ResX;
     int _ResY;
+
+    sPoint _Pos;
 
     GLfloat posX;
     GLfloat posY;

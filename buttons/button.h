@@ -16,7 +16,7 @@ const int DEFAULT_BUZTTON_HEIGHT = 40;
 const float ALPHA_TEXT_ENABLED = 1.0f;
 const float ALPHA_TEXT_DISABLED = 0.3f;
 
-const float ALPHA_IMAGE_ENABLED  = 0.6f;
+const float ALPHA_IMAGE_ENABLED  = 1.0f;
 const float ALPHA_IMAGE_DISABLED = 0.3f;
 
 const glm::vec3 BTN_COLOR_DEFAULT_IMAGE = {1.0, 1.0, 1.0};
@@ -44,7 +44,7 @@ class CButton : public Base2D
 {
 public:
     CButton(int resx, int resy);
-    CButton(int resx, int resy, std::string path);
+    CButton(int resx, int resy, std::string path, std::string text);
     ~CButton();
 
     // ********************************************
@@ -89,6 +89,8 @@ protected:
     float _AlphaText;
     float _Alpha_Image;
 
+    TextRender * btnText;
+
 
 private:
 
@@ -108,7 +110,7 @@ private:
 class CDefaultButton: public CButton {
   public:
     CDefaultButton( int resx, int resy);
-    CDefaultButton( int resx, int resy, std::string path);
+    CDefaultButton( int resx, int resy, std::string path, std::string text);
 
     void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) override;
 
@@ -117,8 +119,8 @@ class CDefaultButton: public CButton {
     void OnRelease() override;
 protected:
     void setSize(int w, int h) override;
-    void animateClick();
-    void releaseClick();
+    void animateClick() override;
+    void releaseClick() override;
 
     Base2D * textImage;
     void  setPos(int x, int y) override;

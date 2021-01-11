@@ -45,6 +45,7 @@ HEADERS += \
     defines.h \
     engine/engine.h \
     fileutils/fileutil.h \
+    functions.h \
     imageloader/loadimage.h \
     include/ik_ESoundEngineOptions.h \
     include/ik_ESoundOutputDrivers.h \

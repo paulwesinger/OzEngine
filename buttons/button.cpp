@@ -6,8 +6,9 @@ CButton::CButton(int resx, int resy) :
 
     init();
 }
-CButton::CButton(int resx, int resy, std::string path) :
+CButton::CButton(int resx, int resy, std::string path, std::string text) :
     Base2D(resx, resy,path){
+    _Text = text;
     init();
 }
 
@@ -19,7 +20,7 @@ void CButton::init() {
     setHeight(DEFAULT_BUZTTON_HEIGHT);
     textPos.x = _Pos.x + X_MARGIN;
     textPos.y = _Pos.y + Y_MARGIN;
-    _Text = "NO";
+
     _AlphaText    = ALPHA_TEXT_ENABLED;
     _Alpha_Image  = ALPHA_IMAGE_ENABLED;
 
@@ -112,6 +113,7 @@ CDefaultButton::CDefaultButton( int resx, int  resy) :
     CButton(resx, resy)
 
 {
+    btnText = new TextRender(resx, resy);
 
 
     textPos.x = _Pos.x + X_MARGIN;
@@ -122,28 +124,51 @@ CDefaultButton::CDefaultButton( int resx, int  resy) :
 
 }
 
-CDefaultButton::CDefaultButton(int resx, int resy, std::string path):
-    CButton(resx, resy, path){
+CDefaultButton::CDefaultButton(int resx, int resy, std::string path, std::string text):
+    CButton(resx, resy, path,text){
+
+    setText(text);
+    btnText = new TextRender(resx, resy);
+    btnText->AddString(text);
+    sPoint p;
+    p.x = (int) textPos.x;
+    p.y = (int) textPos.y;
+    btnText->setPos(p);
+    btnText->SetHasBottom(false);
+    btnText->SetHasHeader(false);
+    btnText->SetHasBackground(false);
+    btnText->SetHasTexture(false);
+    btnText->SetAlignRight(false);
+
 
     textImage = new Base2D(resx, resy,"images/Add.png");
     textImage->setColor(glm::vec4(BTN_COLOR_DEFAULT_TEXT,_AlphaText));
-    textImage->setPos(0,0);
+    textImage->setPos(100,0);
     // init stuff
 }
 
 void CDefaultButton::animateClick() {
     if (textImage != nullptr) {
         sPoint p;
-        p = textImage->Pos();
-        textImage->setPos(p.x-2, p.y -2);
+
+        //p = textImage->Pos();
+        //textImage->setPos(p.x-2, p.y -2);
+        p = btnText->Pos();
+        p.x -= 2;
+        p.y -= 2;
+
+        btnText->setPos(p);
     }
 }
 
 void CDefaultButton::releaseClick() {
     if (textImage != nullptr) {
         sPoint p;
-        p = textImage->Pos();
-        textImage->setPos(p.x + 2, p.y + 2);
+        p = btnText->Pos();   //textImage->Pos();
+        p.x += 2;
+        p.y += 2;
+        btnText->setPos(p);
+        //textImage->setPos(p.x + 2, p.y + 2);
     }
 }
 
@@ -176,9 +201,10 @@ void CDefaultButton::Render() {
 
     Base2D::setColor(glm::vec4(1.0,1.0,1.0,_Alpha_Image));
     Base2D::Render();
+    btnText->Render();
 
-    textImage->Base2D::setColor(glm::vec4(1.0,1.0,1.0,_AlphaText));
-    textImage->Base2D::Render();
+    //textImage->Base2D::setColor(glm::vec4(1.0,1.0,1.0,_AlphaText));
+    //textImage->Base2D::Render();
 }
 
 void CDefaultButton::OnClick() {

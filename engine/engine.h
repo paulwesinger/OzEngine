@@ -10,6 +10,7 @@
 #include "../controllcontainer/controllcontainer.h"
 #include "../menu/menu.h"
 
+
 const std::string BUTTONS_CFG = "config/Buttons/";
 const std::string OBJECT3D_CFG =  "config/3DObjects/";
 const std::string SPACE = " ";
@@ -17,10 +18,15 @@ const std::string SPACE = " ";
 
 const int CFG_BUTTON_SIZE = 11;
 const int CFG_3D_SIZE = 18;
+const glm::vec4 BTN_ENABLE = glm::vec4(0.2, 0.2, 0.2, 1.0);
+const glm::vec4 BTN_DISABLE = glm::vec4(0.2, 0.2, 0.2, 0.3);
 
 
-void static EnableButton1();
-void static DisableButton1();
+//--------------------------------------
+// Look and feel
+//--------------------------------------
+const int BTN_WIDTH = 50;
+const int BTN_HEIGHT = 25;
 
 
 class CEngine : public InitGL

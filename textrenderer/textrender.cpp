@@ -171,6 +171,11 @@ void TextRender::setText(uint index, std::string newString) {
 void TextRender::setPos(sPoint pos) {
     posX = (GLfloat)pos.x;
     posY = (GLfloat)pos.y;
+    _Pos = pos;
+}
+
+sPoint TextRender::Pos() {
+    return _Pos;
 }
 
 int TextRender::getTextAreaHeight(){
@@ -516,7 +521,7 @@ void TextRender::Render() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-    projection =  glm::ortho(0.0f,static_cast<GLfloat>(_ResX), 0.0f,static_cast<GLfloat>(_ResY));   //,  -1.0f, 1.0f);
+    projection =  glm::ortho(0.0f,static_cast<GLfloat>(_ResX), static_cast<GLfloat>(_ResY), 0.0f);   //,  -1.0f, 1.0f);
 
     // Breite ermitteln:
     std::string::const_iterator c;

@@ -332,10 +332,8 @@ void Base2D::Render( ) {
 
     uniform_colorloc   = glGetUniformLocation(_CurrentShader,"col2D");
 
-    if (_Enable)
-       glUniform4f(uniform_colorloc, _Color.r, _Color.g, _Color.b, _Color.a);
-    else
-        glUniform4f(uniform_colorloc, _DisableColor.r, _DisableColor.g, _DisableColor.b, _DisableColor.a);
+    glUniform4f(uniform_colorloc, _Color.r, _Color.g, _Color.b, _Color.a);
+
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
