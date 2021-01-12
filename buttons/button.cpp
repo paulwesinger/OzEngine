@@ -84,6 +84,7 @@ int CButton::Width(){
 
 void CButton::setPos(int x, int y){
     Base2D::setPos(x,y);
+
 }
 // -----------------------------------------------
 // Event Handling
@@ -98,34 +99,29 @@ void CButton::OnFocus() {
     loginfo("OnFocus","CButton::OnFocus");
 }
 
-void CButton::Render( ) {
-
-    Base2D::Render();
-
-}
+void CButton::Render( ) {}
 
 
 //--------------------------------------------------
 // Defaullt Buttons for use
 // -------------------------------------------------
 
-CDefaultButton::CDefaultButton( int resx, int  resy) :
+CTextButton::CTextButton( int resx, int  resy) :
     CButton(resx, resy)
 
 {
+    _Text = "NO";
     btnText = new TextRender(resx, resy);
+    textPos.x = _Pos.x + X_MARGIN;
+    textPos.y = _Pos.y + Y_MARGIN;
+}
+
+CTextButton::CTextButton(int resx, int resy, std::string path, std::string text):
+    CButton(resx, resy, path,text){
 
 
     textPos.x = _Pos.x + X_MARGIN;
     textPos.y = _Pos.y + Y_MARGIN;
-    // init stuff
-    textImage = new Base2D(resx, resy, "images/Add.png");
-    textImage->setPos(0,0);
-
-}
-
-CDefaultButton::CDefaultButton(int resx, int resy, std::string path, std::string text):
-    CButton(resx, resy, path,text){
 
     setText(text);
     btnText = new TextRender(resx, resy);
@@ -134,25 +130,18 @@ CDefaultButton::CDefaultButton(int resx, int resy, std::string path, std::string
     p.x = (int) textPos.x;
     p.y = (int) textPos.y;
     btnText->setPos(p);
+    btnText->SetTextColor(glm::vec4(_TextCol,1.0));
     btnText->SetHasBottom(false);
     btnText->SetHasHeader(false);
     btnText->SetHasBackground(false);
     btnText->SetHasTexture(false);
     btnText->SetAlignRight(false);
 
-
-    textImage = new Base2D(resx, resy,"images/Add.png");
-    textImage->setColor(glm::vec4(BTN_COLOR_DEFAULT_TEXT,_AlphaText));
-    textImage->setPos(100,0);
-    // init stuff
 }
 
-void CDefaultButton::animateClick() {
-    if (textImage != nullptr) {
+void CTextButton::animateClick() {
+    if (btnText != nullptr) {
         sPoint p;
-
-        //p = textImage->Pos();
-        //textImage->setPos(p.x-2, p.y -2);
         p = btnText->Pos();
         p.x -= 2;
         p.y -= 2;
@@ -161,42 +150,44 @@ void CDefaultButton::animateClick() {
     }
 }
 
-void CDefaultButton::releaseClick() {
-    if (textImage != nullptr) {
+void CTextButton::releaseClick() {
+    if (btnText != nullptr) {
         sPoint p;
-        p = btnText->Pos();   //textImage->Pos();
+        p = btnText->Pos();
         p.x += 2;
         p.y += 2;
         btnText->setPos(p);
-        //textImage->setPos(p.x + 2, p.y + 2);
     }
 }
 
-void CDefaultButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol)  {
+void CTextButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol)  {
 
     CButton::setbuttonColors(imagecol, textcol);
-    textImage->setColor(glm::vec4(textcol,_AlphaText));
+    btnText->SetTextColor(glm::vec4(textcol,1.0));
 }
 
 
 // overritten
 
-void CDefaultButton::setPos(int x, int y) {
+void CTextButton::setPos(int x, int y) {
     Base2D::setPos(x,y);
 
     textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGIN;
+    textPos.y = _Pos.y + Y_MARGINBTN_TEXT;
 
-    textImage->setPos(_Pos.x,_Pos.y);
+    sPoint p;
+    p.x = (int) textPos.x;
+    p.y = (int) textPos.y;
+    btnText->setPos(p);
 }
-void CDefaultButton::setSize(int w, int h) {
+void CTextButton::setSize(int w, int h) {
     Base2D::setSize(w, h);
-    if (textImage != nullptr) {
-        textImage->setSize(w, h);
-    }
+
+    // Todo : setSize in TextRender
+
 }
 
-void CDefaultButton::Render() {
+void CTextButton::Render() {
 
 
     Base2D::setColor(glm::vec4(1.0,1.0,1.0,_Alpha_Image));
@@ -207,10 +198,115 @@ void CDefaultButton::Render() {
     //textImage->Base2D::Render();
 }
 
-void CDefaultButton::OnClick() {
+void CTextButton::OnClick() {
     clickFunc();
     animateClick();
 }
-void CDefaultButton::OnRelease(){
+void CTextButton::OnRelease(){
     releaseClick();
 }
+
+
+
+//--------------------------------------------------
+// Image Button for use
+// -------------------------------------------------
+
+CImageButton::CImageButton( int resx, int  resy) :
+    CButton(resx, resy)
+
+{
+    textPos.x = _Pos.x + X_MARGIN;
+    textPos.y = _Pos.y + Y_MARGIN;
+    // init stuff
+    textImage = new Base2D(resx, resy, "images/Add.png");
+    textImage->setPos(0,0);
+
+}
+
+CImageButton::CImageButton(int resx, int resy, std::string pathbg, std::string pathtext):
+    CButton(resx, resy, pathbg,pathtext){
+
+    _TextPath = pathtext;
+
+    textPos.x = _Pos.x + X_MARGIN;
+    textPos.y = _Pos.y + Y_MARGIN;
+
+    sPoint p;
+    p.x = (int) textPos.x;
+    p.y = (int) textPos.y;
+
+    textImage = new Base2D(resx, resy,_TextPath);
+    textImage->setColor(glm::vec4(BTN_COLOR_DEFAULT_TEXT,_AlphaText));
+    textImage->setPos(100,0);
+    // init stuff
+}
+
+void CImageButton::animateClick() {
+    if (textImage != nullptr) {
+        sPoint p;
+
+        p = textImage->Pos();
+        textImage->setPos(p.x-2, p.y -2);
+    }
+}
+
+void CImageButton::releaseClick() {
+    if (textImage != nullptr) {
+        sPoint p;
+        textImage->setPos(p.x + 2, p.y + 2);
+    }
+}
+
+void CImageButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol)  {
+
+    CButton::setbuttonColors(imagecol, textcol);
+    textImage->setColor(glm::vec4(textcol,_AlphaText));
+}
+
+
+// overritten
+
+void CImageButton::setPos(int x, int y) {
+    Base2D::setPos(x,y);
+
+    textPos.x = _Pos.x + X_MARGIN;
+    textPos.y = _Pos.y + Y_MARGINBTN_TEXT;
+
+    sPoint p;
+    p.x = (int) textPos.x;
+    p.y = (int) textPos.y;
+    textImage->setPos(_Pos.x,_Pos.y);
+}
+void CImageButton::setSize(int w, int h) {
+    Base2D::setSize(w, h);
+    if (textImage != nullptr) {
+        textImage->setSize(w, h);
+    }
+}
+
+void CImageButton::Render() {
+
+
+    Base2D::setColor(glm::vec4(1.0,1.0,1.0,_Alpha_Image));
+    Base2D::Render();
+
+    textImage->Base2D::setColor(glm::vec4(1.0,1.0,1.0,_AlphaText));
+    textImage->Base2D::Render();
+}
+
+void CImageButton::OnClick() {
+    clickFunc();
+    animateClick();
+}
+void CImageButton::OnRelease(){
+    releaseClick();
+}
+
+
+
+
+
+
+
+

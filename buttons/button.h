@@ -25,6 +25,8 @@ const glm::vec3 BTN_COLOR_DEFAULT_TEXT  = {0.0, 0.0, 0.0};
 const int X_MARGIN = 5;
 const int Y_MARGIN = 10;
 
+const int Y_MARGINBTN_TEXT = 20;
+
 typedef struct {
     std::string path;
     int PosX;
@@ -89,28 +91,56 @@ protected:
     float _AlphaText;
     float _Alpha_Image;
 
-    TextRender * btnText;
-
+    glm::vec3 _ImageCol;
+    glm::vec3 _TextCol;
 
 private:
 
     void init();
 
-    glm::vec3 _ImageCol;
-    glm::vec3 _TextCol;
+
     //pointStruct _Pos;   // Linke obere Ecke
     CColorScheme colorscheme;
     sButtonScheme _ButtonColors; // die vecs mit den farben
 };
 
 // ----------------------------------------------------
-// Standard Button zur Verwendung:
+// Text Button zur Verwendung:
 // ----------------------------------------------------
 
-class CDefaultButton: public CButton {
+class CTextButton: public CButton {
   public:
-    CDefaultButton( int resx, int resy);
-    CDefaultButton( int resx, int resy, std::string path, std::string text);
+
+    CTextButton( int resx, int resy);
+    CTextButton( int resx, int resy, std::string path, std::string text);
+
+    void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) override;
+
+    void Render()  override;
+    void OnClick() override;
+    void OnRelease() override;
+protected:
+    void setSize(int w, int h) override;
+    void animateClick() override;
+    void releaseClick() override;
+
+    void  setPos(int x, int y) override;
+
+
+    TextRender * btnText;
+};
+
+
+
+// ----------------------------------------------------
+// Image Button zur Verwendung:
+// ----------------------------------------------------
+
+class CImageButton: public CButton {
+  public:
+
+    CImageButton( int resx, int resy);
+    CImageButton( int resx, int resy, std::string pathbg, std::string pathtext);
 
     void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) override;
 
@@ -124,6 +154,10 @@ protected:
 
     Base2D * textImage;
     void  setPos(int x, int y) override;
+
+private:
+    std::string _TextPath;
+
 
 };
 

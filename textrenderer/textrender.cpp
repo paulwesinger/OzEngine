@@ -218,7 +218,7 @@ bool TextRender::Init(int resx, int resy) {
     _Pixelsize = 16;
     _MarginLeft = 5.0f;
     _MarginRight= 5.0f;
-    _MarginY = 3.0f;
+    _MarginY = 5.0f;
 
 
     shader = new Shader();
@@ -514,14 +514,12 @@ void TextRender::RenderFrame(GLfloat x, GLfloat y, uint tex) {
 void TextRender::Render() {
 
     GLfloat _x = posX;
-    GLfloat _y = posY;
-
-
+    GLfloat _y = _ResY - posY;
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-    projection =  glm::ortho(0.0f,static_cast<GLfloat>(_ResX), static_cast<GLfloat>(_ResY), 0.0f);   //,  -1.0f, 1.0f);
+    projection =  glm::ortho(0.0f,static_cast<GLfloat>(_ResX), 0.0f ,static_cast<GLfloat>(_ResY) );   //,  -1.0f, 1.0f);
 
     // Breite ermitteln:
     std::string::const_iterator c;
@@ -531,8 +529,7 @@ void TextRender::Render() {
     int count = 0;
     for ( uint i = 0; i < _StringList.size(); i ++ ) {
         for (c = _StringList[i].begin(); c != _StringList[i].end(); c++) {
-            Character ch = Characters[*c];           // { x,     y  - height,        0.0, 0.0 },
-
+            Character ch = Characters[*c];
             feldweite += static_cast<GLfloat> ( (ch.Advance >> 6) * _Scale);
         }
         count ++;
@@ -596,7 +593,7 @@ void TextRender::Render() {
 
     _x = newX + _MarginLeft;
     GLfloat startX  = _x;
-    GLfloat row     = _y - _MarginY * 2;
+    GLfloat row     = _y - _MarginY;
     //--------------------
     // Text Rendern
     //--------------------
@@ -623,7 +620,12 @@ void TextRender::Render() {
             Character ch = Characters[*c];
 
             GLfloat xpos = _x + ch.Bearing.x * _Scale;
-            GLfloat ypos = row - ((ch.Size.y - ch.Bearing.y) * _Scale) ;
+            //GLfloat ypos = row - ((ch.Size.y - ch.Bearing.y) * _Scale) ;
+
+
+            GLfloat ypos = row + ((ch.Size.y - ch.Bearing.y) * _Scale) ;
+
+
             row = ypos;
 
             GLfloat w = ch.Size.x * _Scale;
@@ -637,6 +639,9 @@ void TextRender::Render() {
                 { xpos,     ypos + h + 6.0f,   0.0, 0.0 },
                 { xpos + w, ypos + 6.0f,       1.0, 1.0 },
                 { xpos + w, ypos + h + 6.0f,   1.0, 0.0 }
+
+
+
             };
             // Render glyph texture over quad
             glBindTexture(GL_TEXTURE_2D,ch.TextureID);

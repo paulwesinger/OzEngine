@@ -98,7 +98,7 @@ void CEngine::initMenu(){
 
     CControllContainer * testContainer = new CControllContainer();
 
-    butn0 = new CDefaultButton(_ResX, _ResY,"images/darkgray.png",  "Btn1");
+    butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Btn1");
     butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn0->setColor(BTN_ENABLE);
     butn0->setDisablecolor(BTN_DISABLE);
@@ -107,7 +107,7 @@ void CEngine::initMenu(){
     testContainer->addButton(butn0);
 
 
-    butn1 = new CDefaultButton(_ResX, _ResY,"images/darkgray.png", "Btn 2");
+    butn1 = new CImageButton(_ResX, _ResY,"images/darkgray.png", "images/Add.png");
     butn1->setColor(BTN_ENABLE);
     butn1->setDisablecolor(BTN_DISABLE);
     butn1->setSize(BTN_WIDTH,BTN_HEIGHT);
@@ -267,7 +267,7 @@ void CEngine::loadButtons() {
                 sButtonStruct btnStruct;
                 if  (initButtonStruct(btnStruct,btnconfig) ) {
 
-                    CButton * btn = new CDefaultButton(_ResX,_ResY ,btnStruct.path,"");//   btnStruct.path);
+                    CButton * btn = new CTextButton(_ResX,_ResY ,btnStruct.path,"");//   btnStruct.path);
                     btn->setPos(btnStruct.PosX,btnStruct.PosY);
                     btn->setSize(btnStruct.SizeX, btnStruct.SizeY);
                     btn->setbuttonColors(glm::vec3(btnStruct.ImageRed,btnStruct.ImageGreen,btnStruct.ImageBlue),
