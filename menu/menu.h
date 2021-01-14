@@ -25,8 +25,10 @@ class CMenu
 {
 public:
     CMenu(int resX, int resY);
-    CMenu(int resX, int resY, int width, int height);
-    CMenu(int resX, int resY, int width, int height, glm::vec4 bg, glm::vec4 fg);
+    CMenu(int resX, int resY, int w, int h);
+    CMenu(int resX, int resY, int w, int h, glm::vec4 bg, glm::vec4 fg);
+    CMenu(int resX, int resY, int px, int py, int w, int h, glm::vec4 bg, glm::vec4 fg);
+
     void Render();
     void setMenuHeader(std::string name);
 
@@ -36,6 +38,10 @@ public:
     void addConatiner( CControllContainer* con);
     void addButton(CControllContainer * con, CButton * btn);
     void addTextItem(CControllContainer * con, std::string text);
+
+    sPoint Pos();
+    int Width();
+    int Height();
 
     void AlignLeft();
     void AlignRight();
@@ -50,10 +56,10 @@ protected:
     glm::vec4 foregroundColor;
 
 
-    int PosX;  // absolute zum bildschirm
-    int PosY;
-    int Width;
-    int Height;
+    int posX;  // absolute zum bildschirm
+    int posY;
+    int width;
+    int height;
 
 
     bool alignright;

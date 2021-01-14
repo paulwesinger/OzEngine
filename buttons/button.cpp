@@ -74,6 +74,8 @@ void CButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) {
     Base2D::setColor(glm::vec4(imagecol,_Alpha_Image));
 }
 
+void CButton::setScale(float s) {}
+
 int CButton::Height(){
     return Base2D::Height();
 }
@@ -167,13 +169,19 @@ void CTextButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol)  {
 }
 
 
+void CTextButton::setScale(float s) {
+    _TextScale = s;
+    if (btnText)
+        btnText->SetScale(_TextScale);
+}
+
 // overritten
 
 void CTextButton::setPos(int x, int y) {
     Base2D::setPos(x,y);
 
     textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGINBTN_TEXT;
+    textPos.y = _Pos.y + Y_MARGINBTN_TEXT_MEDIUM;
 
     sPoint p;
     p.x = (int) textPos.x;
@@ -225,7 +233,7 @@ CImageButton::CImageButton( int resx, int  resy) :
 }
 
 CImageButton::CImageButton(int resx, int resy, std::string pathbg, std::string pathtext):
-    CButton(resx, resy, pathbg,pathtext){
+    CButton(resx, resy, pathbg,""){
 
     _TextPath = pathtext;
 
@@ -238,24 +246,32 @@ CImageButton::CImageButton(int resx, int resy, std::string pathbg, std::string p
 
     textImage = new Base2D(resx, resy,_TextPath);
     textImage->setColor(glm::vec4(BTN_COLOR_DEFAULT_TEXT,_AlphaText));
-    textImage->setPos(100,0);
+    textImage->setPos(0,0);
     // init stuff
 }
 
 void CImageButton::animateClick() {
+
+
     if (textImage != nullptr) {
         sPoint p;
 
         p = textImage->Pos();
-        textImage->setPos(p.x-2, p.y -2);
+        textImage->setPos(p.x-2, p.y-2);
     }
+
+
 }
 
 void CImageButton::releaseClick() {
+
+
     if (textImage != nullptr) {
-        sPoint p;
-        textImage->setPos(p.x + 2, p.y + 2);
+        sPoint p = textImage->Pos();
+
+        textImage->setPos(p.x+2, p.y+2);
     }
+
 }
 
 void CImageButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol)  {
@@ -263,21 +279,23 @@ void CImageButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol)  {
     CButton::setbuttonColors(imagecol, textcol);
     textImage->setColor(glm::vec4(textcol,_AlphaText));
 }
-
-
 // overritten
 
 void CImageButton::setPos(int x, int y) {
     Base2D::setPos(x,y);
-
+/*
     textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGINBTN_TEXT;
+    textPos.y = _Pos.y + Y_MARGINBTN_TEXT_MEDIUM ;
 
     sPoint p;
     p.x = (int) textPos.x;
     p.y = (int) textPos.y;
+
+    */
     textImage->setPos(_Pos.x,_Pos.y);
 }
+
+void CImageButton::setScale(float s) {}
 void CImageButton::setSize(int w, int h) {
     Base2D::setSize(w, h);
     if (textImage != nullptr) {

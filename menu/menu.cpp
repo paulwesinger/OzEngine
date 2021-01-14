@@ -8,11 +8,11 @@ CMenu::CMenu(int resX, int resY) {
     _resY = resY;
     _resX = resX;
 
-    PosX = 0;
-    PosY = 0;
+    posX = 0;
+    posY = 0;
 
-    Width =  MENU_WIDTH;
-    Height = MENU_HEIGHT;
+    width =  MENU_WIDTH;
+    height = MENU_HEIGHT;
 
     backgroundColor = glm::vec4(0.0,0.0,0.0,1.0);
     foregroundColor = glm::vec4(1.0,1.0,1.0,1.0);
@@ -20,15 +20,15 @@ CMenu::CMenu(int resX, int resY) {
     init();
 }
 
-CMenu::CMenu(int resX, int resY, int width, int height) {
+CMenu::CMenu(int resX, int resY, int w, int h) {
     _resY = resY;
     _resX = resX;
 
-    PosX = 0;
-    PosY = 0;
+    posX = 0;
+    posY = 0;
 
-    Width =  width;
-    Height = height;
+    width =  w;
+    height = h;
 
     backgroundColor = glm::vec4(0.0,0.0,0.0,1.0);
     foregroundColor = glm::vec4(1.0,1.0,1.0,1.0);
@@ -36,17 +36,35 @@ CMenu::CMenu(int resX, int resY, int width, int height) {
     init();
 }
 
-CMenu::CMenu(int resX, int resY, int width, int height, glm::vec4 bg, glm::vec4 fg) {
+CMenu::CMenu(int resX, int resY, int w, int h, glm::vec4 bg, glm::vec4 fg) {
 
     _resY = resY;
     _resX = resX;
     _currentY = 0;
 
-    PosX = 0;
-    PosY = 0;
+    posX = 0;
+    posY = 0;
 
-    Width =  width;
-    Height = height;
+    width =  w;
+    height = h;
+
+    backgroundColor = bg;
+    foregroundColor = fg;
+
+    init();
+}
+
+CMenu::CMenu(int resX, int resY, int px, int py, int w, int h, glm::vec4 bg, glm::vec4 fg) {
+
+    _resY = resY;
+    _resX = resX;
+    _currentY = 0;
+
+    posX = px;
+    posY = py;
+
+    width =  w;
+    height = h;
 
     backgroundColor = bg;
     foregroundColor = fg;
@@ -57,11 +75,26 @@ CMenu::CMenu(int resX, int resY, int width, int height, glm::vec4 bg, glm::vec4 
 void CMenu::init() {
 
     menuBackground = new Base2D(_resX, _resY);
-    menuBackground->setPos(PosX, PosY);
-    menuBackground->setSize(Width, Height);
+    menuBackground->setPos(posX, posY);
+    menuBackground->setSize(width, height);
     menuBackground->setColor(backgroundColor);
 
 
+}
+
+sPoint CMenu::Pos() {
+    sPoint p;
+    p.x = posX;
+    p.y = posY;
+    return p;
+}
+
+int CMenu::Width() {
+    return width;
+}
+
+int CMenu::Height() {
+    return height;
 }
 void CMenu::Render() {
     menuBackground ->Render();

@@ -399,7 +399,8 @@ void InitGL::InitEngineObject() {
 // ===============================================================
 
     loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
-    MainMenu = new CMenu(_ResX, _ResY, 450, 900, glm::vec4(0.1,0.1,0.6,0.5), glm::vec4(0.9,0.9,0.9,1.0));
+    //                   |Resolution|  | Position  | | width,height, colors             |
+    MainMenu = new CMenu(_ResX, _ResY, _ResX- 200, 0, 200, 900, glm::vec4(0.1,0.1,0.6,0.5), glm::vec4(0.9,0.9,0.9,1.0));
 
 
 

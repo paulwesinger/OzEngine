@@ -20,12 +20,17 @@ const float ALPHA_IMAGE_ENABLED  = 1.0f;
 const float ALPHA_IMAGE_DISABLED = 0.3f;
 
 const glm::vec3 BTN_COLOR_DEFAULT_IMAGE = {1.0, 1.0, 1.0};
-const glm::vec3 BTN_COLOR_DEFAULT_TEXT  = {0.0, 0.0, 0.0};
+const glm::vec3 BTN_COLOR_DEFAULT_TEXT  = {0.0, 0.0, 1.0};
 
 const int X_MARGIN = 5;
 const int Y_MARGIN = 10;
 
-const int Y_MARGINBTN_TEXT = 20;
+const int Y_MARGINBTN_TEXT_MEDIUM = 35;
+
+namespace BUTTON {
+    const float TEXT_SCALE_SMALL = 1.0f;
+    const float TEXT_SCALE_MEDIUM = 1.5f;
+};
 
 typedef struct {
     std::string path;
@@ -54,6 +59,7 @@ public:
     // ********************************************
     // set
     void setText(std::string t);
+
     void setPos(int x, int y);
     void enable();
     void disable();
@@ -73,6 +79,7 @@ public:
     // ********************************************
     virtual void Render() = 0;
     virtual void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol);
+    virtual void setScale(float s = BUTTON::TEXT_SCALE_SMALL) = 0;
 
     //EventHandling
     virtual void OnClick() = 0 ;  // Muss überschrieben werden !!!!
@@ -98,8 +105,6 @@ private:
 
     void init();
 
-
-    //pointStruct _Pos;   // Linke obere Ecke
     CColorScheme colorscheme;
     sButtonScheme _ButtonColors; // die vecs mit den farben
 };
@@ -115,6 +120,7 @@ class CTextButton: public CButton {
     CTextButton( int resx, int resy, std::string path, std::string text);
 
     void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) override;
+    void setScale(float s) override;
 
     void Render()  override;
     void OnClick() override;
@@ -126,7 +132,7 @@ protected:
 
     void  setPos(int x, int y) override;
 
-
+    float _TextScale;
     TextRender * btnText;
 };
 
@@ -151,6 +157,7 @@ protected:
     void setSize(int w, int h) override;
     void animateClick() override;
     void releaseClick() override;
+    void setScale(float s) override;
 
     Base2D * textImage;
     void  setPos(int x, int y) override;

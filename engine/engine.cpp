@@ -27,16 +27,26 @@ main(){
 
 CButton* butn0;
 CButton* butn1;
+CButton* butn2;
 
 
 static void EnableButton1() {
     if ( butn0 != nullptr)
         butn0->enable();
+    if ( butn1 != nullptr)
+        butn1->enable();
 }
 static void DisableButton1() {
     if ( butn0 != nullptr)
         butn0->disable();
+    if ( butn2 != nullptr)
+        butn2->disable();
 }
+static void Button3() {
+    if ( butn1 != nullptr)
+        butn1->disable();
+}
+
 
 // more ....
 
@@ -96,10 +106,13 @@ void CEngine::initMenu(){
     // jetzt  befüllen
     //--------------------------------------
 
-    CControllContainer * testContainer = new CControllContainer();
+    CControllContainer * testContainer = new CControllContainer(MainMenu->Pos().x,
+                                                                MainMenu->Pos().y,
+                                                                MainMenu->Width(), 0);
 
     butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Btn1");
     butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
+    butn0->setScale(BUTTON::TEXT_SCALE_MEDIUM);
     butn0->setColor(BTN_ENABLE);
     butn0->setDisablecolor(BTN_DISABLE);
     butn0->AddHandler(EnableButton1);
@@ -114,6 +127,14 @@ void CEngine::initMenu(){
     butn1->AddHandler(DisableButton1);
 
     testContainer->addButton(butn1);
+
+    butn2 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Btn1");
+    butn2->setColor(BTN_ENABLE);
+    butn2->setDisablecolor(BTN_DISABLE);
+    butn2->setSize(BTN_WIDTH,BTN_HEIGHT);
+    butn2->AddHandler(Button3);
+
+    testContainer->addButton(butn2);
 
     MainMenu->addConatiner(testContainer);
 }

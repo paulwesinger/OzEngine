@@ -2,15 +2,10 @@
 #include "../logs/logs.h"
 #include "../utils/utils.h"
 
-CControllContainer::CControllContainer( CControllContainer* parent) {
-    if (parent == nullptr)
-        _Parent = this;
-    else
-        _Parent = parent;
+CControllContainer::CControllContainer() {
 
-    _Child = nullptr;
-
-    _Height = 0;
+    _Height = 10;
+    _Width = 10;
     _CurrentY = 5;
     _CurrentX = 5;
 }
@@ -18,11 +13,14 @@ CControllContainer::CControllContainer( CControllContainer* parent) {
 CControllContainer::~CControllContainer() {
     releaseConterItems();
 }
+CControllContainer::CControllContainer(int px, int py, int w, int h) {
 
-void CControllContainer::addContainer(CControllContainer * parent) {
-    CControllContainer * child = new CControllContainer(parent);
-    this->_Child = child;
+    _Height = h;
+    _Width = w - 10;   // 2* 5
+    _CurrentY = py + 5;
+    _CurrentX = px + 5;
 }
+
 
 void CControllContainer::disableControll(Base2D *con){
     if (con != nullptr) {
@@ -102,6 +100,7 @@ void CControllContainer::rename(std::string theNewName){
 }
 
 bool CControllContainer::addButton(CButton *btn) {
+
 
     btn->setPos(_CurrentX,_CurrentY);
     // Gesammthöhe des container

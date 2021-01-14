@@ -14,10 +14,10 @@
 class CControllContainer
 {
 public:
-    CControllContainer(CControllContainer *parent = nullptr);
+    CControllContainer();
+    CControllContainer(int px=0, int py=0, int w=100, int h=100);
     ~CControllContainer();
 
-    void addContainer(CControllContainer *container);
     bool removeContainer(CControllContainer *container);
     void rename(std::string theNewName);
 
@@ -37,8 +37,6 @@ public:
     sSize Dimensions();
     sPoint Pos();
 
-    CControllContainer * _Child;
-    CControllContainer * _Parent;
     std::vector<Base2D *> controlls2D;
     std::vector<BaseObject*> controlls3D;
     std::vector<CButton *> buttons;
@@ -52,6 +50,7 @@ private:
     std::string _Name;
 
     int _Height; // errechnete höhe
+    int _Width;
     int _CurrentY; //position für nächstes element
     int _CurrentX;
 

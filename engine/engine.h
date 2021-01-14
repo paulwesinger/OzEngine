@@ -25,8 +25,8 @@ const glm::vec4 BTN_DISABLE = glm::vec4(0.2, 0.2, 0.2, 0.3);
 //--------------------------------------
 // Look and feel
 //--------------------------------------
-const int BTN_WIDTH = 50;
-const int BTN_HEIGHT = 25;
+const int BTN_WIDTH = 100;
+const int BTN_HEIGHT = 50;
 
 
 class CEngine : public InitGL
