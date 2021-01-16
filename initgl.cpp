@@ -51,6 +51,7 @@ InitGL::InitGL (const std::string titel){
 
     InitUtils();
     InitMatrices();
+    InitFX();
 
     // Irrklan init
  //   soundengine = createIrrKlangDevice();
@@ -106,6 +107,37 @@ void InitGL::TestFunction() {
     logwarn("Aus der Testfunction", "InitGL::TestFunction");
 
 }
+
+
+//------------------------------------------
+// effects
+//------------------------------------------
+void InitGL::InitFX(){
+    fogParam();
+}
+
+
+// fog
+void InitGL::fogParam(){
+    float col[4] = {0.0f,0.0f,1.0f,1.0f};
+    glFogi(GL_FOG_MODE,GL_LINEAR);
+    glFogfv(GL_FOG_COLOR ,col);
+    glFogf(GL_FOG_DENSITY, 0.35f);              // How Dense Will The Fog Be
+    glHint(GL_FOG_HINT, GL_DONT_CARE);          // Fog Hint Value
+    glFogf(GL_FOG_START, 0.0f);             // Fog Start Depth
+    glFogf(GL_FOG_END, 20.0f);               // Fog End Depth
+    glEnable(GL_FOG);
+
+}
+void InitGL::setFog(bool enable) {
+    if (enable){
+       glEnable(GL_FOG);
+    }
+    else
+        glDisable(GL_FOG);
+}
+
+
 
 
 // ******************************************

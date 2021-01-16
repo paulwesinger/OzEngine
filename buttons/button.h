@@ -86,6 +86,8 @@ public:
     virtual void OnRelease() = 0;
     virtual void OnFocus();
 
+    virtual void alignToSize(int w, int h);
+
 
 protected:
 
@@ -130,7 +132,8 @@ protected:
     void animateClick() override;
     void releaseClick() override;
 
-    void  setPos(int x, int y) override;
+    void setPos(int x, int y) override;
+    void alignToSize(int w, int h);
 
     float _TextScale;
     TextRender * btnText;

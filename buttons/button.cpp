@@ -65,7 +65,7 @@ void CButton::animateClick(){
 }
 void CButton::releaseClick() {}
 
-
+void CButton::alignToSize(int w, int h) {}
 
 void CButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) {
     _ImageCol = imagecol;
@@ -168,6 +168,10 @@ void CTextButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol)  {
     btnText->SetTextColor(glm::vec4(textcol,1.0));
 }
 
+void CTextButton::alignToSize(int w, int h){
+    if (btnText != nullptr)
+        btnText->alignToRectSize(w,h);
+}
 
 void CTextButton::setScale(float s) {
     _TextScale = s;
@@ -188,6 +192,7 @@ void CTextButton::setPos(int x, int y) {
     p.y = (int) textPos.y;
     btnText->setPos(p);
 }
+
 void CTextButton::setSize(int w, int h) {
     Base2D::setSize(w, h);
 

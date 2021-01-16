@@ -74,6 +74,10 @@ public:
     virtual void Prepare2D(); // Flags für Rendern einstellen
     virtual void Restore3D(); // Flags zurücksetzen
 
+    // effects
+    static void setFog(bool enable = false);
+    void fogParam();
+
 protected:
     // ---------------------------------
     // Wieder löschen
@@ -86,6 +90,8 @@ protected:
     void SetClearColor(float r, float g, float b, float a);
     void setClearColor(float r, float g, float b);
     void toogleFullScreen();
+
+    void InitFX();
 
 
     // HandleInput wird wahrscheinlich überflussig....
@@ -111,8 +117,8 @@ protected:
     CMenu* MainMenu;
     bool showMenu;
 
-
-
+    // Flags for effects:
+    bool _Fog;
 
     void safeDelete(BaseObject * bo);
 

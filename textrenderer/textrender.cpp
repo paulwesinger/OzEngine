@@ -170,7 +170,8 @@ void TextRender::setText(uint index, std::string newString) {
 
 void TextRender::setPos(sPoint pos) {
     posX = (GLfloat)pos.x;
-    posY = (GLfloat)pos.y;
+   // posY = (GLfloat)pos.y; _ResY - posY;
+    posY = (GLfloat) _ResY - pos.y;
     _Pos = pos;
 }
 
@@ -185,6 +186,31 @@ int TextRender::getTextAreaHeight(){
 int TextRender::getWidth() {
     return _Textfeld.w;
 }
+
+int TextRender::getHeight() {
+   return _Textfeld.h;
+}
+
+
+
+void TextRender::alignToRectSize(int w, int h) {
+    int margX = (w - _Textfeld.w) / 2;
+    int margY = (h - _Textfeld.h) / 2;
+
+    logwarn("margeX: " + IntToString(margX));
+    logwarn("margey: " + IntToString(margY));
+
+    logwarn("w : " + IntToString(w));
+    logwarn("w : " + IntToString(h));
+
+    logwarn("TextFeldX: " + IntToString(_Textfeld.w));
+    logwarn("TextFeldY: " + IntToString(_Textfeld.h));
+
+    posX += margX;
+    posY -= margY;
+
+}
+
 
 void TextRender::SetHasBottom(bool hasbottom) {_RenderBottom = hasbottom;}
 void TextRender::SetHasHeader(bool hasheader) {_RenderHeader = hasheader;}
@@ -514,7 +540,7 @@ void TextRender::RenderFrame(GLfloat x, GLfloat y, uint tex) {
 void TextRender::Render() {
 
     GLfloat _x = posX;
-    GLfloat _y = _ResY - posY;
+    GLfloat _y = posY;
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);

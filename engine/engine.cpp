@@ -80,8 +80,8 @@ void CEngine::Run() {
 // ---------------------------------------------------------------
 // Place here Functons for button handler..
 // ---------------------------------------------------------------
-void CEngine::EngineTestFunc1() {
-     loginfo("TestFunc1","Engine:: EngineTestFunc 1");
+void CEngine::FxFog() {
+    InitGL::setFog(true);
 }
 void CEngine::EngineTestFunc2() {
      loginfo("TestFunc2","Engine:: EngineTestFunc 2");
@@ -112,7 +112,8 @@ void CEngine::initMenu(){
 
     butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Btn1");
     butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
-    butn0->setScale(BUTTON::TEXT_SCALE_MEDIUM);
+    butn0->setScale(BUTTON::TEXT_SCALE_SMALL);
+    //butn0->alignToSize(BTN_WIDTH,BTN_HEIGHT);
     butn0->setColor(BTN_ENABLE);
     butn0->setDisablecolor(BTN_DISABLE);
     butn0->AddHandler(EnableButton1);
@@ -128,7 +129,9 @@ void CEngine::initMenu(){
 
     testContainer->addButton(butn1);
 
-    butn2 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Btn1");
+    butn2 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Foing");
+    butn2->setSize(BTN_WIDTH,BTN_HEIGHT);
+    butn2->setScale(BUTTON::TEXT_SCALE_SMALL);
     butn2->setColor(BTN_ENABLE);
     butn2->setDisablecolor(BTN_DISABLE);
     butn2->setSize(BTN_WIDTH,BTN_HEIGHT);
@@ -295,11 +298,11 @@ void CEngine::loadButtons() {
                                          glm::vec3(btnStruct.TextRed,btnStruct.TextGreen,btnStruct.TextBlue));
 
                     switch (i) {
-                        case 0: btn ->AddHandler(EngineTestFunc1); break;
+                        case 0: btn ->AddHandler(EngineTestFunc4); break;
                         case 1: btn ->AddHandler(EngineTestFunc2); break;
                         case 2: btn ->AddHandler(EngineTestFunc3); break;
                     default:
-                        btn ->AddHandler(EngineTestFunc1);
+                        btn ->AddHandler(EngineTestFunc4);
                     }
                     if (btnStruct.Enable > 0 )
                         btn->enable();
