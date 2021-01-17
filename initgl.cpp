@@ -113,25 +113,28 @@ void InitGL::TestFunction() {
 // effects
 //------------------------------------------
 void InitGL::InitFX(){
+    _Fog = true;
     fogParam();
 }
 
 
 // fog
 void InitGL::fogParam(){
-    float col[4] = {0.0f,0.0f,1.0f,1.0f};
+    float col[4] = {0.5f,0.5f,0.5f,1.0f};
     glFogi(GL_FOG_MODE,GL_LINEAR);
     glFogfv(GL_FOG_COLOR ,col);
-    glFogf(GL_FOG_DENSITY, 0.35f);              // How Dense Will The Fog Be
+    glFogf(GL_FOG_DENSITY, 0.75f);              // How Dense Will The Fog Be
     glHint(GL_FOG_HINT, GL_DONT_CARE);          // Fog Hint Value
-    glFogf(GL_FOG_START, 0.0f);             // Fog Start Depth
-    glFogf(GL_FOG_END, 20.0f);               // Fog End Depth
+    glFogf(GL_FOG_START, 1.0f);             // Fog Start Depth
+    glFogf(GL_FOG_END, 5.0f);               // Fog End Depth
     glEnable(GL_FOG);
 
 }
 void InitGL::setFog(bool enable) {
     if (enable){
+
        glEnable(GL_FOG);
+       logwarn("fog enabled ");
     }
     else
         glDisable(GL_FOG);
@@ -897,9 +900,15 @@ void InitGL::Run() {
         // ===================================
         skybox->Draw(camera->GetView());
 
+
         // ===================================
         // Engine Objekte
         // ===================================
+
+        if (_Fog) {
+         //   fogParam();
+         //   glEnable(GL_FOG);
+        }
 
         if (! objects3D.empty() ) {
             for (unsigned int i=0;i < objects3D.size(); i++ ) {

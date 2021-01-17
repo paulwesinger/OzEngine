@@ -110,13 +110,13 @@ void CEngine::initMenu(){
                                                                 MainMenu->Pos().y,
                                                                 MainMenu->Width(), 0);
 
-    butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Btn1");
+    butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Fog");
     butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn0->setScale(BUTTON::TEXT_SCALE_SMALL);
     //butn0->alignToSize(BTN_WIDTH,BTN_HEIGHT);
     butn0->setColor(BTN_ENABLE);
     butn0->setDisablecolor(BTN_DISABLE);
-    butn0->AddHandler(EnableButton1);
+    butn0->AddHandler(FxFog);
 
     testContainer->addButton(butn0);
 
