@@ -28,7 +28,6 @@ const glm::vec4 BTN_DISABLE = glm::vec4(0.2, 0.2, 0.2, 0.3);
 const int BTN_WIDTH = 100;
 const int BTN_HEIGHT = 50;
 
-
 class CEngine : public InitGL
 {
 public:
@@ -36,17 +35,7 @@ public:
     void Run() override;
     void Done() override;
 
-    static void FxFog();   // Stellvertretend für alle zukünftigen funcs ->zum testen
-    static void EngineTestFunc2();
-    static void EngineTestFunc3();
-    static void EngineTestFunc4();
-
-
-
 protected:
-
-
-
     void loadButtons();
     // Lists for all objects:
     std::vector<std::string> btnList;

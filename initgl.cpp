@@ -113,8 +113,7 @@ void InitGL::TestFunction() {
 // effects
 //------------------------------------------
 void InitGL::InitFX(){
-    _Fog = true;
-    fogParam();
+
 }
 
 
@@ -131,13 +130,7 @@ void InitGL::fogParam(){
 
 }
 void InitGL::setFog(bool enable) {
-    if (enable){
-
-       glEnable(GL_FOG);
-       logwarn("fog enabled ");
-    }
-    else
-        glDisable(GL_FOG);
+        //Shader use forfogging
 }
 
 
@@ -906,8 +899,6 @@ void InitGL::Run() {
         // ===================================
 
         if (_Fog) {
-         //   fogParam();
-         //   glEnable(GL_FOG);
         }
 
         if (! objects3D.empty() ) {

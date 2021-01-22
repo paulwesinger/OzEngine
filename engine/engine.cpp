@@ -30,25 +30,38 @@ CButton* butn1;
 CButton* butn2;
 
 
-static void EnableButton1() {
+void EnableButton1() {
     if ( butn0 != nullptr)
         butn0->enable();
     if ( butn1 != nullptr)
         butn1->enable();
 }
-static void DisableButton1() {
+void DisableButton1() {
     if ( butn0 != nullptr)
         butn0->disable();
     if ( butn2 != nullptr)
         butn2->disable();
 }
-static void Button3() {
+void Button3() {
     if ( butn1 != nullptr)
         butn1->disable();
 }
 
+void FxFog() {
+    loginfo("TestFunc2","Fog");
+}
 
-// more ....
+
+void EngineTestFunc2() {
+     loginfo("TestFunc2","Engine:: EngineTestFunc 2");
+}
+void EngineTestFunc3() {
+    loginfo("TestFunc3","Engine:: EngineTestFunc 3");
+}
+
+void EngineTestFunc4() {
+    loginfo("TestFunc4","Engine:: EngineTestFunc 4");
+}
 
 
 
@@ -80,19 +93,7 @@ void CEngine::Run() {
 // ---------------------------------------------------------------
 // Place here Functons for button handler..
 // ---------------------------------------------------------------
-void CEngine::FxFog() {
-    InitGL::setFog(true);
-}
-void CEngine::EngineTestFunc2() {
-     loginfo("TestFunc2","Engine:: EngineTestFunc 2");
-}
-void CEngine::EngineTestFunc3() {
-    loginfo("TestFunc3","Engine:: EngineTestFunc 3");
-}
 
-void CEngine::EngineTestFunc4() {
-    loginfo("TestFunc4","Engine:: EngineTestFunc 4");
-}
 
 
 // --------------------------------------------------------------

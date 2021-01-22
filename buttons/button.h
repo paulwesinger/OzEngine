@@ -71,9 +71,8 @@ public:
     bool Enabled();
 
     FP clickFunc;  // aufzurufende func für Buttonclick
-  //  FPEnableBtn clickFuncEnable;
+    //  FPEnableBtn clickFuncEnable;
     void AddHandler(FP handler);
-
     //*********************************************
     // Virtuals
     // ********************************************
