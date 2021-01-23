@@ -233,20 +233,6 @@ void CCube::Init() {
                   vertex_NormalIndices,
                   GL_DYNAMIC_DRAW);
 
-    /*
-    // WICHTIG : -->  Wenn Texture dazu kommt, ist Stride 8 * sizeof (float ) stattt 6 * sizeof (float )
-    // Psoitions
-    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,8 * sizeof(float), static_cast<void*>(nullptr));
-    glEnableVertexAttribArray(0);
-    // Colors
-    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,8 * sizeof(float),(void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // Texture
-    glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8 * sizeof(float),(void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    */
-
     // Vertex
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);

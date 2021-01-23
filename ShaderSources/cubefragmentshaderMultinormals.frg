@@ -22,8 +22,7 @@ uniform vec4 triangleColor;
 
 uniform vec3 diffuse_albedo = vec3(0.5,0.2,0.7);
 uniform vec3 specular_albedo = vec3(0.7);
-uniform float specular_power = 128.0;
-
+uniform float specular_power = 256.0;
 
 
 
@@ -35,12 +34,12 @@ void main(void) {
 
     vec3 R = reflect(-L,N);
 
-    vec3 diffuse = max(dot(N,L),0.0) * diffuse_albedo;
+    vec3 diffuse = max(dot(N,L),0.0) * specular_albedo;
     vec3 specular = pow(max(dot(R,V),0.0), specular_power) * specular_albedo;
 
 
     vec4 texcolor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.8);
-    FragColor = vec4(diffuse + specular, 1.0) * texcolor;
+    FragColor = vec4(diffuse + specular, 1.0) * texcolor * triangleColor;
 
 /*
    float ambientStrength = 0.8;

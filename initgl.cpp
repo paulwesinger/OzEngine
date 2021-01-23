@@ -190,7 +190,21 @@ void InitGL::InitShaders() {
     shader->AttachCustomShader(cubeshaderprog_normals,fsn);
     shader->CreateCustomProgram(cubeshaderprog_normals);
 
+    // Shader für colorlightning
+    loginfo("Erstelle Cube Color Light Shader ..............done");
+    v_source ="ShaderSources/vertexnormalcolorshader.vex";
+    int vscn = shader ->compileVertexShaderFromFile(v_source,filestream);
+    //Fragment Shader Color
+    v_source ="ShaderSources/fragmentnormalcolorshader.frg";
+    int fscn = shader ->compileFragmentShaderFromFile(v_source,filestream);
+    shader->CreateCustomShader(cubeshaderprog_color_normal);
+    shader->AttachCustomShader(cubeshaderprog_color_normal,vsn);
+    shader->AttachCustomShader(cubeshaderprog_color_normal,fsn);
+    shader->CreateCustomProgram(cubeshaderprog_color_normal);
+
     glDetachShader(cubeshaderprog_color,vs);
+    glDetachShader(cubeshaderprog_color,vscn);
+    glDetachShader(cubeshaderprog_color,fscn);
     glDetachShader(cubeshaderprog_color,fs_Color);
     glDetachShader(cubeshaderprog_tex,fs_Tex);
 
@@ -517,24 +531,6 @@ void InitGL::InitEngineObject() {
         logwarn("Init::Cube3 konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
     cubeimages.clear();
 
-
-    //----------------------------------------------------
-    // engine objects testen
-    //- --------------------------------------------------
-
-    for (uint i = 0; i< objects3D.size(); i ++) {
-        objects3D.at(i) -> initShader(COLOR_SHADER,cubeshaderprog_color);
-        objects3D.at(i) -> initShader(TEXTURE_SHADER,cubeshaderprog_tex);
-        objects3D.at(i) -> initShader(LIGHT_SHADER,cubeshaderprog_normals);
-        objects3D.at(i) -> SetProjection(projection->GetPerspective());
-
-        //if (objects3D.at(i)->HasTextures() )
-        //    objects3D.at(i)->addTexture()
-
-        objects3D.at(i)->setActiveShader(LIGHT_SHADER);
-        objects3D.at(i)->addLight(ambientLight);
-    }
-
     // Sphere
     loginfo("Erstelle Sphere .........done");
     sphere1  = new CSphere(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,1.0,1.0,1.0), projection->GetPerspective(),12,(GLfloat)4.0,shader);
@@ -573,16 +569,30 @@ void InitGL::InitEngineObject() {
 // --------------------------------------------
 // Adding's
 // --------------------------------------------
-void InitGL::add3Dobject(CCube *obj) {
+void InitGL::add3DTexObject(CCube *obj, ShaderType s) {
 
     obj->initShader(COLOR_SHADER,cubeshaderprog_color);
     obj->initShader(TEXTURE_SHADER,cubeshaderprog_tex);
     obj->initShader(LIGHT_SHADER, cubeshaderprog_normals);
-    obj->setActiveShader(TEXTURE_SHADER);
+    obj->initShader(LIGHT_COLOR_SHADER, cubeshaderprog_color_normal);
+    obj->setActiveShader(s);
 
     obj->addLight(ambientLight);
-    objects3D.push_back(obj);
+    objects3DTextured.push_back(obj);
 }
+
+void InitGL::add3DColObject(CColorCube *obj, ShaderType s) {
+
+    obj->initShader(COLOR_SHADER,cubeshaderprog_color);
+    obj->initShader(TEXTURE_SHADER,cubeshaderprog_tex);
+    obj->initShader(LIGHT_SHADER, cubeshaderprog_normals);
+    obj->initShader(LIGHT_COLOR_SHADER, cubeshaderprog_color_normal);
+    obj->setActiveShader(s);
+
+    obj->addLight(ambientLight);
+    objects3DColored.push_back(obj);
+}
+
 
 void InitGL::add2Dobject(Base2D *obj) {
     objects2D.push_back(obj);
@@ -898,29 +908,46 @@ void InitGL::Run() {
         // Engine Objekte
         // ===================================
 
-        if (_Fog) {
-        }
-
-        if (! objects3D.empty() ) {
-            for (unsigned int i=0;i < objects3D.size(); i++ ) {
+        if (! objects3DTextured.empty() ) {
+            for (unsigned int i=0;i < objects3DTextured.size(); i++ ) {
                 dummy = vec3(1.0 * (float) i ,2.0,3.0);
-                objects3D[i]->SetProjection(projection->GetPerspective());
+                objects3DTextured[i]->SetProjection(projection->GetPerspective());
 
                 float hlp = (float) (i+1);
                 glm::vec3 rv(hlp * 0.5);
 
                 glm::vec3 vt(0.001,0.002,0.003);
-                objects3D[i]->StepTranslate(vt);
-                objects3D[i]->StepRotate(rv);
+                objects3DTextured[i]->StepTranslate(vt);
+                objects3DTextured[i]->StepRotate(rv);
 
 
                 vt.x =0.01;
                 vt.y =0.0;
                 vt.z =0.0;
 
-//                objects3D[i]->StepScale(vt);
+                objects3DTextured[i]->Draw(camera,currentShader);
 
-                objects3D[i]->Draw(camera,currentShader);
+            }
+        }
+
+        if (! objects3DColored.empty() ) {
+            for (unsigned int i=0;i < objects3DColored.size(); i++ ) {
+                dummy = vec3(1.0 * (float) i ,2.0,3.0);
+                objects3DColored[i]->SetProjection(projection->GetPerspective());
+
+                float hlp = (float) (i+1);
+                glm::vec3 rv(hlp * 0.5);
+
+                glm::vec3 vt(0.001,0.002,0.003);
+                objects3DColored[i]->StepTranslate(vt);
+                objects3DColored[i]->StepRotate(rv);
+
+
+                vt.x =0.01;
+                vt.y =0.0;
+                vt.z =0.0;
+
+                objects3DColored[i]->Draw(camera,currentShader);
 
             }
         }

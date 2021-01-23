@@ -40,7 +40,8 @@ protected:
     // Lists for all objects:
     std::vector<std::string> btnList;
     std::vector<std::string> object2DList;
-    std::vector<std::string> object3DList;
+    std::vector<std::string> object3DTexturedList;
+    std::vector<std::string> object3DColoredList;
 
 private:
     void InitButtons();
@@ -50,6 +51,9 @@ private:
 
     bool initButtonStruct(sButtonStruct & bs,std::vector<std::string> cfg);
     bool init3DStruct(s3DStruct & d3s, std::vector<std::string> &cfg);
+
+    bool loadTexturedCubes();
+    bool loadColorCubes();
 
     std::string &getValueItem(std::string &s, std::string erasestring);
 

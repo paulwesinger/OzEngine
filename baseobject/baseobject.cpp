@@ -109,18 +109,22 @@ bool BaseObject::addTexture(std::vector<std::string> path, std::string obj) {
 void BaseObject::initShader(ShaderType s, GLuint prog) {
     switch (s) {
 
-        case COLOR_SHADER:      perspectiveColorShader = prog; break;
-        case TEXTURE_SHADER:    perspectiveTextureShader = prog; break;
-        case LIGHT_SHADER:      lightshader = prog; break;
+        case COLOR_SHADER:          perspectiveColorShader = prog; break;
+        case TEXTURE_SHADER:        perspectiveTextureShader = prog; break;
+        case LIGHT_SHADER:          lightshader = prog; break;
+        case LIGHT_COLOR_SHADER:    lightcolorshader = prog; break;
+    default:
+            perspectiveColorShader = prog;
     }
 }
 
 void BaseObject::setActiveShader(ShaderType t){
 
     switch (t) {
-        case COLOR_SHADER: currentShader = perspectiveColorShader; break;
-        case TEXTURE_SHADER: currentShader = perspectiveTextureShader; break;
-        case LIGHT_SHADER: currentShader = lightshader; break;
+        case COLOR_SHADER       : currentShader = perspectiveColorShader; break;
+        case TEXTURE_SHADER     : currentShader = perspectiveTextureShader; break;
+        case LIGHT_SHADER       : currentShader = lightshader; break;
+        case LIGHT_COLOR_SHADER : currentShader = lightcolorshader; break;
     }
 }
  // Transormatioons

@@ -99,7 +99,6 @@ void CEngine::Run() {
 // --------------------------------------------------------------
 // Init Methods for Engines
 // --------------------------------------------------------------
-
 void CEngine::initMenu(){
 
     // -------------------------------------
@@ -167,81 +166,28 @@ void CEngine::Init3D(){
    fileUtil * fileutil = new fileUtil();
    bool ok;
 
-   std::string str = "TranslateX: 2.0";
-   std::vector<std::string> parts = split(str," ");
-
-   for (int i = 0; i< parts.size(); i++)
-       loginfo(parts.at(i));
-
-
-   ok = fileutil->readLine(OBJECT3D_CFG + "Objects3DList.cfg", object3DList);
+   //--------------------------------------
+   // loading Textured cubes
+   //--------------------------------------
+   ok = fileutil->readLine(OBJECT3D_CFG + "TexturedCubes/TexCubes.cfg", object3DTexturedList);
    if (ok) {
-       loginfo("Lade Datei |ObjectList3D.cfg|","CEngine::Init3D");
-
-        // Liste mit Objekten abarbeiten :
-        for (unsigned int i = 0; i < object3DList.size(); i++) {
-
-            std::string path = OBJECT3D_CFG + object3DList[i];
-
-            loginfo("Erstelle Object: .......< " + path+ " >","Engine::Init3D");
-
-            fileUtil * objreader = new fileUtil;
-            std::vector<std::string> objconfig;
-            objreader->readLine(path, objconfig);
-
-
-            if( ! objconfig.empty() ) {
-
-                s3DStruct s3D;
-
-                if (init3DStruct(s3D,objconfig)) {
-
-                    CCube * obj = new CCube();
-                    //obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
-                    if ( s3D.textures == "" )
-                        obj->SetHasTextures( false);
-                    else
-                        obj->SetHasTextures( true);
-
-                    obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
-                    obj->SetFirstTranslate( ( s3D.firstTranslate == 1) ? true: false);
-                    obj->Rotate(glm::vec3(s3D.trans.rotate.x, s3D.trans.rotate.y, s3D.trans.rotate.z) );
-                    obj->Translate(glm::vec3(s3D.trans.translate.x, s3D.trans.translate.y, s3D.trans.translate.z));
-                    obj->Scale(glm::vec3(s3D.trans.scale.x, s3D.trans.scale.y, s3D.trans.scale.z));
-
-                    //----------------------------------------
-                    // Add textures , if we have some
-                    // ---------------------------------------
-                    bool texturesok;
-                    std::vector<std::string> images;
-
-                    std::string path = s3D.textures;
-
-                    if ( s3D.textures != "" ) {
-                        fileUtil fu;
-
-                        texturesok =  fu.readLine(path, images);
-                        if (texturesok)
-                            obj->addTexture(images,"InitGL::add3DObject");
-                        else
-                            logwarn("Init::Cube2 :  konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
-                    }
-
-                    add3Dobject(obj);
-                    loginfo("s3D initialisisert ","CEngine::init3D");
-                }
-                else
-                    logwarn("konnte s3D nicht initialisieren !!", "CEngine::init3D" );
-                   // Hier die neuen stringpart functions einbauen
-
-                logEmptyLine();
-                loginfo("Prepare for next Object: ","CEngine::init3D");
-
-           }
-       }
+        if ( ! loadTexturedCubes() )
+            logwarn("Fehler: Keine Textured Cubes gefunden oder Fehler im Pfad!");
    }
    else
-       logwarn("Fehler: Datei | config/Object3DList.cfg nicht gefunden ! |");
+       logwarn("Fehler: Datei  < config/TexCubes.cfg  > nicht gefunden !");
+
+
+   // --------------------------------------
+   // colored cubes loading
+   //---------------------------------------
+   ok = fileutil->readLine(OBJECT3D_CFG + "ColoredCubes/ColorCubes.cfg", object3DColoredList);
+   if (ok) {
+        if ( ! loadColorCubes() )
+            logwarn("Fehler: Keine Colored Cubes gefunden oder Fehler im Pfad!");
+   }
+   else
+       logwarn("Fehler: Datei  < config/ColorCubes.cfg  > nicht gefunden !");
 
    logEmptyLine() ;
    loginfo("----------------------------");
@@ -250,6 +196,127 @@ void CEngine::Init3D(){
    loginfo("----------------------------");
 }
 
+bool CEngine::loadTexturedCubes(){
+
+    loginfo("Lade Datei |TexCubes.cfg|","CEngine::Init3D");
+
+     // Liste mit Objekten abarbeiten :
+
+    if (object3DTexturedList.empty() )
+        return false;
+
+    for (unsigned int i = 0; i < object3DTexturedList.size(); i++) {
+
+         std::string path = OBJECT3D_CFG + "TexturedCubes/" + object3DTexturedList[i];
+
+         loginfo("Erstelle Object: .......< " + path+ " >","Engine::Init3D");
+
+         fileUtil * objreader = new fileUtil;
+         std::vector<std::string> objconfig;
+         objreader->readLine(path, objconfig);
+
+
+         if( ! objconfig.empty() ) {
+
+             s3DStruct s3D;
+
+             if (init3DStruct(s3D,objconfig)) {
+
+                 CCube * obj = new CCube();
+                 //obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
+                 if ( s3D.textures == "" )
+                     obj->SetHasTextures( false);
+                 else
+                     obj->SetHasTextures( true);
+
+                 obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
+                 obj->SetFirstTranslate( ( s3D.firstTranslate == 1) ? true: false);
+                 obj->Rotate(glm::vec3(s3D.trans.rotate.x, s3D.trans.rotate.y, s3D.trans.rotate.z) );
+                 obj->Translate(glm::vec3(s3D.trans.translate.x, s3D.trans.translate.y, s3D.trans.translate.z));
+                 obj->Scale(glm::vec3(s3D.trans.scale.x, s3D.trans.scale.y, s3D.trans.scale.z));
+
+                 //----------------------------------------
+                 // Add textures , if we have some
+                 // ---------------------------------------
+                 bool texturesok;
+                 std::vector<std::string> images;
+
+                 std::string path = s3D.textures;
+
+                 if ( s3D.textures != "NONE" ) {
+                     fileUtil fu;
+
+                     texturesok =  fu.readLine(path, images);
+                     if (texturesok)
+                         obj->addTexture(images,"InitGL::add3DObject");
+                     else
+                         logwarn("Init::Cube2 :  konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
+                 }
+
+                 add3DTexObject(obj,LIGHT_SHADER);      //TEXTURE_SHADER);
+                 loginfo("s3D initialisisert ","CEngine::init3D");
+             }
+             else
+                 logwarn("konnte s3D nicht initialisieren !!", "CEngine::init3D" );
+                // Hier die neuen stringpart functions einbauen
+
+             logEmptyLine();
+             loginfo("Prepare for next Object: ","CEngine::init3D");
+
+        }
+    }
+    return true;
+}
+
+bool CEngine::loadColorCubes() {
+
+    loginfo("Lade Datei |ColorCubes.cfg|","CEngine::Init3D");
+
+     // Liste mit Objekten abarbeiten :
+
+    if (object3DColoredList.empty() )
+        return false;
+
+    for (unsigned int i = 0; i < object3DColoredList.size(); i++) {
+
+         std::string path = OBJECT3D_CFG + "ColoredCubes/" + object3DColoredList[i];
+
+         loginfo("Erstelle Object: .......< " + path+ " >","Engine::Init3D");
+
+         fileUtil * objreader = new fileUtil;
+         std::vector<std::string> objconfig;
+         objreader->readLine(path, objconfig);
+
+
+         if( ! objconfig.empty() ) {
+
+             s3DStruct s3D;
+
+             if (init3DStruct(s3D,objconfig)) {
+
+                 CColorCube * obj = new CColorCube();
+                 //obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
+                 obj->SetHasTextures( false);
+                 obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
+                 obj->SetFirstTranslate( ( s3D.firstTranslate == 1) ? true: false);
+                 obj->Rotate(glm::vec3(s3D.trans.rotate.x, s3D.trans.rotate.y, s3D.trans.rotate.z) );
+                 obj->Translate(glm::vec3(s3D.trans.translate.x, s3D.trans.translate.y, s3D.trans.translate.z));
+                 obj->Scale(glm::vec3(s3D.trans.scale.x, s3D.trans.scale.y, s3D.trans.scale.z));
+
+                 add3DColObject(obj,LIGHT_COLOR_SHADER);
+                 loginfo("s3D initialisisert ","CEngine::init3D");
+             }
+             else
+                 logwarn("konnte s3D nicht initialisieren !!", "CEngine::init3D" );
+                // Hier die neuen stringpart functions einbauen
+
+             logEmptyLine();
+             loginfo("Prepare for next Object: ","CEngine::init3D");
+
+        }
+    }
+    return true;
+}
 
 
 void CEngine::InitButtons() {

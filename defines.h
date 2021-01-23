@@ -182,7 +182,8 @@ enum Events{
 enum ShaderType {
     COLOR_SHADER = 0,
     TEXTURE_SHADER,
-    LIGHT_SHADER
+    LIGHT_SHADER,
+    LIGHT_COLOR_SHADER
 };
 
 // ------------------------------------------------------

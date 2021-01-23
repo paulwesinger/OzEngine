@@ -69,7 +69,11 @@ public:
 
 
 protected:
-    GLuint       perspectiveTextureShader,perspectiveColorShader, lightshader, currentShader;
+    GLuint      perspectiveTextureShader,
+                perspectiveColorShader,
+                lightshader,
+                lightcolorshader,
+                currentShader;
 
     // This vectors holds the current translation,rotation,scale
     vec3 _rotate;

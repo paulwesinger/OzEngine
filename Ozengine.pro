@@ -11,6 +11,7 @@ SOURCES += \
         camera/camera.cpp \
         colors/colorscheme.cpp \
         controllcontainer/controllcontainer.cpp \
+        cube/colorcube.cpp \
         cube/cube.cpp \
         engine/engine.cpp \
         fileutils/fileutil.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     camera/camera.h \
     colors/colorscheme.h \
     controllcontainer/controllcontainer.h \
+    cube/colorcube.h \
     cube/cube.h \
     defines.h \
     engine/engine.h \
@@ -96,6 +98,8 @@ DISTFILES += \
     ShaderSources/cubefragmentshaderMultinormals.frg \
     ShaderSources/cubevertexnormalshader.vex \
     ShaderSources/cubevertexshader.vex \
+    ShaderSources/fragmentnormalcolorshader.frg \
+    ShaderSources/vertexnormalcolorshader.vex \
     config/2DObjects/2DObjects.txt \
     config/3DObjects/Cube1.txt \
     config/3DObjects/Cube2.txt \

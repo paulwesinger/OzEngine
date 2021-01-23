@@ -25,6 +25,7 @@
 
 #include "shaders/shader.h"
 #include "cube/cube.h"
+#include "cube/colorcube.h"
 #include "sphere/sphere.h"
 #include "skybox/skybox.h"
 #include "base2d/base2d.h"
@@ -107,7 +108,8 @@ protected:
     //----------------------------------
     // Object creation
     // ---------------------------------
-    void add3Dobject(CCube * obj);
+    void add3DTexObject(CCube * obj, ShaderType s);
+    void add3DColObject(CColorCube * obj, ShaderType s);
     void add2Dobject(Base2D * obj);
     void addButton(CButton* obj);
 
@@ -142,8 +144,12 @@ protected:
     light * ambientLight = nullptr;
 
 
-    // Liste die alle 3D objekte enthält
-    std::vector<CCube *> objects3D;
+    // Liste die alle 3D Textured Cube objekte enthält
+    std::vector<CCube *> objects3DTextured;
+
+    // Liste die alle 3D Colored Cube objekte enthält
+    std::vector<CColorCube *> objects3DColored;
+
     // Liste für die 2D Objekte
     std::vector<Base2D *> objects2D;
     // Eine Button liste
@@ -168,6 +174,7 @@ protected:
     GLuint cubeshaderprog_color;
     GLuint cubeshaderprog_tex;
     GLuint cubeshaderprog_normals;
+    GLuint cubeshaderprog_color_normal;
 
     GLuint sphereshader_color;
     GLuint currentShader;
