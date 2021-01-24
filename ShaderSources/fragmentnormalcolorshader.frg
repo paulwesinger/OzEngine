@@ -4,12 +4,10 @@ in VS_OUT {
     vec3 N;
     vec3 L;
     vec3 V;
-    vec4 color;
 } fs_in;
 
-//in vec3 normal_out;
 in vec3 fragpos;
-//in vec3 Color;
+in vec3 Color;
 
 uniform vec3 lightcolor;
 uniform vec3 lightpos;
@@ -17,7 +15,7 @@ uniform vec4 triangleColor;
 
 uniform vec3 diffuse_albedo = vec3(0.5,0.2,0.7);
 uniform vec3 specular_albedo = vec3(0.9);
-uniform float specular_power = 256.0;
+uniform float specular_power = 128.0;
 
 out vec4 FragColor;
 
@@ -33,7 +31,6 @@ void main(void) {
     vec3 diffuse = max(dot(N,L),0.0) * diffuse_albedo;
     vec3 specular = pow(max(dot(R,V),0.0), specular_power) * specular_albedo;
 
-    vec4 texcolor = mix(triangleColor, color);
-    FragColor = vec4(diffuse + specular, 1.0) * texcolor * triangleColor;
+    FragColor = vec4(diffuse + specular, 1.0) * triangleColor * vec4(Color,1.0);
 
 }

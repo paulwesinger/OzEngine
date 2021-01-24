@@ -12,6 +12,7 @@
 
 #include "../defines.h"
 #include "../camera/camera.h"
+#include "../lights/light.h"
 
 
 /*
@@ -37,7 +38,7 @@ public:
     virtual vec3 GetScale();
 
     virtual vec4 GetColor();
-    virtual void Draw( Camera * cam, GLuint shaderprog);
+    virtual void Draw( Camera * cam);
 
     virtual void Translate(vec3 trans);
     virtual void Rotate(vec3 rotate);  // ACHTUN : Hält nur den aktuell zu drehenden
@@ -51,6 +52,7 @@ public:
     virtual bool addTexture(std::vector<std::string> path, std::string obj);
     virtual void setActiveShader(ShaderType t);
     virtual void initShader(ShaderType s,GLuint prog);
+    virtual void addLight(light * l);
 
 
     // Flags
@@ -96,6 +98,9 @@ protected:
 
     uint _CountTextures;  // die Anzehl = Listen länge
     GLuint  _Textures[5];
+
+    // Light
+     light *  _Light;
 
 private:
     void init();

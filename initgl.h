@@ -108,10 +108,10 @@ protected:
     //----------------------------------
     // Object creation
     // ---------------------------------
-    void add3DTexObject(CCube * obj, ShaderType s);
-    void add3DColObject(CColorCube * obj, ShaderType s);
+    void add2List(BaseObject * obj, ShaderType s);
     void add2Dobject(Base2D * obj);
     void addButton(CButton* obj);
+
 
     //----------------------------------
     // Main Menu
@@ -143,12 +143,8 @@ protected:
 
     light * ambientLight = nullptr;
 
-
-    // Liste die alle 3D Textured Cube objekte enthält
-    std::vector<CCube *> objects3DTextured;
-
-    // Liste die alle 3D Colored Cube objekte enthält
-    std::vector<CColorCube *> objects3DColored;
+    // Liste für 3D objekte
+    std::vector<BaseObject*> list3D;
 
     // Liste für die 2D Objekte
     std::vector<Base2D *> objects2D;

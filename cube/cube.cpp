@@ -260,7 +260,7 @@ void CCube::Init() {
 }
 
 void CCube::addLight(light *l) {
-   _Light = l;
+   BaseObject::addLight(l);
 }
 
 void CCube::Calc( float roty,float trans_x) {
@@ -287,7 +287,7 @@ void CCube::Calc( float roty,float trans_x) {
 void CCube::SetColor( vec4 color){
     _Color = color;
 }
-void CCube::Draw( Camera * cam, GLuint shaderprog ) {
+void CCube::Draw(Camera * cam) {
 
     glUseProgram( currentShader);
 

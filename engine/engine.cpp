@@ -252,9 +252,9 @@ bool CEngine::loadTexturedCubes(){
                      else
                          logwarn("Init::Cube2 :  konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
                  }
-
-                 add3DTexObject(obj,LIGHT_SHADER);      //TEXTURE_SHADER);
                  loginfo("s3D initialisisert ","CEngine::init3D");
+                 add2List(obj,LIGHT_SHADER);
+
              }
              else
                  logwarn("konnte s3D nicht initialisieren !!", "CEngine::init3D" );
@@ -303,8 +303,9 @@ bool CEngine::loadColorCubes() {
                  obj->Translate(glm::vec3(s3D.trans.translate.x, s3D.trans.translate.y, s3D.trans.translate.z));
                  obj->Scale(glm::vec3(s3D.trans.scale.x, s3D.trans.scale.y, s3D.trans.scale.z));
 
-                 add3DColObject(obj,LIGHT_COLOR_SHADER);
                  loginfo("s3D initialisisert ","CEngine::init3D");
+
+                 add2List(obj,LIGHT_COLOR_SHADER);
              }
              else
                  logwarn("konnte s3D nicht initialisieren !!", "CEngine::init3D" );

@@ -54,7 +54,11 @@ void BaseObject::init( ) {
     _AlphaColor.b = 0.0;
 }
 
-void BaseObject::Draw( Camera * cam, GLuint shaderprog){}
+void BaseObject::Draw(Camera * cam){}
+
+void BaseObject::addLight(light *l) {
+    _Light = l;
+}
 
 bool BaseObject::addTexture(std::vector<std::string> path, std::string obj) {
 

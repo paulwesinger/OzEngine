@@ -29,7 +29,7 @@ public:
     CCube(vec3 origin,glm::mat4 pro) ;
     CCube(vec3 origin , vec4 color, glm::mat4 pro);
     virtual ~CCube();
-    virtual void Draw( Camera * cam, GLuint shaderprog);
+    virtual void Draw( Camera * cam);
     virtual void Calc(float roty,float trans_x); // Check for Arguments
     virtual void SetColor(vec4 color);
 
@@ -51,7 +51,7 @@ private:
     Shader *        shader;
 
     // Light
-    light *  _Light;  // Liste ?
+    //light *  _Light;  // Liste ?
 
     // Transformations
     vec3           _Trans;

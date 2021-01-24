@@ -93,6 +93,7 @@ void InitGL::DeleteShaders() {
     glDeleteProgram(cubeshaderprog_color);
     glDeleteProgram(cubeshaderprog_tex);
     glDeleteProgram(sphereshader_color);
+    glDeleteProgram(cubeshaderprog_color_normal);
     glDeleteProgram(currentShader);
 }
 
@@ -198,8 +199,8 @@ void InitGL::InitShaders() {
     v_source ="ShaderSources/fragmentnormalcolorshader.frg";
     int fscn = shader ->compileFragmentShaderFromFile(v_source,filestream);
     shader->CreateCustomShader(cubeshaderprog_color_normal);
-    shader->AttachCustomShader(cubeshaderprog_color_normal,vsn);
-    shader->AttachCustomShader(cubeshaderprog_color_normal,fsn);
+    shader->AttachCustomShader(cubeshaderprog_color_normal,vscn);
+    shader->AttachCustomShader(cubeshaderprog_color_normal,fscn);
     shader->CreateCustomProgram(cubeshaderprog_color_normal);
 
     glDetachShader(cubeshaderprog_color,vs);
@@ -463,7 +464,7 @@ void InitGL::InitEngineObject() {
     //----------------------------------------
     ambientLight = new light;
     ambientLight->setColor(glm::vec3(1.0,0.0,1.0));
-    ambientLight->setPos(glm::vec3(0.0,15.0,10.0));
+    ambientLight->setPos(glm::vec3(0.0,1.0,40.0));
 
 
     loginfo("Erstelle Standard Ambientes Licht ","InitGL::InitEngineObjects");
@@ -552,7 +553,7 @@ void InitGL::InitEngineObject() {
     // Lightsource as a spere
     //-----------------------------------------
     loginfo("Serstell LichtQuelle als wiesse spere....","InitGL::InitEngineObjects");
-    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(1.0,1.0,1.0,1.0),projection->GetPerspective(),12,(GLfloat)5.0,shader );
+    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(1.0,1.0,1.0,1.0),projection->GetPerspective(),12,(GLfloat)2.0,shader );
     lightSource->SetColor(glm::vec4(1.0,1.0,1.0,0.4));
     //Texture loading
     cubeimages.clear();
@@ -569,7 +570,9 @@ void InitGL::InitEngineObject() {
 // --------------------------------------------
 // Adding's
 // --------------------------------------------
-void InitGL::add3DTexObject(CCube *obj, ShaderType s) {
+
+
+void InitGL::add2List(BaseObject *obj, ShaderType s) {
 
     obj->initShader(COLOR_SHADER,cubeshaderprog_color);
     obj->initShader(TEXTURE_SHADER,cubeshaderprog_tex);
@@ -578,21 +581,8 @@ void InitGL::add3DTexObject(CCube *obj, ShaderType s) {
     obj->setActiveShader(s);
 
     obj->addLight(ambientLight);
-    objects3DTextured.push_back(obj);
+    list3D.push_back(obj);
 }
-
-void InitGL::add3DColObject(CColorCube *obj, ShaderType s) {
-
-    obj->initShader(COLOR_SHADER,cubeshaderprog_color);
-    obj->initShader(TEXTURE_SHADER,cubeshaderprog_tex);
-    obj->initShader(LIGHT_SHADER, cubeshaderprog_normals);
-    obj->initShader(LIGHT_COLOR_SHADER, cubeshaderprog_color_normal);
-    obj->setActiveShader(s);
-
-    obj->addLight(ambientLight);
-    objects3DColored.push_back(obj);
-}
-
 
 void InitGL::add2Dobject(Base2D *obj) {
     objects2D.push_back(obj);
@@ -870,7 +860,7 @@ void InitGL::Run() {
         cube3->StepRotate(dummy);
 
         cube3->SetFirstTranslate(false);
-        cube3->Draw ( camera, currentShader);
+        cube3->Draw ( camera);
 
         dummy = vec3(0.0,0.2,0.0);
         sphere1->SetFirstTranslate(true);
@@ -908,6 +898,7 @@ void InitGL::Run() {
         // Engine Objekte
         // ===================================
 
+        /*
         if (! objects3DTextured.empty() ) {
             for (unsigned int i=0;i < objects3DTextured.size(); i++ ) {
                 dummy = vec3(1.0 * (float) i ,2.0,3.0);
@@ -925,7 +916,7 @@ void InitGL::Run() {
                 vt.y =0.0;
                 vt.z =0.0;
 
-                objects3DTextured[i]->Draw(camera,currentShader);
+                objects3DTextured[i]->Draw(camera);
 
             }
         }
@@ -947,10 +938,33 @@ void InitGL::Run() {
                 vt.y =0.0;
                 vt.z =0.0;
 
-                objects3DColored[i]->Draw(camera,currentShader);
+                objects3DColored[i]->Draw(camera);
 
             }
         }
+        */
+        if (! list3D.empty() ) {
+            for (unsigned int i=0;i < list3D.size(); i++ ) {
+                dummy = vec3(1.0 * (float) i ,2.0,3.0);
+                list3D[i]->SetProjection(projection->GetPerspective());
+
+                float hlp = (float) (i+1);
+                glm::vec3 rv(hlp * 0.5);
+
+                glm::vec3 vt(0.001,0.002,0.003);
+                list3D[i]->StepTranslate(vt);
+                list3D[i]->StepRotate(rv);
+
+
+                vt.x =0.01;
+                vt.y =0.0;
+                vt.z =0.0;
+
+                list3D[i]->Draw(camera);
+
+            }
+        }
+
 
         // ===================================
         // Alles für 2D Projektion vorbereiten
