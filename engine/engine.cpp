@@ -21,10 +21,15 @@ main(){
 */
 
 
+
+#define safeDelete(pt) \
+    if (pt != nullptr) \
+        delete pt;
+
+
 //------------------------------------------------------------------
 // static functions for Button Handler
 //------------------------------------------------------------------
-
 CButton* butn0;
 CButton* butn1;
 CButton* butn2;
@@ -68,10 +73,18 @@ void EngineTestFunc4() {
 
 
 CEngine::CEngine(std::string titel) :
-        InitGL(titel)
-{
-    // Do some init stuff
+        InitGL(titel){
+    con1 = nullptr;
+    con2 = nullptr;
 
+    fogBtn = nullptr;
+}
+
+CEngine::~CEngine(){
+    safeDelete (con1);
+    safeDelete (con2);
+
+    //safeDelete(fogBtn);
 }
 
 void CEngine::Done() {
@@ -94,6 +107,10 @@ void CEngine::Run() {
 // Place here Functons for button handler..
 // ---------------------------------------------------------------
 
+void CEngine::funcFog(){
+    loginfo("Fog - function");
+}
+
 
 
 // --------------------------------------------------------------
@@ -101,14 +118,15 @@ void CEngine::Run() {
 // --------------------------------------------------------------
 void CEngine::initMenu(){
 
+    int curr_y;
     // -------------------------------------
     // Standard Menu ist in Initgl vorhanden
     // jetzt  befüllen
     //--------------------------------------
 
-    CControllContainer * testContainer = new CControllContainer(MainMenu->Pos().x,
-                                                                MainMenu->Pos().y,
-                                                                MainMenu->Width(), 0);
+    con1 = new CControllContainer(MainMenu->Pos().x,
+                                  MainMenu->Pos().y,
+                                  MainMenu->Width(), 0);
 
     butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Fog");
     butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
@@ -118,7 +136,7 @@ void CEngine::initMenu(){
     butn0->setDisablecolor(BTN_DISABLE);
     butn0->AddHandler(FxFog);
 
-    testContainer->addButton(butn0);
+    con1->addButton(butn0);
 
 
     butn1 = new CImageButton(_ResX, _ResY,"images/darkgray.png", "images/Add.png");
@@ -127,7 +145,7 @@ void CEngine::initMenu(){
     butn1->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn1->AddHandler(DisableButton1);
 
-    testContainer->addButton(butn1);
+    con1->addButton(butn1);
 
     butn2 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Foing");
     butn2->setSize(BTN_WIDTH,BTN_HEIGHT);
@@ -137,9 +155,26 @@ void CEngine::initMenu(){
     butn2->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn2->AddHandler(Button3);
 
-    testContainer->addButton(butn2);
+    con1->addButton(butn2);
+    MainMenu->addConatiner(con1);
 
-    MainMenu->addConatiner(testContainer);
+    curr_y = MainMenu->CurrentY() + MENU_SPACER;
+
+    //---------------------------------------------------
+    // 2. container
+    //---------------------------------------------------
+    con2 = new CControllContainer(MainMenu->Pos().x,
+                                             curr_y,
+                                  MainMenu->Width(),0);
+    fogBtn = new CImageButton(_ResX, _ResY, "images/darkgray.png", "images/Add.png" );
+    fogBtn->setColor(BTN_ENABLE);
+    fogBtn->setDisablecolor(BTN_DISABLE);
+    fogBtn->setSize(BTN_WIDTH,BTN_HEIGHT);
+    fogBtn->AddHandler(funcFog);
+    con2->addButton(fogBtn);
+    MainMenu->addConatiner(con2);
+
+
 }
 
 void CEngine::Init2D() {
@@ -387,8 +422,6 @@ void CEngine::loadButtons() {
             }
 
         }
-
-
     }
     else
         logwarn("Fehler: Datei | config/ButtonList nicht gefunden ! |");
@@ -406,23 +439,6 @@ std::string &CEngine::getValueItem(std::string &s, std::string erasestring) {
     return s.erase(0,erasestring.length() ) ;
 }
 
-
-
-std::vector<std::string> CEngine::split(std::string const& input, std::string const& separator = " ")
-{
-  std::vector<std::string> result;
-  std::string::size_type position, start = 0;
-
-  while (std::string::npos != (position = input.find(separator, start)))
-  {
-    result.push_back(input.substr(start, position-start));
-    start = position + separator.size();
-  }
-
-  result.push_back(input.substr(start));
-  return result;
-}
-
 bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
     if (cfg.size() >= CFG_3D_SIZE ) {
 
@@ -434,7 +450,7 @@ bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){
         //+---------------------------------------------------------------------+
 
         for (uint i = 0; i < cfg.size(); i++) {
-            std::vector<std::string> parts = split(cfg.at(i));
+            std::vector<std::string> parts = split(cfg.at(i), SPACE);
 
             if (parts.at(0) == "originX")
                 d3s.origin.x = StringToFloat(parts.at(1));

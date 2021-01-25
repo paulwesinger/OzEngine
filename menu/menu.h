@@ -42,6 +42,7 @@ public:
     sPoint Pos();
     int Width();
     int Height();
+    int CurrentY();
 
     void AlignLeft();
     void AlignRight();
@@ -55,18 +56,13 @@ protected:
     glm::vec4 backgroundColor;
     glm::vec4 foregroundColor;
 
-
     int posX;  // absolute zum bildschirm
     int posY;
     int width;
     int height;
 
-
     bool alignright;
     bool alignleft;
-
-
-
 
 private:
     void init();

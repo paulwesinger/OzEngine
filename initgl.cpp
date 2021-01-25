@@ -36,7 +36,6 @@ InitGL::InitGL (const std::string titel){
     _Mouse.x     = 0;
     _Mouse.y     = 0;
 
-    cube3   = NULL;
     sphere1 = NULL;
     lightSource = NULL;
     skybox  = NULL;
@@ -49,6 +48,7 @@ InitGL::InitGL (const std::string titel){
     MainMenu = nullptr;
     showMenu = false;
 
+    LoadConfiguration();
     InitUtils();
     InitMatrices();
     InitFX();
@@ -69,7 +69,6 @@ InitGL::~InitGL() {
 
     if (soundengine)
         soundengine->drop();
-    safeDelete(cube3);
 
     safeDelete(sphere1);
     safeDelete(lightSource);
@@ -107,6 +106,49 @@ void InitGL::safeDelete(BaseObject * bo) {
 void InitGL::TestFunction() {
     logwarn("Aus der Testfunction", "InitGL::TestFunction");
 
+}
+
+void InitGL::LoadConfiguration(){
+
+    fileUtil * fu = new fileUtil();
+    std::vector<std::string> enginecfg;
+    bool ok = fu->readLine(MAIN_CFG,enginecfg);
+
+    if (ok) {
+        for (uint i = 0; i< enginecfg.size(); i++) {
+
+            std::vector<std::string> parts = split(enginecfg.at(i), SPACE);
+            if ( ! parts.empty()) {
+
+                if ( parts.at(0) == "FullScreen") {
+                    if (parts.size() > 1) {  // wenigstens 2 einträge:
+                        _FullScreen = (StringToInt(parts.at(1)) == 1 ? true : false);
+                        loginfo("Schalte auf Fullscreen.......Done");
+                    }
+                }
+            }
+        }
+
+
+    }
+    else
+        logwarn("Konnte keine .cfg Datei finden ","CEngine::LoadConfiguration");
+
+}
+
+std::vector<std::string> InitGL::split(std::string const& input, std::string const& separator = " ")
+{
+  std::vector<std::string> result;
+  std::string::size_type position, start = 0;
+
+  while (std::string::npos != (position = input.find(separator, start)))
+  {
+    result.push_back(input.substr(start, position-start));
+    start = position + separator.size();
+  }
+
+  result.push_back(input.substr(start));
+  return result;
 }
 
 
@@ -514,23 +556,7 @@ void InitGL::InitEngineObject() {
     std::vector<std::string> cubeimages;
     fileUtil fu;
     // Texture loading
-    bool texturesok =  fu.readLine("config/cubetextures.cfg",cubeimages);
-
-    // Cube3 init
-    cube3 = new CCube(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,1.0,1.0,1.0), projection->GetPerspective());
-    cube3->initShader(COLOR_SHADER,cubeshaderprog_color);
-    cube3->initShader(TEXTURE_SHADER,cubeshaderprog_tex);
-    cube3->initShader(LIGHT_SHADER,cubeshaderprog_normals);
-
-    cube3->setActiveShader(LIGHT_SHADER);
-    cube3->addLight(ambientLight);
-    // Texture loading
-    texturesok =  fu.readLine("config/cube2textures.cfg",cubeimages);
-    if (texturesok)
-        cube3->addTexture(cubeimages,"InitGL::cube3");
-    else
-        logwarn("Init::Cube3 konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
-    cubeimages.clear();
+    bool texturesok;
 
     // Sphere
     loginfo("Erstelle Sphere .........done");
@@ -538,16 +564,12 @@ void InitGL::InitEngineObject() {
     sphere1->SetColor(glm::vec4(1.0,1.0,0.5,1.0));
     sphere1->SetHasAlpha(true);
 
-    // Texture loading
-    cubeimages.clear();
     texturesok =  fu.readLine("config/SphereWorldTextures.cfg",cubeimages);
     if (texturesok)
         sphere1->addTexture(cubeimages,"InitGL::Sphere");
     else
         logwarn("Init::Sphere1 konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
     cubeimages.clear();
-
-
 
     //-----------------------------------------
     // Lightsource as a spere
@@ -570,8 +592,6 @@ void InitGL::InitEngineObject() {
 // --------------------------------------------
 // Adding's
 // --------------------------------------------
-
-
 void InitGL::add2List(BaseObject *obj, ShaderType s) {
 
     obj->initShader(COLOR_SHADER,cubeshaderprog_color);
@@ -633,7 +653,6 @@ void InitGL::Run() {
     steprotate = vec3(0.5,0.8,0.0);
     stepscale  = vec3(0.0,0.0,0.0);
 
-    cube3->Translate(vec3(0.0,-2.0,0.0));
     sphere1->Translate(vec3(0.0,-4.0,0.0));
 
     // timetest
@@ -845,29 +864,12 @@ void InitGL::Run() {
        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
        vec3 dummy;
-
-       cube3 -> SetColor(vec4(0.0,1.0,0.0,1.0));
-
-     //   cube3 -> Calc( rot_y + 0.4,0.4);
-        //      dummy = steprotate;
-
-        dummy = vec3(1.5,3.0,0.0);
-        cube3->StepRotate(dummy);
-
-        dummy = steptrans;
-
-        cube3->Translate(dummy);
-        cube3->StepRotate(dummy);
-
-        cube3->SetFirstTranslate(false);
-        cube3->Draw ( camera);
-
-        dummy = vec3(0.0,0.2,0.0);
-        sphere1->SetFirstTranslate(true);
-        sphere1 ->StepRotate(dummy);
+       dummy = vec3(0.0,0.2,0.0);
+       sphere1->SetFirstTranslate(true);
+       sphere1 ->StepRotate(dummy);
 
 
-        //meshObject
+       //meshObject
         dummy = vec3(1.0,0.0,0.0);
       //  me->SetFirstTranslate(true);
       //  me ->StepRotate(dummy);

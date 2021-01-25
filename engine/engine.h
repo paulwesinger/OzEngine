@@ -11,15 +11,18 @@
 #include "../menu/menu.h"
 
 
+
 const std::string BUTTONS_CFG = "config/Buttons/";
 const std::string OBJECT3D_CFG =  "config/3DObjects/";
-const std::string SPACE = " ";
+
 
 
 const int CFG_BUTTON_SIZE = 11;
 const int CFG_3D_SIZE = 18;
 const glm::vec4 BTN_ENABLE = glm::vec4(0.2, 0.2, 0.2, 1.0);
 const glm::vec4 BTN_DISABLE = glm::vec4(0.2, 0.2, 0.2, 0.3);
+
+const int MENU_SPACER = 10;
 
 
 //--------------------------------------
@@ -32,6 +35,7 @@ class CEngine : public InitGL
 {
 public:
     CEngine(std::string titel = "OpenGL 4.5 Engine");
+    ~CEngine();
     void Run() override;
     void Done() override;
 
@@ -43,7 +47,15 @@ protected:
     std::vector<std::string> object3DTexturedList;
     std::vector<std::string> object3DColoredList;
 
-private:
+
+    CControllContainer *con1;
+    CControllContainer *con2;
+
+    CButton * fogBtn;
+    static void funcFog();
+
+ private:
+
     void InitButtons();
     void Init2D();
     void Init3D();
@@ -56,8 +68,6 @@ private:
     bool loadColorCubes();
 
     std::string &getValueItem(std::string &s, std::string erasestring);
-
-    std::vector<std::string> split(std::string const& input, std::string const& separator);
 
     TextRender * textrenderer;
     fileUtil * fu;

@@ -96,6 +96,11 @@ int CMenu::Width() {
 int CMenu::Height() {
     return height;
 }
+
+int CMenu::CurrentY(){
+    return _currentY;
+}
+
 void CMenu::Render() {
     menuBackground ->Render();
     if (! containerList.empty() ) {
@@ -118,7 +123,6 @@ void CMenu::setMenuHeader(std::string name) {
 
     _currentY += ms.text->getTextAreaHeight();
 }
-
 
 void CMenu::addButton(CControllContainer* con, CButton *btn) {
 

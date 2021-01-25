@@ -46,7 +46,8 @@
 #include "buttons/button.h"
 #include "lights/light.h"
 
-
+const std::string MAIN_CFG = "config/Engine/engine.cfg";
+const std::string SPACE = " ";
 
 
 typedef struct {
@@ -85,6 +86,7 @@ protected:
     static void TestFunction();
     // ---------------------------------
 
+    std::vector<std::string> split(std::string const& input, std::string const& separator);
     //----------------------------------
     // Look and feel
     //----------------------------------
@@ -92,6 +94,7 @@ protected:
     void setClearColor(float r, float g, float b);
     void toogleFullScreen();
 
+    void LoadConfiguration();
     void InitFX();
 
 
@@ -123,8 +126,6 @@ protected:
     bool _Fog;
 
     void safeDelete(BaseObject * bo);
-
-    CCube * cube3;
 
     //CMeshObject *me;
     //COBJLoader * objLoader;
