@@ -30,6 +30,7 @@ SOURCES += \
         shaders/shader.cpp \
         skybox/skybox.cpp \
         sphere/sphere.cpp \
+        textedit/textedit.cpp \
         textrenderer/textrender.cpp \
         utils/utils.cpp \
         vecmath/vecmath.cpp
@@ -84,6 +85,7 @@ HEADERS += \
     shaders/shader.h \
     skybox/skybox.h \
     sphere/sphere.h \
+    textedit/textedit.h \
     textrenderer/textrender.h \
     utils/utils.h \
     vecmath/vecmath.h
@@ -91,6 +93,7 @@ HEADERS += \
 DISTFILES += \
     BtnInstances/Button0.txt \
     BtnInstances/Button2.txt \
+    Description.txt \
     Makefile \
     Meshes/spaceship.3ds \
     ShaderSources/colorshader.frg \

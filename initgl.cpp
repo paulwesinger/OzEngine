@@ -900,57 +900,12 @@ void InitGL::Run() {
         // Engine Objekte
         // ===================================
 
-        /*
-        if (! objects3DTextured.empty() ) {
-            for (unsigned int i=0;i < objects3DTextured.size(); i++ ) {
-                dummy = vec3(1.0 * (float) i ,2.0,3.0);
-                objects3DTextured[i]->SetProjection(projection->GetPerspective());
-
-                float hlp = (float) (i+1);
-                glm::vec3 rv(hlp * 0.5);
-
-                glm::vec3 vt(0.001,0.002,0.003);
-                objects3DTextured[i]->StepTranslate(vt);
-                objects3DTextured[i]->StepRotate(rv);
-
-
-                vt.x =0.01;
-                vt.y =0.0;
-                vt.z =0.0;
-
-                objects3DTextured[i]->Draw(camera);
-
-            }
-        }
-
-        if (! objects3DColored.empty() ) {
-            for (unsigned int i=0;i < objects3DColored.size(); i++ ) {
-                dummy = vec3(1.0 * (float) i ,2.0,3.0);
-                objects3DColored[i]->SetProjection(projection->GetPerspective());
-
-                float hlp = (float) (i+1);
-                glm::vec3 rv(hlp * 0.5);
-
-                glm::vec3 vt(0.001,0.002,0.003);
-                objects3DColored[i]->StepTranslate(vt);
-                objects3DColored[i]->StepRotate(rv);
-
-
-                vt.x =0.01;
-                vt.y =0.0;
-                vt.z =0.0;
-
-                objects3DColored[i]->Draw(camera);
-
-            }
-        }
-        */
         if (! list3D.empty() ) {
             for (unsigned int i=0;i < list3D.size(); i++ ) {
                 dummy = vec3(1.0 * (float) i ,2.0,3.0);
                 list3D[i]->SetProjection(projection->GetPerspective());
 
-                float hlp = (float) (i+1);
+                float hlp = 0.1; //(float) (i+1);
                 glm::vec3 rv(hlp * 0.5);
 
                 glm::vec3 vt(0.001,0.002,0.003);
