@@ -5,6 +5,7 @@
 #include "../buttons/button.h"
 #include "../textrenderer/textrender.h"
 #include "../fileutils/fileutil.h"
+#include "../textedit/textedit.h"
 #include "../defines.h"
 #include <vector>
 #include "../controllcontainer/controllcontainer.h"
@@ -66,10 +67,15 @@ protected:
 
     bool loadTexturedCubes();
     bool loadColorCubes();
+    //----------------------------------------------------------------
+    // Menu controlls
+    //----------------------------------------------------------------
+    TextEdit * txtEdit;
 
     std::string &getValueItem(std::string &s, std::string erasestring);
 
     TextRender * textrenderer;
+
     fileUtil * fu;
 };
 

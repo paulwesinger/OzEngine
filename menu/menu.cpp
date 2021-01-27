@@ -111,6 +111,11 @@ void CMenu::Render() {
                     containerList.at(i)->buttons.at(j) ->Render();
                 }
             }
+            if ( ! containerList.at(i) ->controlls2D.empty() ) {
+                for (int j=0; j < containerList.at(i)->controlls2D.size(); j++){
+                    containerList.at(i)->controlls2D.at(j) ->Render();
+                }
+            }
         }
     }
 

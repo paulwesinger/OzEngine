@@ -29,8 +29,7 @@ private:
     sPoint _Pos;
     sSize _Size;
 
-
-
+    void init();
 };
 
 #endif // TEXTEDIT_H

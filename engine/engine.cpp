@@ -172,16 +172,28 @@ void CEngine::initMenu(){
     fogBtn->setSize(BTN_WIDTH,BTN_HEIGHT);
     fogBtn->AddHandler(funcFog);
     con2->addButton(fogBtn);
+
+    //-----------------------------------------------------
+    // Textedit:
+    //-----------------------------------------------------
+    sSize s;
+    sPoint p;
+    s.w = MainMenu->Width();
+    s.h = BTN_HEIGHT;
+    p.x = MainMenu->Pos().x;
+    p.y = curr_y;
+    txtEdit = new TextEdit(_ResX, _ResY, "images/darkgray.png", p, s, BTN_ENABLE, BTN_ENABLE );
+    con2->addControll2D(txtEdit);
+    curr_y = MainMenu->CurrentY();
+
     MainMenu->addConatiner(con2);
-
-
 }
 
 void CEngine::Init2D() {
 
     //================================
     // Init 2D Objects
-    // ===============================
+    // ==========y=====================
 
     // Testweise mal einfügen
     loginfo("============================");
