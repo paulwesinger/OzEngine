@@ -1,6 +1,7 @@
 #include "controllcontainer.h"
 #include "../logs/logs.h"
 #include "../utils/utils.h"
+#include "../defaults.h"
 
 CControllContainer::CControllContainer() {
 
@@ -80,6 +81,13 @@ sPoint CControllContainer::Pos() {
     return _Pos;
 }
 
+sPoint CControllContainer::NextControllPos() {
+    sPoint p;
+    p.x = _CurrentX;
+    p.y = _CurrentY;
+    return  p;
+}
+
 void CControllContainer::setDimensions(sSize size) {
     _Dimensions = size;
 }
@@ -99,6 +107,11 @@ void CControllContainer::rename(std::string theNewName){
     _Name = theNewName;
 }
 
+bool CControllContainer::addSpacer(){
+    _CurrentY += SPACER;
+    return true;
+}
+
 bool CControllContainer::addButton(CButton *btn) {
 
 
@@ -115,7 +128,12 @@ bool CControllContainer::addButton(CButton *btn) {
 }
 
 bool CControllContainer::addControll2D(Base2D *controll) {
+    controll->setPos(_CurrentX, _CurrentY);
+    _Height += controll->Height();
+    _CurrentY += controll->Height()+1;
+    _Dimensions.h += _Height;
     controlls2D.push_back(controll);
+    loginfo("added controll2D");
     return true;
 }
 

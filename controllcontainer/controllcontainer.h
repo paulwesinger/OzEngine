@@ -9,6 +9,10 @@
 #include "../defines.h"
 
 
+
+
+const int SPACER = 10;
+
 // Container Class für
 // 2D Steuerelemente(Buttons ,...
 class CControllContainer
@@ -30,12 +34,14 @@ public:
     bool addControll3D(BaseObject * baseobject);
     bool addButton(CButton * btn);
     bool addText(std::string text,int resx, int resy);
+    bool addSpacer();
 
     void setPos(sPoint pos);
     void setDimensions(sSize size);
 
     sSize Dimensions();
     sPoint Pos();
+    sPoint NextControllPos();
 
     std::vector<Base2D *> controlls2D;
     std::vector<BaseObject*> controlls3D;

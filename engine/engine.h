@@ -7,6 +7,7 @@
 #include "../fileutils/fileutil.h"
 #include "../textedit/textedit.h"
 #include "../defines.h"
+#include "../defaults.h"
 #include <vector>
 #include "../controllcontainer/controllcontainer.h"
 #include "../menu/menu.h"

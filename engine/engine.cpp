@@ -1,5 +1,6 @@
 #include "engine.h"
 #include "../utils/utils.h"
+//#include "../defaults.h"
 /*
 
 #include <stdio.h>
@@ -69,9 +70,6 @@ void EngineTestFunc4() {
 }
 
 
-
-
-
 CEngine::CEngine(std::string titel) :
         InitGL(titel){
     con1 = nullptr;
@@ -118,6 +116,11 @@ void CEngine::funcFog(){
 // --------------------------------------------------------------
 void CEngine::initMenu(){
 
+
+    //                  |Resolution|  | Position  | | width,height, colors             |
+    MainMenu = new CMenu(_ResX, _ResY, _ResX- 200, 0, 200, 900, glm::vec4(0.1,0.1,0.6,0.5), glm::vec4(0.9,0.9,0.9,1.0));
+    // loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
+
     int curr_y;
     // -------------------------------------
     // Standard Menu ist in Initgl vorhanden
@@ -128,10 +131,9 @@ void CEngine::initMenu(){
                                   MainMenu->Pos().y,
                                   MainMenu->Width(), 0);
 
-    butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Fog");
+    butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Fogjgjjg",con1->NextControllPos() );
     butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn0->setScale(BUTTON::TEXT_SCALE_SMALL);
-    //butn0->alignToSize(BTN_WIDTH,BTN_HEIGHT);
     butn0->setColor(BTN_ENABLE);
     butn0->setDisablecolor(BTN_DISABLE);
     butn0->AddHandler(FxFog);
@@ -139,7 +141,7 @@ void CEngine::initMenu(){
     con1->addButton(butn0);
 
 
-    butn1 = new CImageButton(_ResX, _ResY,"images/darkgray.png", "images/Add.png");
+    butn1 = new CImageButton(_ResX, _ResY,"images/darkgray.png", "images/Add.png", con1->NextControllPos());
     butn1->setColor(BTN_ENABLE);
     butn1->setDisablecolor(BTN_DISABLE);
     butn1->setSize(BTN_WIDTH,BTN_HEIGHT);
@@ -147,12 +149,11 @@ void CEngine::initMenu(){
 
     con1->addButton(butn1);
 
-    butn2 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Foing");
+    butn2 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Foging", con1->NextControllPos());
     butn2->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn2->setScale(BUTTON::TEXT_SCALE_SMALL);
     butn2->setColor(BTN_ENABLE);
     butn2->setDisablecolor(BTN_DISABLE);
-    butn2->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn2->AddHandler(Button3);
 
     con1->addButton(butn2);
@@ -166,23 +167,33 @@ void CEngine::initMenu(){
     con2 = new CControllContainer(MainMenu->Pos().x,
                                              curr_y,
                                   MainMenu->Width(),0);
-    fogBtn = new CImageButton(_ResX, _ResY, "images/darkgray.png", "images/Add.png" );
+    fogBtn = new CImageButton(_ResX, _ResY, "images/darkgray.png", "images/Add.png",con2->NextControllPos() );
     fogBtn->setColor(BTN_ENABLE);
     fogBtn->setDisablecolor(BTN_DISABLE);
     fogBtn->setSize(BTN_WIDTH,BTN_HEIGHT);
     fogBtn->AddHandler(funcFog);
     con2->addButton(fogBtn);
 
+
     //-----------------------------------------------------
     // Textedit:
     //-----------------------------------------------------
     sSize s;
     sPoint p;
-    s.w = MainMenu->Width();
+
+    con2->addSpacer();
+    curr_y = MainMenu->CurrentY();
+
+    s.w = MainMenu->Width() - 10;
     s.h = BTN_HEIGHT;
     p.x = MainMenu->Pos().x;
-    p.y = curr_y;
-    txtEdit = new TextEdit(_ResX, _ResY, "images/darkgray.png", p, s, BTN_ENABLE, BTN_ENABLE );
+    p.y = curr_y + MENU_SPACER;
+
+    logimage("TextRender pos: " + IntToString(p.x) + "  " + IntToString(p.y) + " Size " + IntToString(s.w) + "  " +IntToString(s.h));
+    txtEdit = new TextEdit(_ResX, _ResY, "images/ControllBg.png", p, s, BTN_ENABLE,BTN_ENABLE );
+    txtEdit->setSize(s.w,s.h);
+    txtEdit->setPos(p.x, p.y);
+    txtEdit->setColor(glm::vec4(1.0));
     con2->addControll2D(txtEdit);
     curr_y = MainMenu->CurrentY();
 
@@ -406,8 +417,8 @@ void CEngine::loadButtons() {
 
                 sButtonStruct btnStruct;
                 if  (initButtonStruct(btnStruct,btnconfig) ) {
-
-                    CButton * btn = new CTextButton(_ResX,_ResY ,btnStruct.path,"");//   btnStruct.path);
+                    sPoint pos;
+                    CButton * btn = new CTextButton(_ResX,_ResY ,btnStruct.path,"",pos);//   btnStruct.path);
                     btn->setPos(btnStruct.PosX,btnStruct.PosY);
                     btn->setSize(btnStruct.SizeX, btnStruct.SizeY);
                     btn->setbuttonColors(glm::vec3(btnStruct.ImageRed,btnStruct.ImageGreen,btnStruct.ImageBlue),

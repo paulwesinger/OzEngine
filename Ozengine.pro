@@ -45,6 +45,7 @@ HEADERS += \
     controllcontainer/controllcontainer.h \
     cube/colorcube.h \
     cube/cube.h \
+    defaults.h \
     defines.h \
     engine/engine.h \
     fileutils/fileutil.h \
@@ -88,7 +89,8 @@ HEADERS += \
     textedit/textedit.h \
     textrenderer/textrender.h \
     utils/utils.h \
-    vecmath/vecmath.h
+    vecmath/vecmath.h \
+    defaults.h
 
 DISTFILES += \
     BtnInstances/Button0.txt \

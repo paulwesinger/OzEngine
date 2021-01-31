@@ -4,33 +4,13 @@
 #include "../base2d/base2d.h"
 #include "../colors/colorscheme.h"
 #include "../textrenderer/textrender.h"
+//#include "../defaults.h"
+
 
 // -----------------------------------------------
 // Base class for all kind of buttons
 // derrived classes must overwrite Method Render()
 // -----------------------------------------------
-
-const int DEFAULT_BUTTON_WIDTH   = 80;
-const int DEFAULT_BUZTTON_HEIGHT = 40;
-
-const float ALPHA_TEXT_ENABLED = 1.0f;
-const float ALPHA_TEXT_DISABLED = 0.3f;
-
-const float ALPHA_IMAGE_ENABLED  = 1.0f;
-const float ALPHA_IMAGE_DISABLED = 0.3f;
-
-const glm::vec3 BTN_COLOR_DEFAULT_IMAGE = {1.0, 1.0, 1.0};
-const glm::vec3 BTN_COLOR_DEFAULT_TEXT  = {0.0, 0.0, 1.0};
-
-const int X_MARGIN = 5;
-const int Y_MARGIN = 10;
-
-const int Y_MARGINBTN_TEXT_MEDIUM = 35;
-
-namespace BUTTON {
-    const float TEXT_SCALE_SMALL = 1.0f;
-    const float TEXT_SCALE_MEDIUM = 1.5f;
-};
 
 typedef struct {
     std::string path;
@@ -78,7 +58,7 @@ public:
     // ********************************************
     virtual void Render() = 0;
     virtual void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol);
-    virtual void setScale(float s = BUTTON::TEXT_SCALE_SMALL) = 0;
+    virtual void setScale(float s = 1.0f) = 0;
 
     //EventHandling
     virtual void OnClick() = 0 ;  // Muss überschrieben werden !!!!
@@ -118,7 +98,8 @@ class CTextButton: public CButton {
   public:
 
     CTextButton( int resx, int resy);
-    CTextButton( int resx, int resy, std::string path, std::string text);
+    CTextButton( int resx, int resy, std::string path, std::string text, sPoint pos);
+
 
     void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) override;
     void setScale(float s) override;
@@ -148,7 +129,7 @@ class CImageButton: public CButton {
   public:
 
     CImageButton( int resx, int resy);
-    CImageButton( int resx, int resy, std::string pathbg, std::string pathtext);
+    CImageButton( int resx, int resy, std::string pathbg, std::string pathtext, sPoint pos);
 
     void setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol) override;
 

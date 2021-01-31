@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "../logs/logs.h"
 #include "../utils/utils.h"
+#include "../defaults.h"
 
 
 
@@ -104,17 +105,17 @@ int CMenu::CurrentY(){
 void CMenu::Render() {
     menuBackground ->Render();
     if (! containerList.empty() ) {
-        for(int i=0; i < containerList.size(); i++) {
+        for(uint i=0; i < containerList.size(); i++) {
 
             if ( ! containerList.at(i) ->buttons.empty()) {
-                for (int j=0; j < containerList.at(i)->buttons.size(); j++){
+                for (uint j=0; j < containerList.at(i)->buttons.size(); j++){
                     containerList.at(i)->buttons.at(j) ->Render();
                 }
             }
             if ( ! containerList.at(i) ->controlls2D.empty() ) {
-                for (int j=0; j < containerList.at(i)->controlls2D.size(); j++){
+                for (uint j=0; j < containerList.at(i)->controlls2D.size(); j++){
                     containerList.at(i)->controlls2D.at(j) ->Render();
-                }
+                 }
             }
         }
     }

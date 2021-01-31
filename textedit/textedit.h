@@ -12,13 +12,18 @@
 #include <glm/vec2.hpp>
 #include <string>
 
+
+
 class TextEdit : public Base2D
 {
 public:
     TextEdit(int resx, int resy);
     TextEdit(int resx, int resy,sPoint p, sSize s, glm::vec4 labelcol, glm::vec4 editcol);
     TextEdit(int resx, int resy,std::string path, sPoint p, sSize s, glm::vec4 labelcol, glm::vec4 editcol);
+
     void Render();
+    void showLabel (bool show);
+
 protected:
     TextRender * textLabel;
     TextRender * editLabel;
@@ -29,7 +34,19 @@ private:
     sPoint _Pos;
     sSize _Size;
 
+    sPoint _PosLabel;
+    sPoint _PosText;
+
+    sSize _SizeLabel;
+    sSize _SizeText;
+
+
     void init();
+    bool _ShowLabel;
+
+    int resX;
+    int resY;
+
 };
 
 #endif // TEXTEDIT_H

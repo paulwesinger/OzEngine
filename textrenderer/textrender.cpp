@@ -170,8 +170,8 @@ void TextRender::setText(uint index, std::string newString) {
 
 void TextRender::setPos(sPoint pos) {
     posX = (GLfloat)pos.x;
-   // posY = (GLfloat)pos.y; _ResY - posY;
-    posY = (GLfloat) _ResY - pos.y;
+    posY = (GLfloat)pos.y; //_ResY - posY;
+    //posY = (GLfloat) _ResY - pos.y;
     _Pos = pos;
 }
 
@@ -245,7 +245,6 @@ bool TextRender::Init(int resx, int resy) {
     _MarginLeft = 5.0f;
     _MarginRight= 5.0f;
     _MarginY = 5.0f;
-
 
     shader = new Shader();
     if (shader ) {
@@ -485,13 +484,13 @@ void TextRender::RenderPaintarea(GLfloat x, GLfloat y, GLfloat height) {
 
     GLfloat vertices[6][4] = {
 
-         { x,     y  - height,          0.0, 0.0 },
+         { x,     y  + height,          0.0, 0.0 },
          { x,     y,                    0.0, 1.0 },
          { x + w, y,                    1.0, 1.0 },
 
-         { x, y  -  height,             0.0, 0.0 }, // w muss weg für 6  uv = 0,0 !!
+         { x, y  +  height,             0.0, 0.0 }, // w muss weg für 6  uv = 0,0 !!
          { x + w, y,                    1.0, 1.0 },
-         { x + w, y - height,           1.0, 0.0 }
+         { x + w, y + height,           1.0, 0.0 }
     };
 
     if (_HasTexture) {
@@ -516,13 +515,13 @@ void TextRender::RenderFrame(GLfloat x, GLfloat y, uint tex) {
     GLfloat h = 16.0f;
 
     GLfloat vertices[6][4] = {
-            { x,     y  + h,        0.0, 0.0 },
+            { x,     y  - h,        0.0, 0.0 },
             { x,     y,             0.0, 1.0 },
             { x + w, y,             1.0, 1.0 },
 
-            { x, y + h,             0.0, 0.0 }, // w muss weg für 6  uv = 0,0 !!
+            { x, y - h,             0.0, 0.0 }, // w muss weg für 6  uv = 0,0 !!
             { x + w, y,             1.0, 1.0 },
-            { x + w, y + h,         1.0, 0.0 }
+            { x + w, y - h,         1.0, 0.0 }
     };
 
     glUniform4f(framecolor_loc,1.0,1.0,1.0,1.0);
@@ -542,10 +541,10 @@ void TextRender::Render() {
     GLfloat _x = posX;
     GLfloat _y = posY;
 
+    projection =  glm::ortho(0.0f,static_cast<GLfloat>(_ResX)  ,static_cast<GLfloat>(_ResY) , 0.0f);   //,  -1.0f, 1.0f);
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
-    projection =  glm::ortho(0.0f,static_cast<GLfloat>(_ResX), 0.0f ,static_cast<GLfloat>(_ResY) );   //,  -1.0f, 1.0f);
 
     // Breite ermitteln:
     std::string::const_iterator c;
@@ -566,7 +565,7 @@ void TextRender::Render() {
     }
     feldhoehe = feldhoehe * count * _Scale;
 
-    _Textfeld.w = width + _MarginLeft + _MarginRight;
+    _Textfeld.w = width * _Scale + _MarginLeft + _MarginRight;
     _Textfeld.h = feldhoehe;
     GLfloat newX;
     if ( _AlignRight )
@@ -602,14 +601,14 @@ void TextRender::Render() {
         glBindBuffer(GL_ARRAY_BUFFER,_bgVBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_bgEBO);
 
-        RenderPaintarea(newX, _y + 16, feldhoehe);
+        RenderPaintarea(newX, _y - (16 - _MarginY*2), feldhoehe);
 
         // Alles Rendern
         if (_RenderHeader)
-            RenderFrame(newX, _y + 16.0f, texHeadline );
+            RenderFrame(newX, _y - (16.0f - _MarginY*2), texHeadline );
 
         if (_RenderBottom)
-            RenderFrame(newX, _y - feldhoehe, texBottom );
+            RenderFrame(newX, _y + feldhoehe, texBottom );
         // ... und aushängen
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -619,7 +618,7 @@ void TextRender::Render() {
 
     _x = newX + _MarginLeft;
     GLfloat startX  = _x;
-    GLfloat row     = _y - _MarginY;
+    GLfloat row     = _y + 16.0f;//_MarginY;
     //--------------------
     // Text Rendern
     //--------------------
@@ -652,19 +651,20 @@ void TextRender::Render() {
             GLfloat ypos = row + ((ch.Size.y - ch.Bearing.y) * _Scale) ;
 
 
+
             row = ypos;
 
             GLfloat w = ch.Size.x * _Scale;
             GLfloat h = ch.Size.y * _Scale;
             // Update VBO for each character
             GLfloat vertices[6][4] = {
-                { xpos,     ypos + h + 6.0f,   0.0, 0.0 },  // alles 16 war 6 !!
-                { xpos,     ypos + 6.0f,       0.0, 1.0 },
-                { xpos + w, ypos + 6.0f,       1.0, 1.0 },
+                { xpos,     ypos - h - 6.0f,   0.0, 0.0 },  // alles 16 war 6 !!
+                { xpos,     ypos - 6.0f,       0.0, 1.0 },
+                { xpos + w, ypos - 6.0f,       1.0, 1.0 },
 
-                { xpos,     ypos + h + 6.0f,   0.0, 0.0 },
-                { xpos + w, ypos + 6.0f,       1.0, 1.0 },
-                { xpos + w, ypos + h + 6.0f,   1.0, 0.0 }
+                { xpos,     ypos - h - 6.0f,   0.0, 0.0 },
+                { xpos + w, ypos - 6.0f,       1.0, 1.0 },
+                { xpos + w, ypos - h - 6.0f,   1.0, 0.0 }
 
 
 
@@ -683,7 +683,7 @@ void TextRender::Render() {
             _x += (ch.Advance >> 6) * _Scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
         }
         _x =     startX;
-        row -=  18.0f;  // 16
+        row +=  18.0f;  // 16
     }
     // Aufräumen
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);

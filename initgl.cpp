@@ -483,10 +483,10 @@ void InitGL::InitEngineObject() {
 // Hier werden alle Objeckte initialisiert
 // ===============================================================
 
-    loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
-    //                   |Resolution|  | Position  | | width,height, colors             |
-    MainMenu = new CMenu(_ResX, _ResY, _ResX- 200, 0, 200, 900, glm::vec4(0.1,0.1,0.6,0.5), glm::vec4(0.9,0.9,0.9,1.0));
 
+    //                   |Resolution|  | Position  | | width,height, colors             |
+//    MainMenu = new CMenu(_ResX, _ResY, _ResX- 200, 0, 200, 900, glm::vec4(0.1,0.1,0.6,0.5), glm::vec4(0.9,0.9,0.9,1.0));
+//    loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
 
 
 
@@ -682,9 +682,9 @@ void InitGL::Run() {
        snd->setIsPaused(false); // unpause the sound
     }
 
-    std::vector<std::string> texts;
     textrender->AddString("Das ist die 1. Zeile");
     textrender->AddString("Das ist die 2. Zeile");
+    textrender->AddString("Das ist die 3. Zeile");
 
     textrender->SetHasBottom(true);
     textrender->SetHasHeader(true);
@@ -935,7 +935,7 @@ void InitGL::Run() {
         // MainMenu rendern
         // -----------------------------------
 
-        if (MainMenu && showMenu) {
+        if ( MainMenu != nullptr  && showMenu) {
             MainMenu ->Render();
 
         }
@@ -1029,7 +1029,7 @@ void InitGL::OnMouseMove(int &x, int &y, uint buttonstate) {
 void InitGL::OnLeftMouseButtonUp(int &x, int &y) {
 
     MOUSE m = convertMouse(x,y);
-    if ( ! MainMenu->containerList.empty()) {
+    if ( ! MainMenu->containerList.empty() && MainMenu != nullptr) {
 
         for ( uint i = 0; i< MainMenu->containerList.size(); i++) {
             if ( ! MainMenu->containerList.at(i)->buttons.empty()) {
@@ -1047,14 +1047,15 @@ void InitGL::OnLeftMouseButtonUp(int &x, int &y) {
 void InitGL::OnLeftMouseButtonClick(int &x, int &y) {
 
     MOUSE m = convertMouse(x,y);
-    if ( ! buttons.empty() ) {
+
+    if ( ! buttons.empty()  ) {
         for (uint i = 0; i < buttons.size(); i++) {
             if (buttons[i]->intersect(m.x, m.y) )
                 buttons[i]->OnClick();
         }
     }
 
-    if ( ! MainMenu->containerList.empty()) {
+    if ( ! MainMenu->containerList.empty() && MainMenu != nullptr) {
 
         for ( uint i = 0; i< MainMenu->containerList.size(); i++) {
             if ( ! MainMenu->containerList.at(i)->buttons.empty()) {

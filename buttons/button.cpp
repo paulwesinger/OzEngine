@@ -1,5 +1,7 @@
 #include "button.h"
 #include "../logs/logs.h"
+#include "../defaults.h"
+#include "../utils/utils.h"
 
 CButton::CButton(int resx, int resy) :
     Base2D(resx,resy) {
@@ -16,16 +18,16 @@ void CButton::init() {
 
      _ButtonColors = colorscheme.setScheme(DARK);
 
-    setWidth(DEFAULT_BUTTON_WIDTH);
-    setHeight(DEFAULT_BUZTTON_HEIGHT);
-    textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGIN;
+    setWidth(BUTTON::DEFAULT_WIDTH);
+    setHeight(BUTTON::DEFAULT_HEIGHT);
+    textPos.x = _Pos.x + BUTTON::X_MARGIN;
+    textPos.y = _Pos.y + BUTTON::Y_MARGIN;
 
-    _AlphaText    = ALPHA_TEXT_ENABLED;
-    _Alpha_Image  = ALPHA_IMAGE_ENABLED;
+    _AlphaText    = BUTTON::ALPHA_TEXT_ENABLED;
+    _Alpha_Image  = BUTTON::ALPHA_IMAGE_ENABLED;
 
-    _ImageCol = BTN_COLOR_DEFAULT_IMAGE;
-    _TextCol  = BTN_COLOR_DEFAULT_TEXT;
+    _ImageCol = BUTTON::COLOR_DEFAULT_IMAGE;
+    _TextCol  = BUTTON::COLOR_DEFAULT_TEXT;
 }
 CButton::~CButton() {
 
@@ -40,15 +42,15 @@ void CButton::setText(std::string t) { _Text = t; }
 void CButton::enable() {
     Base2D::disable();
     _Enabled = true;
-    _AlphaText   = ALPHA_TEXT_ENABLED;
-    _Alpha_Image = ALPHA_IMAGE_ENABLED;
+    _AlphaText   = BUTTON::ALPHA_TEXT_ENABLED;
+    _Alpha_Image = BUTTON::ALPHA_IMAGE_ENABLED;
 }
 
 void CButton::disable() {
     Base2D::disable();
     _Enabled = false;
-    _AlphaText    = ALPHA_TEXT_DISABLED;
-    _Alpha_Image  = ALPHA_IMAGE_DISABLED;
+    _AlphaText    = BUTTON::ALPHA_TEXT_DISABLED;
+    _Alpha_Image  = BUTTON::ALPHA_IMAGE_DISABLED;
 }
 
 std::string CButton::Text() {return  _Text; }
@@ -113,25 +115,28 @@ CTextButton::CTextButton( int resx, int  resy) :
 
 {
     _Text = "NO";
+    _Pos.x = 0;
+    _Pos.y = 0;
     btnText = new TextRender(resx, resy);
-    textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGIN;
+    textPos.x = _Pos.x + BUTTON::X_MARGIN;
+    textPos.y = _Pos.y + BUTTON::Y_MARGIN;
 }
 
-CTextButton::CTextButton(int resx, int resy, std::string path, std::string text):
+CTextButton::CTextButton(int resx, int resy, std::string path, std::string text, sPoint pos):
     CButton(resx, resy, path,text){
 
+    _Pos = pos;
 
-    textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGIN;
+    textPos.x = (float) _Pos.x + BUTTON::X_MARGIN;
+    textPos.y = (float) _Pos.y + BUTTON::Y_MARGIN;
+
+    logimage(" texpos.y " + IntToString(pos.y),"CTextButton");
+
 
     setText(text);
     btnText = new TextRender(resx, resy);
     btnText->AddString(text);
-    sPoint p;
-    p.x = (int) textPos.x;
-    p.y = (int) textPos.y;
-    btnText->setPos(p);
+    btnText->setPos(pos);
     btnText->SetTextColor(glm::vec4(_TextCol,1.0));
     btnText->SetHasBottom(false);
     btnText->SetHasHeader(false);
@@ -184,8 +189,8 @@ void CTextButton::setScale(float s) {
 void CTextButton::setPos(int x, int y) {
     Base2D::setPos(x,y);
 
-    textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGINBTN_TEXT_MEDIUM;
+    textPos.x = _Pos.x + BUTTON::X_MARGIN;
+    textPos.y = _Pos.y + BUTTON::Y_MARGINBTN_TEXT_MEDIUM;
 
     sPoint p;
     p.x = (int) textPos.x;
@@ -229,28 +234,29 @@ CImageButton::CImageButton( int resx, int  resy) :
     CButton(resx, resy)
 
 {
-    textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGIN;
+    textPos.x = _Pos.x + BUTTON::X_MARGIN;
+    textPos.y = _Pos.y + BUTTON::Y_MARGIN;
     // init stuff
     textImage = new Base2D(resx, resy, "images/Add.png");
     textImage->setPos(0,0);
 
 }
 
-CImageButton::CImageButton(int resx, int resy, std::string pathbg, std::string pathtext):
+CImageButton::CImageButton(int resx, int resy, std::string pathbg, std::string pathtext, sPoint pos):
     CButton(resx, resy, pathbg,""){
 
     _TextPath = pathtext;
+    _Pos = pos;
 
-    textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGIN;
+    textPos.x = _Pos.x + BUTTON::X_MARGIN;
+    textPos.y = _Pos.y + BUTTON::Y_MARGIN;
 
     sPoint p;
     p.x = (int) textPos.x;
     p.y = (int) textPos.y;
 
     textImage = new Base2D(resx, resy,_TextPath);
-    textImage->setColor(glm::vec4(BTN_COLOR_DEFAULT_TEXT,_AlphaText));
+    textImage->setColor(glm::vec4(BUTTON::COLOR_DEFAULT_TEXT,_AlphaText));
     textImage->setPos(0,0);
     // init stuff
 }
@@ -288,15 +294,6 @@ void CImageButton::setbuttonColors(glm::vec3 imagecol, glm::vec3 textcol)  {
 
 void CImageButton::setPos(int x, int y) {
     Base2D::setPos(x,y);
-/*
-    textPos.x = _Pos.x + X_MARGIN;
-    textPos.y = _Pos.y + Y_MARGINBTN_TEXT_MEDIUM ;
-
-    sPoint p;
-    p.x = (int) textPos.x;
-    p.y = (int) textPos.y;
-
-    */
     textImage->setPos(_Pos.x,_Pos.y);
 }
 

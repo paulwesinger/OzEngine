@@ -23,6 +23,8 @@ LDFLAGS = -g
 OBJ= $(SRC)
 $(BIN):
 	$(CC) $(INC) $(SRC) $(LIB)  -o $(BIN) $(LIB) $(LDFLAGS) $< 
+
+all: Test
 .Phony: clean
 
 clean:
