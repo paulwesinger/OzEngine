@@ -96,8 +96,8 @@ static const GLushort vertex_indices[] =
 Base2D::Base2D(int resx, int resy) {
     setImage("");
 
-    dimensions.width = RECT_WIDTH;
-    dimensions.height = RECT_HEIGHT;
+    _Size.w = RECT_WIDTH;
+    _Size.h = RECT_HEIGHT;
 
     Init(resx, resy);
 }
@@ -105,8 +105,8 @@ Base2D::Base2D(int resx, int resy) {
 Base2D::Base2D(int resx, int resy, std::string path){
     setImage(path);
 
-    dimensions.width = RECT_WIDTH;
-    dimensions.height = RECT_HEIGHT;
+    _Size.w = RECT_WIDTH;
+    _Size.h = RECT_HEIGHT;
 
     Init(resx,resy);
 }
@@ -155,23 +155,23 @@ glm::vec4 Base2D::color() { return  _Color; }
 
 
 void Base2D::setWidth(int w) {
-    dimensions.width = w;
+    _Size.w = w;
 }
 
 int Base2D::Width(){
-    return dimensions.width;
+    return _Size.w;
 }
 
 int Base2D::Height() {
-    return dimensions.height;
+    return _Size.h;
 }
 void Base2D::setHeight(int h) {
-    dimensions.height = h;
+    _Size.h = h;
 }
 
 void Base2D::setSize(int w, int h) {
-    dimensions.width = w;
-    dimensions.height = h;
+    _Size.w = w;
+    _Size.h = h;
 }
 
 void Base2D::setPos(int x, int y) {
@@ -180,8 +180,8 @@ void Base2D::setPos(int x, int y) {
 }
 
 bool Base2D::intersect(int x, int y) {
-    return  ( ((x > _Pos.x) && (x < _Pos.x + dimensions.width) ) &&
-              ((y > _Pos.y) && (y < _Pos.y + dimensions.height)) ) ? true : false;
+    return  ( ((x > _Pos.x) && (x < _Pos.x + _Size.w) ) &&
+              ((y > _Pos.y) && (y < _Pos.y + _Size.h)) ) ? true : false;
 }
 
 bool Base2D::Init(int resx, int resy) {
@@ -240,8 +240,8 @@ bool Base2D::Init(int resx, int resy) {
 
 
             data = static_cast<char*>( surface ->pixels);
-            dimensions.width  = surface-> w;
-            dimensions.height = surface-> h;
+            _Size.w  = surface-> w;
+            _Size.h = surface-> h;
         }
 
         if ( data ) {
@@ -265,8 +265,8 @@ bool Base2D::Init(int resx, int resy) {
     }
     else {
         _CurrentShader = _ColorShader;
-        dimensions.width = RECT_WIDTH;
-        dimensions.height = RECT_HEIGHT;
+        _Size.w = RECT_WIDTH;
+        _Size.h = RECT_HEIGHT;
     }
 
 
@@ -337,8 +337,8 @@ void Base2D::Render( ) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-    GLfloat w = dimensions.width;
-    GLfloat h = dimensions.height;
+    GLfloat w = _Size.w;
+    GLfloat h = _Size.h;
 
     GLfloat px = static_cast<GLfloat>(_Pos.x);
     GLfloat py = static_cast<GLfloat>(_Pos.y);

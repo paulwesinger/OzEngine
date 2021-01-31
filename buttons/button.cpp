@@ -23,7 +23,7 @@ void CButton::init() {
     textPos.x = _Pos.x + BUTTON::X_MARGIN;
     textPos.y = _Pos.y + BUTTON::Y_MARGIN;
 
-    _AlphaText    = BUTTON::ALPHA_TEXT_ENABLED;
+    _AlphaText    = TEXT::ALPHA_ENABLED;
     _Alpha_Image  = BUTTON::ALPHA_IMAGE_ENABLED;
 
     _ImageCol = BUTTON::COLOR_DEFAULT_IMAGE;
@@ -42,14 +42,14 @@ void CButton::setText(std::string t) { _Text = t; }
 void CButton::enable() {
     Base2D::disable();
     _Enabled = true;
-    _AlphaText   = BUTTON::ALPHA_TEXT_ENABLED;
+    _AlphaText   = TEXT::ALPHA_ENABLED;
     _Alpha_Image = BUTTON::ALPHA_IMAGE_ENABLED;
 }
 
 void CButton::disable() {
     Base2D::disable();
     _Enabled = false;
-    _AlphaText    = BUTTON::ALPHA_TEXT_DISABLED;
+    _AlphaText    = TEXT::ALPHA_DISABLED;
     _Alpha_Image  = BUTTON::ALPHA_IMAGE_DISABLED;
 }
 
@@ -127,16 +127,13 @@ CTextButton::CTextButton(int resx, int resy, std::string path, std::string text,
 
     _Pos = pos;
 
-    textPos.x = (float) _Pos.x + BUTTON::X_MARGIN;
-    textPos.y = (float) _Pos.y + BUTTON::Y_MARGIN;
-
-    logimage(" texpos.y " + IntToString(pos.y),"CTextButton");
-
+    textPos.x = _Pos.x + BUTTON::X_MARGIN;
+    textPos.y = _Pos.y + BUTTON::Y_MARGIN;
 
     setText(text);
     btnText = new TextRender(resx, resy);
     btnText->AddString(text);
-    btnText->setPos(pos);
+    btnText->setPos(textPos);
     btnText->SetTextColor(glm::vec4(_TextCol,1.0));
     btnText->SetHasBottom(false);
     btnText->SetHasHeader(false);
@@ -190,7 +187,7 @@ void CTextButton::setPos(int x, int y) {
     Base2D::setPos(x,y);
 
     textPos.x = _Pos.x + BUTTON::X_MARGIN;
-    textPos.y = _Pos.y + BUTTON::Y_MARGINBTN_TEXT_MEDIUM;
+    textPos.y = _Pos.y + BUTTON::Y_MARGIN;
 
     sPoint p;
     p.x = (int) textPos.x;

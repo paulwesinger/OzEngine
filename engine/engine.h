@@ -30,8 +30,8 @@ const int MENU_SPACER = 10;
 //--------------------------------------
 // Look and feel
 //--------------------------------------
-const int BTN_WIDTH = 100;
-const int BTN_HEIGHT = 50;
+const int BTN_WIDTH = 150;
+const int BTN_HEIGHT = 30;
 
 class CEngine : public InitGL
 {

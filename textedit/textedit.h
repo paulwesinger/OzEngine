@@ -31,8 +31,6 @@ protected:
 private:
     glm::vec4 _LabelTextColor;
     glm::vec4 _TextEditColor;
-    sPoint _Pos;
-    sSize _Size;
 
     sPoint _PosLabel;
     sPoint _PosText;

@@ -11,8 +11,8 @@ TextEdit::TextEdit(int resx, int resy)
     _Size.w = 100;
     _Size.h = 50;
 
-    _LabelTextColor = COLOR_LABEL_TEXT;
-    _TextEditColor  = COLOR_LABEL_BACKGROUND;
+    _LabelTextColor = LABEL::COLOR_TEXT;
+    _TextEditColor  = LABEL::COLOR_BACKGROUND;
 
     init();
 }
@@ -32,6 +32,8 @@ TextEdit::TextEdit(int resx, int resy, sPoint p, sSize s, glm::vec4 labelcol, gl
 }
 TextEdit::TextEdit(int resx, int resy,std::string path, sPoint p, sSize s, glm::vec4 labelcol, glm::vec4 editcol)
     :Base2D(resx,resy,path){
+
+    Base2D::setPos(p.x,p.y);
 
     resX = resx;
     resY = resy;
@@ -62,14 +64,14 @@ void TextEdit::init() {
     textLabel = nullptr;
     editLabel = nullptr;
 
-    _PosLabel.x =_Pos.x + 2;
-    _PosLabel.y =_Pos.y + 2;
+    _PosLabel.x = _Pos.x + LABEL::MARGIN_X;
+    _PosLabel.y = _Pos.y + LABEL::MARGIN_Y;
     // init ptr
     textLabel = new TextRender(resX, resY, _PosLabel);
+    textLabel->SetScale(TEXT::SCALE_SMALL);
     textLabel->AddString("Test");
-    _SizeText.w = textLabel->getWidth();
-    _SizeText.h = textLabel->getTextAreaHeight();
+    _SizeLabel.w = textLabel->getWidth();
+    _SizeLabel.h = textLabel->getTextAreaHeight();
     _ShowLabel = true;
-    textLabel->SetScale(BUTTON::TEXT_SCALE_SMALL);
-
+    textLabel->setPos(_PosLabel);
 }

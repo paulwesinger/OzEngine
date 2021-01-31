@@ -118,7 +118,7 @@ void CEngine::initMenu(){
 
 
     //                  |Resolution|  | Position  | | width,height, colors             |
-    MainMenu = new CMenu(_ResX, _ResY, _ResX- 200, 0, 200, 900, glm::vec4(0.1,0.1,0.6,0.5), glm::vec4(0.9,0.9,0.9,1.0));
+    MainMenu = new CMenu(_ResX, _ResY, _ResX- BTN_WIDTH, 0, BTN_WIDTH, 900, glm::vec4(0.1,0.1,0.1,0.8), glm::vec4(0.9,0.9,0.9,1.0));
     // loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
 
     int curr_y;
@@ -133,29 +133,25 @@ void CEngine::initMenu(){
 
     butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Fogjgjjg",con1->NextControllPos() );
     butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
-    butn0->setScale(BUTTON::TEXT_SCALE_SMALL);
+    butn0->setScale(TEXT::SCALE_SMALL);
     butn0->setColor(BTN_ENABLE);
     butn0->setDisablecolor(BTN_DISABLE);
     butn0->AddHandler(FxFog);
-
     con1->addButton(butn0);
-
 
     butn1 = new CImageButton(_ResX, _ResY,"images/darkgray.png", "images/Add.png", con1->NextControllPos());
     butn1->setColor(BTN_ENABLE);
     butn1->setDisablecolor(BTN_DISABLE);
     butn1->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn1->AddHandler(DisableButton1);
-
     con1->addButton(butn1);
 
     butn2 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Foging", con1->NextControllPos());
     butn2->setSize(BTN_WIDTH,BTN_HEIGHT);
-    butn2->setScale(BUTTON::TEXT_SCALE_SMALL);
+    butn2->setScale(TEXT::SCALE_SMALL);
     butn2->setColor(BTN_ENABLE);
     butn2->setDisablecolor(BTN_DISABLE);
     butn2->AddHandler(Button3);
-
     con1->addButton(butn2);
     MainMenu->addConatiner(con1);
 
@@ -173,23 +169,19 @@ void CEngine::initMenu(){
     fogBtn->setSize(BTN_WIDTH,BTN_HEIGHT);
     fogBtn->AddHandler(funcFog);
     con2->addButton(fogBtn);
-
-
     //-----------------------------------------------------
     // Textedit:
     //-----------------------------------------------------
     sSize s;
     sPoint p;
-
     con2->addSpacer();
     curr_y = MainMenu->CurrentY();
 
     s.w = MainMenu->Width() - 10;
     s.h = BTN_HEIGHT;
-    p.x = MainMenu->Pos().x;
-    p.y = curr_y + MENU_SPACER;
 
-    logimage("TextRender pos: " + IntToString(p.x) + "  " + IntToString(p.y) + " Size " + IntToString(s.w) + "  " +IntToString(s.h));
+    p = con2->NextControllPos();
+
     txtEdit = new TextEdit(_ResX, _ResY, "images/ControllBg.png", p, s, BTN_ENABLE,BTN_ENABLE );
     txtEdit->setSize(s.w,s.h);
     txtEdit->setPos(p.x, p.y);

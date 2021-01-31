@@ -75,7 +75,7 @@ protected:
 
     bool _Enabled;
     std::string _Text;
-    FLOAT2 textPos;
+    sPoint textPos;
     float _AlphaText;
     float _Alpha_Image;
 

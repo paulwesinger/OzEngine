@@ -20,13 +20,6 @@
 
 using namespace glm;
 
-
-typedef struct{
-    int width;
-    int height;
-} _2DStruct;
-
-
 class Base2D {
 public:
     Base2D(int resx, int resy);
@@ -64,7 +57,7 @@ protected:
     glm::vec4 _DisableColor;
 
     sPoint _Pos;
-    _2DStruct dimensions;
+    sSize _Size;
 
     bool _Enable;
 private:
