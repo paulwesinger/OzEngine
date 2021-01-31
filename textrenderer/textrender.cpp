@@ -638,7 +638,6 @@ void TextRender::Render() {
     // Iterate through all characters
     // std::string::const_iterator c;
 
-
     for (uint i = 0; i < _StringList.size(); i++ ) {
         for (c = _StringList[i].begin(); c != _StringList[i].end(); c++)
         {
@@ -647,12 +646,9 @@ void TextRender::Render() {
             GLfloat xpos = _x + ch.Bearing.x * _Scale;
             //GLfloat ypos = row - ((ch.Size.y - ch.Bearing.y) * _Scale) ;
 
-
-            GLfloat ypos = row + ((ch.Size.y - ch.Bearing.y) * _Scale) ;
-
-
-
-            row = ypos;
+            GLfloat ypos;
+            ypos = row;
+            ypos = row + ((ch.Size.y - ch.Bearing.y) * _Scale) ;
 
             GLfloat w = ch.Size.x * _Scale;
             GLfloat h = ch.Size.y * _Scale;
@@ -683,7 +679,7 @@ void TextRender::Render() {
             _x += (ch.Advance >> 6) * _Scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
         }
         _x =     startX;
-        row +=  18.0f;  // 16
+        row +=  18.0f *_Scale; //  + bearingdiff ;  // 16
     }
     // Aufräumen
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
