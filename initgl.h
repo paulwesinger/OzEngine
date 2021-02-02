@@ -81,11 +81,6 @@ public:
     void fogParam();
 
 protected:
-    // ---------------------------------
-    // Wieder löschen
-    static void TestFunction();
-    // ---------------------------------
-
     std::vector<std::string> split(std::string const& input, std::string const& separator);
     //----------------------------------
     // Look and feel

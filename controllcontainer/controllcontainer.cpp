@@ -70,8 +70,6 @@ void CControllContainer::releaseConterItems() {
         }
         texts.clear();
     }
-
-
 }
 
 void CControllContainer::setPos(sPoint pos) {
@@ -85,6 +83,9 @@ sPoint CControllContainer::NextControllPos() {
     sPoint p;
     p.x = _CurrentX;
     p.y = _CurrentY;
+
+    loginfo("_CurrentX " + IntToString(p.x),"CControllContainer::NextControllPos");
+    logEmptyLine();
     return  p;
 }
 

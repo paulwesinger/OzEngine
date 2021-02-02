@@ -11,6 +11,9 @@ TextEdit::TextEdit(int resx, int resy)
     _Size.w = 100;
     _Size.h = 50;
 
+    textLabel = nullptr;
+    editLabel = nullptr;
+
     _LabelTextColor = LABEL::COLOR_TEXT;
     _TextEditColor  = LABEL::COLOR_BACKGROUND;
 
@@ -25,6 +28,9 @@ TextEdit::TextEdit(int resx, int resy, sPoint p, sSize s, glm::vec4 labelcol, gl
     _Size   = s;
     _LabelTextColor = labelcol;
     _TextEditColor  = editcol;
+
+    textLabel = nullptr;
+    editLabel = nullptr;
 
     init();
 
@@ -61,17 +67,21 @@ void TextEdit::showLabel(bool show){
 
 void TextEdit::init() {
 
-    textLabel = nullptr;
-    editLabel = nullptr;
+    _ShowLabel = true;
+
+    textLabel = new TextRender(resX, resY, _PosLabel);
+
 
     _PosLabel.x = _Pos.x + LABEL::MARGIN_X;
     _PosLabel.y = _Pos.y + LABEL::MARGIN_Y;
-    // init ptr
-    textLabel = new TextRender(resX, resY, _PosLabel);
-    textLabel->SetScale(TEXT::SCALE_SMALL);
-    textLabel->AddString("Test");
     _SizeLabel.w = textLabel->getWidth();
     _SizeLabel.h = textLabel->getTextAreaHeight();
-    _ShowLabel = true;
+
+    // init ptr
+
+    textLabel->SetScale(TEXT::SCALE_SMALL);
+    textLabel->AddString("Test");
+
+    textLabel->SetAlignRight(false);
     textLabel->setPos(_PosLabel);
 }

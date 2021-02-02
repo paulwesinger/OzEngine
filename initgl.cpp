@@ -29,8 +29,6 @@ InitGL::InitGL (const std::string titel){
 
     maincontext = nullptr;
 
-    _FullScreen = false;
-
     _Mouse.lastx = 0;
     _Mouse.lasty = 0;
     _Mouse.x     = 0;
@@ -103,12 +101,12 @@ void InitGL::safeDelete(BaseObject * bo) {
     }
  }
 
-void InitGL::TestFunction() {
-    logwarn("Aus der Testfunction", "InitGL::TestFunction");
-
-}
-
 void InitGL::LoadConfiguration(){
+
+
+    _FullScreen = false;
+    _ResX = SD_WIDTH;
+    _ResY = SD_HEIGHT;
 
     fileUtil * fu = new fileUtil();
     std::vector<std::string> enginecfg;
@@ -123,13 +121,23 @@ void InitGL::LoadConfiguration(){
                 if ( parts.at(0) == "FullScreen") {
                     if (parts.size() > 1) {  // wenigstens 2 einträge:
                         _FullScreen = (StringToInt(parts.at(1)) == 1 ? true : false);
-                        loginfo("Schalte auf Fullscreen.......Done");
+                        if (_FullScreen)
+                            loginfo("Schalte auf Fullscreen.......Done");
+                        else
+                            loginfo("Schalte auf Window-Mode.......Done");
                     }
+                }
+                else if ( parts.at(0) == "Resolution") {
+                    if (parts.size() > 2) {  // wenigstens 3 einträge:
+                        _ResX = StringToInt(parts.at(1));
+                        _ResY = StringToInt(parts.at(2));
+                        loginfo("Setting Resolution " +parts.at(1) + "x" + parts.at(2) + ".......Done");
+                    }
+                    else
+                        logwarn("Warnung: konnte Resolution nich lesen -> verwende Default 1920x1200");
                 }
             }
         }
-
-
     }
     else
         logwarn("Konnte keine .cfg Datei finden ","CEngine::LoadConfiguration");
@@ -622,7 +630,7 @@ void InitGL::toogleFullScreen (){
         _ResX = FULLSCREEN_WIDTH;
         _ResY = FULLSCREEN_HEIGHT;
 
-        glViewport(0,0,FULLSCREEN_WIDTH, FULLSCREEN_HEIGHT);
+        glViewport(0,0,_ResX, _ResY);//FULLSCREEN_WIDTH, FULLSCREEN_HEIGHT);
 
 
     }

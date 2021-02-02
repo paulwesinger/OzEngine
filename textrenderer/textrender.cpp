@@ -236,7 +236,7 @@ bool TextRender::Init(int resx, int resy) {
     _RenderHeader = false;
     _HasBackground = false;
     _HasTexture = false;
-    _AlignRight = true;
+    _AlignRight = false;
     _BackgroundColor = glm::vec4(0.0f,0.0f,0.8f,0.3f);
     _TextColor = glm::vec4(1.0f,1.0f,1.0f,1.0f);
     _Scale = 1.0f;
@@ -541,7 +541,9 @@ void TextRender::Render() {
     GLfloat _x = posX;
     GLfloat _y = posY;
 
-    projection =  glm::ortho(0.0f,static_cast<GLfloat>(_ResX)  ,static_cast<GLfloat>(_ResY) , 0.0f);   //,  -1.0f, 1.0f);
+    //projection =  glm::ortho(0.0f,static_cast<GLfloat>(_ResX), static_cast<GLfloat>(_ResY) , 0.0f);   //,  -1.0f, 1.0f);
+    projection =  glm::orthoRH(0.0f,static_cast<GLfloat>(_ResX), static_cast<GLfloat>(_ResY), 0.0f,  -100.0f, 100.0f);
+
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
