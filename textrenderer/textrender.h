@@ -70,9 +70,6 @@ public:
     void setText(uint index, std::string newString);  // starts qt 0 !!
     void setPos(sPoint pos);
     sPoint Pos();
-
-
-
     void Render();
 
 protected:

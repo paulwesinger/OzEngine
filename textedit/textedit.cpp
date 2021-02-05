@@ -50,6 +50,24 @@ TextEdit::TextEdit(int resx, int resy,std::string path, sPoint p, sSize s, glm::
     init();
 
 }
+
+TextRender* TextEdit::getTextPtr(){
+    return editLabel;
+}
+
+TextRender* TextEdit::getLabelPtr(){
+    return textLabel;
+}
+
+void TextEdit::setLabel(std::string  label){
+    if (textLabel != nullptr)
+        textLabel->setText(0, label);
+}
+
+void TextEdit::setText(std::string text) {
+    if (editLabel != nullptr)
+        editLabel->setText(0, text);
+}
 void TextEdit::Render() {
     Base2D::Render();
 
@@ -70,18 +88,26 @@ void TextEdit::init() {
     _ShowLabel = true;
 
     textLabel = new TextRender(resX, resY, _PosLabel);
-
-
     _PosLabel.x = _Pos.x + LABEL::MARGIN_X;
     _PosLabel.y = _Pos.y + LABEL::MARGIN_Y;
-    _SizeLabel.w = textLabel->getWidth();
+    _SizeLabel.w = _Size.w / 2;
+
+    logwarn("Breite TextLabel " + IntToString(_SizeLabel.w));
     _SizeLabel.h = textLabel->getTextAreaHeight();
-
-    // init ptr
-
     textLabel->SetScale(TEXT::SCALE_SMALL);
     textLabel->AddString("Test");
-
     textLabel->SetAlignRight(false);
     textLabel->setPos(_PosLabel);
+    // EditLabel:
+    editLabel = new TextRender(resX, resY, _PosLabel);
+    _PosText.x = _PosLabel.x + 100;// _Size.w / 2 ;
+    _PosText.y = _Pos.y + LABEL::MARGIN_Y;
+    _SizeText.w = _Size.w / 2;
+    _SizeText.h = editLabel->getTextAreaHeight();
+    editLabel->SetScale(TEXT::SCALE_SMALL);
+    editLabel->AddString("EDIT");
+    editLabel->SetAlignRight(false);
+    editLabel->setPos(_PosText);
+
+
 }

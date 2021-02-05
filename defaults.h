@@ -3,6 +3,10 @@
 
 #include <glm/glm.hpp>
 
+namespace CONTROLL {
+    const int HEIGHT = 40;
+};
+
 
 namespace BUTTON {
     const int X_MARGIN = 5;

@@ -12,7 +12,7 @@
 #include <vector>
 
 
-const int MENU_WIDTH  = 150;
+const int MENU_WIDTH  = 250;
 const int MENU_HEIGHT = 500;
 
 typedef struct {

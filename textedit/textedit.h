@@ -23,6 +23,10 @@ public:
 
     void Render();
     void showLabel (bool show);
+    void setLabel(std::string label);
+    void setText(std::string text);
+    TextRender * getLabelPtr();
+    TextRender * getTextPtr();
 
 protected:
     TextRender * textLabel;

@@ -26,8 +26,10 @@ InitGL::InitGL (const std::string titel){
 
     caption = titel;
     window = nullptr;
-
     maincontext = nullptr;
+
+    _Frames = nullptr;
+    _FramerateOut = 0;
 
     _Mouse.lastx = 0;
     _Mouse.lasty = 0;
@@ -358,8 +360,8 @@ bool InitGL::InitSDL2()  {
     }
     SDL_GetDesktopDisplayMode(0, &DesktopDisplayMode );
 
-    _ResX = FULLSCREEN_WIDTH;
-    _ResY = FULLSCREEN_HEIGHT;
+    //_ResX = FULLSCREEN_WIDTH;
+    //_ResY = FULLSCREEN_HEIGHT;
 
     if ( _FullScreen) {
 
@@ -374,14 +376,15 @@ bool InitGL::InitSDL2()  {
 
     }
     else {
-            _ResX = SD_WIDTH;
-            _ResY = SD_HEIGHT;
+
+            //_ResX = SD_WIDTH;
+            //_ResY = SD_HEIGHT;
             window = SDL_CreateWindow(
                 caption.c_str(),
                 SDL_WINDOWPOS_UNDEFINED,
                 SDL_WINDOWPOS_UNDEFINED,
                 _ResX,_ResY,
-                SDL_WINDOW_OPENGL
+                SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
             );
 
             glViewport(0,0,_ResX, _ResY);
@@ -637,9 +640,13 @@ void InitGL::toogleFullScreen (){
     else {
         _ResX = SD_WIDTH;
         _ResY = SD_HEIGHT;
-
         glViewport(0,0,_ResX, _ResY);
     }
+}
+
+void InitGL::setFramelabel(TextRender *pText){
+    if (pText != nullptr)
+        _Frames = pText;
 }
 
 void InitGL::Run() {
@@ -699,40 +706,29 @@ void InitGL::Run() {
     textrender->SetHasBackground(true);
     textrender->SetHasTexture(true);
     textrender->SetAlignRight(false);
-
-
     //--------------------------------------------------
     // framerate berechene
     //--------------------------------------------------
     int frames = 0;
-    int framerateOut = 0;
     Uint32 ms = 0;
-
     showMenu = true;
 
     while ( ! quit) {
-
-
-
          //     snd ->setVolume(40);
          // snd->drop();
-
-
         elapsed = tickend - tickstart;
 
         ms += elapsed;
         frames++;
-
         if (ms > 1000) {
-            framerateOut = frames;
+            _FramerateOut = frames;
             frames = 0;
             ms = 0;
-          //  textrender->setText(1,"Frames pers sec: " + IntToString(framerateOut) );
+            if (_Frames != nullptr)
+                _Frames->setText(0, IntToString(_FramerateOut));
          }
-
         textrender->setText(0,"Mouse X " + IntToString(_Mouse.x) );
         textrender->setText(1,"Mouse Y " + IntToString(_Mouse.y) );
-
         tickstart = tickend;
         // -------------------------------
         // Test für dynamische winkel

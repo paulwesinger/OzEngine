@@ -184,11 +184,11 @@ int TextRender::getTextAreaHeight(){
 }
 
 int TextRender::getWidth() {
-    return _Textfeld.w;
+    return (int)_Textfeld.w;
 }
 
 int TextRender::getHeight() {
-   return _Textfeld.h;
+   return (int)_Textfeld.h;
 }
 
 

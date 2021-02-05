@@ -118,7 +118,7 @@ void CEngine::initMenu(){
 
 
     //                  |Resolution|  | Position  | | width,height, colors             |
-    MainMenu = new CMenu(_ResX, _ResY, _ResX- BTN_WIDTH, 0, BTN_WIDTH, 900, glm::vec4(0.1,0.1,0.1,0.8), glm::vec4(0.9,0.9,0.9,1.0));
+    MainMenu = new CMenu(_ResX, _ResY, _ResX-MENU_WIDTH, 0, MENU_HEIGHT, 900, glm::vec4(0.1,0.1,0.1,0.8), glm::vec4(0.9,0.9,0.9,1.0));
     // loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
 
     int curr_y;
@@ -177,8 +177,8 @@ void CEngine::initMenu(){
     con2->addSpacer();
     curr_y = MainMenu->CurrentY();
 
-    s.w = MainMenu->Width() - 10;
-    s.h = BTN_HEIGHT;
+    s.w = MainMenu->Width() - 2;
+    s.h = CONTROLL::HEIGHT;
 
     p = con2->NextControllPos();
 
@@ -189,6 +189,8 @@ void CEngine::initMenu(){
     con2->addControll2D(txtEdit);
     curr_y = MainMenu->CurrentY();
 
+    // add label for Frames to buildin textrender label
+    setFramelabel(txtEdit->getTextPtr());
     MainMenu->addConatiner(con2);
 }
 

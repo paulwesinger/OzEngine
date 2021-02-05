@@ -1,3 +1,5 @@
+
+
 #ifndef INITGL_H
 #define INITGL_H
 
@@ -19,10 +21,8 @@
 
 #include <SDL2/SDL.h>
 #include <irrklang/irrKlang.h>
-
 #include "logs/logs.h"
 #include "utils/utils.h"
-
 #include "shaders/shader.h"
 #include "cube/cube.h"
 #include "cube/colorcube.h"
@@ -36,13 +36,10 @@
 #include "projection/projection.h"
 #include "textrenderer/textrender.h"
 #include "baseobject/baseobject.h"
-
 #include "menu/menu.h"
-
 #include "meshobject/meshobject.h"
 #include "objloader/objloader.h"
-
-
+#include "textedit/textedit.h"
 #include "buttons/button.h"
 #include "lights/light.h"
 
@@ -89,6 +86,7 @@ protected:
     void setClearColor(float r, float g, float b);
     void toogleFullScreen();
 
+    void ShowFrames();
     void LoadConfiguration();
     void InitFX();
 
@@ -109,6 +107,7 @@ protected:
     void add2List(BaseObject * obj, ShaderType s);
     void add2Dobject(Base2D * obj);
     void addButton(CButton* obj);
+    void setFramelabel(TextRender *pText);
 
 
     //----------------------------------
@@ -134,11 +133,9 @@ protected:
 
     fileUtil * filestream = nullptr;
     Projection * projection;
-
     TextRender * textrender;
-
+    TextRender * _Frames;
     light * ambientLight = nullptr;
-
     // Liste für 3D objekte
     std::vector<BaseObject*> list3D;
 
@@ -174,6 +171,7 @@ protected:
     // Global Resolution vars
     int _ResX;
     int _ResY;
+    int _FramerateOut;
 
     std::string caption;
 
