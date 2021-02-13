@@ -139,11 +139,13 @@ void CEngine::initMenu(){
     butn0->AddHandler(FxFog);
     con1->addButton(butn0);
 
-    butn1 = new CImageButton(_ResX, _ResY,"images/darkgray.png", "images/Add.png", con1->NextControllPos());
+    butn1 = new CImageButton(_ResX, _ResY,"images/ButtonReleased.png", "images/NewCube.png", con1->NextControllPos());
+    butn1->useShader(TEXTURE_SHADER);
     butn1->setColor(BTN_ENABLE);
     butn1->setDisablecolor(BTN_DISABLE);
     butn1->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn1->AddHandler(DisableButton1);
+  //  butn1->setbuttonColors(glm::vec3(0,0,1), glm::vec3(0,0,1));
     con1->addButton(butn1);
 
     butn2 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Foging", con1->NextControllPos());
