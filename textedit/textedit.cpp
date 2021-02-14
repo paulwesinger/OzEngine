@@ -92,12 +92,12 @@ void TextEdit::init() {
     _PosLabel.y = _Pos.y + LABEL::MARGIN_Y;
     _SizeLabel.w = _Size.w / 2;
 
-    logwarn("Breite TextLabel " + IntToString(_SizeLabel.w));
     _SizeLabel.h = textLabel->getTextAreaHeight();
     textLabel->SetScale(TEXT::SCALE_SMALL);
     textLabel->AddString("Test");
     textLabel->SetAlignRight(false);
     textLabel->setPos(_PosLabel);
+    textLabel->SetTextColor(_LabelTextColor);
     // EditLabel:
     editLabel = new TextRender(resX, resY, _PosLabel);
     _PosText.x = _PosLabel.x + 100;// _Size.w / 2 ;
@@ -106,8 +106,7 @@ void TextEdit::init() {
     _SizeText.h = editLabel->getTextAreaHeight();
     editLabel->SetScale(TEXT::SCALE_SMALL);
     editLabel->AddString("EDIT");
-    editLabel->SetAlignRight(false);
+    editLabel->SetAlignRight(true);
     editLabel->setPos(_PosText);
-
-
+    editLabel->SetTextColor(_TextEditColor);
 }

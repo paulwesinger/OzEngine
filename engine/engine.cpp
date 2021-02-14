@@ -118,7 +118,7 @@ void CEngine::initMenu(){
 
 
     //                  |Resolution|  | Position  | | width,height, colors             |
-    MainMenu = new CMenu(_ResX, _ResY, _ResX-MENU_WIDTH, 0, MENU_HEIGHT, 900, glm::vec4(0.1,0.1,0.1,0.8), glm::vec4(0.9,0.9,0.9,1.0));
+     MainMenu = new CMenu(_ResX, _ResY, _ResX-MENU_WIDTH, 0, MENU_HEIGHT, 900, glm::vec4(0.1,0.1,0.1,0.8), glm::vec4(0.9,0.9,0.9,1.0));
     // loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
 
     int curr_y;
@@ -184,14 +184,15 @@ void CEngine::initMenu(){
 
     p = con2->NextControllPos();
 
-    txtEdit = new TextEdit(_ResX, _ResY, "images/ControllBg.png", p, s, BTN_ENABLE,BTN_ENABLE );
-    txtEdit->setSize(s.w,s.h);
+    txtEdit = new TextEdit(_ResX, _ResY, "images/ButtonReleased.png", p,s ,glm::vec4(0.79, 0.99, 1.0, 1.0) , glm::vec4(0.79, 0.99, 1.0, 1.0));
+    //txtEdit->setSize(s.w,s.h);
     txtEdit->setPos(p.x, p.y);
-    txtEdit->setColor(glm::vec4(1.0));
+    txtEdit->setColor(glm::vec4(0.79, 0.99, 1.0, 1.0));
     con2->addControll2D(txtEdit);
     curr_y = MainMenu->CurrentY();
 
     // add label for Frames to buildin textrender label
+    txtEdit->setLabel("FPS");
     setFramelabel(txtEdit->getTextPtr());
     MainMenu->addConatiner(con2);
 }
