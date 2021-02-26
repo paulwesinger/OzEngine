@@ -105,8 +105,8 @@ void TextEdit::init() {
     _SizeText.w = _Size.w / 2;
     _SizeText.h = editLabel->getTextAreaHeight();
     editLabel->SetScale(TEXT::SCALE_SMALL);
-    editLabel->AddString("EDIT");
-    editLabel->SetAlignRight(true);
+    editLabel->AddString("<>");
+    editLabel->SetAlignRight(false);
     editLabel->setPos(_PosText);
     editLabel->SetTextColor(_TextEditColor);
 }

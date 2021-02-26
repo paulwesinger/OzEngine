@@ -131,7 +131,17 @@ void CEngine::initMenu(){
                                   MainMenu->Pos().y,
                                   MainMenu->Width(), 0);
 
+    /*
     butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Fogjgjjg",con1->NextControllPos() );
+    butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
+    butn0->setScale(TEXT::SCALE_SMALL);
+    butn0->setColor(BTN_ENABLE);
+    butn0->setDisablecolor(BTN_DISABLE);
+    butn0->AddHandler(FxFog);
+    con1->addButton(butn0);
+    */
+
+    butn0 = new CImageButton(_ResX, _ResY,"images/ButtonReleased.png", "images/NewCube.png", con1->NextControllPos() );
     butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn0->setScale(TEXT::SCALE_SMALL);
     butn0->setColor(BTN_ENABLE);
@@ -148,7 +158,7 @@ void CEngine::initMenu(){
   //  butn1->setbuttonColors(glm::vec3(0,0,1), glm::vec3(0,0,1));
     con1->addButton(butn1);
 
-    butn2 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Foging", con1->NextControllPos());
+    butn2 = new CImageButton(_ResX, _ResY,"images/ButtonReleased.png",  "images/NewCube.png", con1->NextControllPos());
     butn2->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn2->setScale(TEXT::SCALE_SMALL);
     butn2->setColor(BTN_ENABLE);
@@ -165,7 +175,7 @@ void CEngine::initMenu(){
     con2 = new CControllContainer(MainMenu->Pos().x,
                                              curr_y,
                                   MainMenu->Width(),0);
-    fogBtn = new CImageButton(_ResX, _ResY, "images/darkgray.png", "images/Add.png",con2->NextControllPos() );
+    fogBtn = new CImageButton(_ResX, _ResY, "images/ButtonReleased.png", "images/NewCube.png",con2->NextControllPos() );
     fogBtn->setColor(BTN_ENABLE);
     fogBtn->setDisablecolor(BTN_DISABLE);
     fogBtn->setSize(BTN_WIDTH,BTN_HEIGHT);
@@ -176,7 +186,7 @@ void CEngine::initMenu(){
     //-----------------------------------------------------
     sSize s;
     sPoint p;
-    con2->addSpacer();
+    //con2->addSpacer();
     curr_y = MainMenu->CurrentY();
 
     s.w = MainMenu->Width() - 2;

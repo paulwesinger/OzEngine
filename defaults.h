@@ -27,7 +27,7 @@ namespace LABEL {
     const glm::vec4 COLOR_TEXT = glm::vec4(0.0);
     const glm::vec4 COLOR_BACKGROUND = glm::vec4(0.8,0.8, 0.8, 1.0);
     const int MARGIN_X  = 2;
-    const int MARGIN_Y  = 5;
+    const int MARGIN_Y  = 15;
 }
 
 namespace TEXT {
