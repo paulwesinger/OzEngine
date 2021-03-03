@@ -69,6 +69,7 @@ public:
     // Methode zum abbrechen
     void sdl_die( std::string msg);
     virtual ~InitGL();
+    void showSkyBox();
 
     virtual void Prepare2D(); // Flags für Rendern einstellen
     virtual void Restore3D(); // Flags zurücksetzen
@@ -82,6 +83,8 @@ protected:
     //----------------------------------
     // Look and feel
     //----------------------------------
+    virtual void Render(glm::mat4 cam);
+
     void SetClearColor(float r, float g, float b, float a);
     void setClearColor(float r, float g, float b);
     void toogleFullScreen();
@@ -109,6 +112,9 @@ protected:
     void addButton(CButton* obj);
     void setFramelabel(TextRender *pText);
 
+    bool hasSkyBox();
+    void setHasSkybox(bool enable);
+
 
     //----------------------------------
     // Main Menu
@@ -118,6 +124,10 @@ protected:
 
     // Flags for effects:
     bool _Fog;
+    bool _HasSkyBox;
+
+
+
 
     void safeDelete(BaseObject * bo);
 

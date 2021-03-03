@@ -36,6 +36,10 @@ CButton* butn1;
 CButton* butn2;
 
 
+bool renderSkybox;
+
+
+
 void EnableButton1() {
     if ( butn0 != nullptr)
         butn0->enable();
@@ -56,7 +60,6 @@ void Button3() {
 void FxFog() {
     loginfo("TestFunc2","Fog");
 }
-
 
 void EngineTestFunc2() {
      loginfo("TestFunc2","Engine:: EngineTestFunc 2");
@@ -105,10 +108,25 @@ void CEngine::Run() {
 // Place here Functons for button handler..
 // ---------------------------------------------------------------
 
+void CEngine::funcToogleSkybox() {
+    if (renderSkybox) {
+        renderSkybox = false;
+        loginfo("skybox = false");
+    }
+    else{
+        renderSkybox = true;
+        loginfo("skybox = true");
+    }
+}
+
 void CEngine::funcFog(){
     loginfo("Fog - function");
 }
 
+void CEngine::Render(glm::mat4 cam) {
+    if (renderSkybox)
+        InitGL::Render(cam);
+}
 
 
 // --------------------------------------------------------------
@@ -149,7 +167,7 @@ void CEngine::initMenu(){
     butn0->AddHandler(FxFog);
     con1->addButton(butn0);
 
-    butn1 = new CImageButton(_ResX, _ResY,"images/ButtonReleased.png", "images/NewCube.png", con1->NextControllPos());
+    butn1 = new CImageButton(_ResX, _ResY,"images/ButtonReleased.png", "images/ShowSkybox.png", con1->NextControllPos());
     butn1->useShader(TEXTURE_SHADER);
     butn1->setColor(BTN_ENABLE);
     butn1->setDisablecolor(BTN_DISABLE);
@@ -179,7 +197,8 @@ void CEngine::initMenu(){
     fogBtn->setColor(BTN_ENABLE);
     fogBtn->setDisablecolor(BTN_DISABLE);
     fogBtn->setSize(BTN_WIDTH,BTN_HEIGHT);
-    fogBtn->AddHandler(funcFog);
+
+    fogBtn->AddHandler(CEngine::funcToogleSkybox);
     con2->addButton(fogBtn);
     //-----------------------------------------------------
     // Textedit:
@@ -230,7 +249,6 @@ void CEngine::Init3D(){
     loginfo("============================");
    fileUtil * fileutil = new fileUtil();
    bool ok;
-
    //--------------------------------------
    // loading Textured cubes
    //--------------------------------------

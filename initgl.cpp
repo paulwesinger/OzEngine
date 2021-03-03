@@ -103,6 +103,25 @@ void InitGL::safeDelete(BaseObject * bo) {
     }
  }
 
+//------------------------------------------
+//  Abstracts Render
+// -----------------------------------------
+void InitGL::Render(glm::mat4 cam) {
+
+    if ( skybox != nullptr)
+        skybox->Draw(cam);
+
+    // Hier noch zusätzliche virtuelle Renderer (objecte, und so weiter!
+}
+
+void InitGL::showSkyBox() {
+
+}
+
+
+bool InitGL::hasSkyBox() { return _HasSkyBox; }
+void InitGL::setHasSkybox(bool enable) { _HasSkyBox = enable; }
+
 void InitGL::LoadConfiguration(){
 
 
@@ -481,6 +500,7 @@ void InitGL::setClearColor(float r, float g, float b) {
     _ClearColor.z = b;
     _ClearColor.w = 1.0f;
 }
+
 
 void InitGL::SetClearColor(float r, float g, float b, float a) {
     _ClearColor.x = r;
@@ -897,7 +917,9 @@ void InitGL::Run() {
         // ===================================
         // Das beste zum Schluss : Skybox
         // ===================================
-        skybox->Draw(camera->GetView());
+
+        Render(camera->GetView());
+        //skybox->Draw(camera->GetView());
 
 
         // ===================================

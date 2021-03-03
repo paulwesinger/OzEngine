@@ -33,6 +33,7 @@ const int MENU_SPACER = 10;
 const int BTN_WIDTH = 150;
 const int BTN_HEIGHT = 30;
 
+
 class CEngine : public InitGL
 {
 public:
@@ -41,8 +42,10 @@ public:
     void Run() override;
     void Done() override;
 
+
 protected:
     void loadButtons();
+    void Render(glm::mat4 cam)  override;
     // Lists for all objects:
     std::vector<std::string> btnList;
     std::vector<std::string> object2DList;
@@ -53,8 +56,12 @@ protected:
     CControllContainer *con1;
     CControllContainer *con2;
 
+
     CButton * fogBtn;
+
+
     static void funcFog();
+    static void funcToogleSkybox();
 
  private:
 
@@ -72,12 +79,13 @@ protected:
     // Menu controlls
     //----------------------------------------------------------------
     TextEdit * txtEdit;
-
     std::string &getValueItem(std::string &s, std::string erasestring);
-
     TextRender * textrenderer;
-
     fileUtil * fu;
+    //-----------------------------------------------------------------
+    //flags
+    //-----------------------------------------------------------------
+
 };
 
 #endif // CENGINE_H
