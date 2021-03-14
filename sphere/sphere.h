@@ -23,9 +23,15 @@
 
 
 typedef struct {
-    glm::vec3 vertex;
+    glm::vec3 vector;
+    glm::vec3 color;
     glm::vec2 tex;
-} SpherePointStruct;
+} sVertexTexture ;
+
+typedef struct {
+    glm::vec3 vector;
+    glm::vec3 color;
+} sVertexColor;
 
 class CSphere  : public BaseObject {
 public:
@@ -73,6 +79,11 @@ private:
     int _CountPoints;
     void setUp();
     void calc( GLfloat * v);
+
+    // Neue Version für Vertex calculation:
+    std::vector<sVertexTexture> vertsTexture;
+    std::vector<sVertexColor> vertsColor;
+    void calcNew();
 };
 
 

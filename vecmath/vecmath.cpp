@@ -80,6 +80,16 @@ void calccircle(float radius, float angle, glm::vec2 & point) {
     point.y = radius * sin(radian);
 }
 
+void calccircle(float radius, float angle, std::vector<glm::vec2> & l) {
+
+    float radian = glm::radians( angle);
+    glm::vec2 tmp;
+
+    tmp.x = radius * cos(radian);
+    tmp.y = radius * sin(radian);
+    l.push_back(tmp);
+}
+
 
 
 

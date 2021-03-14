@@ -27,8 +27,8 @@ void rotX(glm::vec3 & vec, double angle );  // degrees, no radians -> need to be
 void rotY(glm::vec3 & vec, double angle );
 void rotZ(glm::vec3 & vec, double angle );
 // Kreis berechnungen für kartessisches 2D System:
-void calccircle(float radius, float angle,glm::vec2 &point);
-
+void calccircle(float radius, float angle, glm::vec2 &point);
+void calccircle(float radius, float angle, std::vector<glm::vec2> & l);
 // other transforms later, if needed  ! 
 
 void checkdegree(glm::vec3 & angle);

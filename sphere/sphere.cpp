@@ -71,6 +71,9 @@ static const GLchar * fs_source = {
 "   fragcolor = fragcolor * changecolor;        \n"
 "}                                              "
 };
+
+
+
 CSphere::CSphere() :
     BaseObject((vec3(0.0,0.0,0.0)),vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec4(0.5,0.2,0.6,1.0)) {
    _CountPoints = 36;
@@ -237,26 +240,29 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
 
     glUniform4f(color_location,0.0,0.0,0.0,1.0);
 
-    glPointSize(1.0f);
-    glLineWidth(3.0);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
-    glDrawArrays(GL_LINES, 0 , countVertex);
 
-    glUniform4f(color_location,1.0,0.0,GetColor().b,GetColor().a);
+    glPointSize(32.0f);
 
-    glPointSize(16.0f);
-   // glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
+    glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
     glDrawArrays(GL_POINTS, 1 , 1);
 
+    glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
+    glDrawArrays(GL_POINTS, 24 , 1);
 
     glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
     glDrawArrays(GL_POINTS, 25 , 1);
+
+
+    glUniform4f(color_location,0.0,1.0,0.0,GetColor().a);
+    glDrawArrays(GL_POINTS, 48 , 1);
+
+/*
     glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
     glDrawArrays(GL_POINTS, 49 , 1);
     glDrawArrays(GL_POINTS, 50 , 1);
     glDrawArrays(GL_POINTS, 73 , 1);
     glDrawArrays(GL_POINTS, 95 , 1);
-
+*/
     glBindTexture(GL_TEXTURE_2D,0);
     glActiveTexture(GL_TEXTURE0);
 
@@ -293,6 +299,124 @@ void CSphere::Add2GPU(float* v, int &index, glm::vec2 vec) {
     v[index+1]  = vec.y;
     index +=2;
 }
+
+
+void CSphere::calcNew() {
+    // Erstmal NordPol festlegen
+    glm::vec3 npol = glm::vec3(0.0,_Radius ,0.0);
+    float winkel_laenge = 180.0f / (_CountPoints -1 ) ;
+    float winkel_breite = 360.0f / ((_CountPoints  * 2) - 1 )  ; // ((_CountPoints  * 2) - 1)
+    float laengenwinkel = 90.0f - winkel_laenge;
+    float breitenwinkel = -winkel_breite;
+
+    sVertexTexture vt;   // Structure für Texture Sphere
+    sVertexColor   vc;   // Structure für Color Sphere
+
+    glm::vec3 color = glm::vec3(GetColor().x, GetColor().y, GetColor().z);
+
+    // Nordpol ins array für vertexbuffer eintragen
+    // structure für Texture Nordpol:
+    vt.vector = npol;
+    vt.color = color;
+    vt.tex   = glm::vec2(0.5,1.0);
+
+    //structure für Color Nordpol
+    vc.vector = npol;
+    vc.color = color;
+
+
+    vertsTexture.push_back(vt);
+    vertsColor.push_back(vc);
+
+    //--------------------------------------------------------------
+    // jetzt den Body : Hilfsvariablen
+    //--------------------------------------------------------------
+    glm::vec3 laengengrad;
+    glm::vec3 breitengrad;
+
+    float texCoordU = 1.0f / ((_CountPoints * 2) -1 ) ;
+    float texCoordV = 1.0f / (_CountPoints);
+    float texU;
+    float texV;
+
+    for (int i = 0; i < _CountPoints - 2; i++) {
+
+        glm::vec2 mPoint;
+        calccircle(_Radius, laengenwinkel, mPoint);
+
+        laengenwinkel -= winkel_laenge;
+        if ( laengenwinkel < 0.0f )
+            laengenwinkel += 360.0f;
+
+        laengengrad.x = mPoint.x;///meridianPoints.at(i).x;
+        laengengrad.y = mPoint.y;//meridianPoints.at(i).y;
+        laengengrad.z = 0.0;
+
+        // structure für Texture Sphere
+        vt.vector = laengengrad;
+        vt.color = color;
+        texU = 0.0f;
+        texV = (i+1) * texCoordV;
+        vt.tex   = glm::vec2(texU,texV);
+
+        //structure für Color Nordpol
+        vc.vector = laengengrad;
+        vc.color = color;
+
+        vertsTexture.push_back(vt);
+        vertsColor.push_back(vc);
+
+        // ========================================================
+        // Jetzt den Breitengrad für jeden längengrad punkt rechnen
+        // diesmal CountPoints * 2
+        //---------------------------------------------------------
+        for (int j = 0; j < _CountPoints * 2 - 1 ;  j++) {//                   -1;  j++) {
+            // sehne  :
+            glm::vec2 lPoint;
+
+             calccircle(laengengrad.x,breitenwinkel,lPoint);
+
+             breitenwinkel += winkel_breite;
+
+             // Man könnte das ganze auch gleich direkt in das array fürden GPU Mem schreiben
+             // .. ist aber so leichter zu lesen
+             breitengrad.x = lPoint.x;//latitudePoints.at(j).x;
+             breitengrad.y = laengengrad.y;
+             breitengrad.z = lPoint.y;//latitudePoints.at(j).y;
+             // Texture , diesmal nur u koordinate , v bleibt erstmal
+             texU = j * texCoordU;
+
+             vt.vector = breitengrad;
+             vt.color = color;
+
+             if ( j ==   _CountPoints * 2 - 1  )
+                vt.tex = glm::vec2(1.0,1.0);
+             else
+                vt.tex = glm::vec2(texU,texV);
+
+             //structure für Color Nordpol
+             vc.vector = laengengrad;
+             vc.color = color;
+
+             vertsTexture.push_back(vt);
+             vertsColor.push_back(vc);
+        }
+
+        breitenwinkel = winkel_breite;
+
+    }
+    // "Südpol"
+    vt.vector = glm::vec3(0.0, -(_Radius),0.0) ;
+    vt.color = color;
+    vt.tex = glm::vec2(0.5,0.0);
+    //structure für Colorsphere Südpol
+    vc.vector = laengengrad;
+    vc.color = color;
+
+    vertsTexture.push_back(vt);
+    vertsColor.push_back(vc);
+}
+
 
 
 
@@ -386,23 +510,20 @@ void CSphere::setUp() {
     fs = shader->compileFragmentShader(fs_source);
     shaderprogram = shader->CreateProgram(vs,fs);
 
+    calcNew();
 
-    //            Nordpol und südpol abziehen          letzer breitegrad = 1. breiten grad , + nord und südpol
-    int countverts =         ((_CountPoints - 2)         *      (_CountPoints * 2 ) + 2  )  + 2 ;
-    int count = countverts * 8;   // pro vertex 3 float vektor, 3float color, 2 float textur
-    GLfloat verts[count];
-
-    calc(verts);
-
+    // Neu mit std::vector
     glGenVertexArrays(1,&_Vao);
     glBindVertexArray(_Vao);
     // Vertex Buffer
     glGenBuffers(1,&_VertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _VertexBuffer);
     glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(verts),
-                verts,
-                GL_DYNAMIC_DRAW);
+                 vertsTexture.size() * sizeof(sVertexTexture),
+                 &vertsTexture[0],
+                 GL_DYNAMIC_DRAW);
+
+
 
     // Vertex
     glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, 8*sizeof(float),(void*)0);

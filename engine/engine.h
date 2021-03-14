@@ -34,6 +34,13 @@ const int BTN_WIDTH = 150;
 const int BTN_HEIGHT = 30;
 
 
+static CButton* butn0;
+static CButton* butn1;
+static CButton* butn2;
+
+static bool renderSkybox;
+
+
 class CEngine : public InitGL
 {
 public:

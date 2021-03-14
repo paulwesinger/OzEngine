@@ -31,12 +31,7 @@ main(){
 //------------------------------------------------------------------
 // static functions for Button Handler
 //------------------------------------------------------------------
-CButton* butn0;
-CButton* butn1;
-CButton* butn2;
 
-
-bool renderSkybox;
 
 
 
