@@ -10,8 +10,6 @@
 
 #include <cstdio>
 #include <vector>
-#include <SDL2/SDL_image.h>
-
 #include <glm/glm.hpp>
 
 #include "../shaders/shader.h"

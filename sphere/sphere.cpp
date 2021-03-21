@@ -8,11 +8,6 @@
  * Created on 27. Oktober 2019, 20:03
  */
 
-//#include <glm/glm.hpp>
-//#include <glm/detail/type_mat4x4.hpp>
-//#include <glm/ext/matrix_transform.hpp>
-//#include <glm/gtc/type_ptr.hpp>
-
 #include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -543,12 +538,19 @@ void CSphere::setUp() {
     for (GLushort i = 0; i < _CountPoints * 2 + 1; i++)
         npol_indices[i] = i;
     npol_indices[_CountPoints * 2 + 1] = 1;
+
+
+    for (GLushort i = 0; i < _CountPoints * 2 + 2; i ++) {
+        northPol.push_back(i);
+    }
+
+
     // und in den buffer...
     glGenBuffers(1,&_Ebo_npol);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo_npol);
     glBufferData (GL_ELEMENT_ARRAY_BUFFER,
-                  sizeof (npol_indices),
-                  npol_indices,
+                  northPol.size() * sizeof (GLushort),
+                  &northPol[0],
                   GL_DYNAMIC_DRAW);
 
     //-------------------------------------------

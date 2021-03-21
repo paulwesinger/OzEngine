@@ -10,12 +10,9 @@
 
 #include <cstdio>
 
-#include <SDL2/SDL_image.h>
+//#include <SDL2/SDL_image.h>
 
 #include <glm/glm.hpp>
-//#include <glm/vec2.hpp>
-//#include <glm/vec3.hpp>
-//#include <glm/vec4.hpp>
 
 #include "../shaders/shader.h"
 #include "../baseobject/baseobject.h"
@@ -65,6 +62,8 @@ private:
     GLuint  _Vao, _VertexBuffer,_Ebo_npol, _Ebo_spol;
     GLuint _BodyPoints;
     std::vector<GLushort> body;
+    std::vector<GLushort> northPol;
+    std::vector<GLushort> southPol;
 
     GLint   mv_location;
     GLint   color_location;
