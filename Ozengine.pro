@@ -9,6 +9,7 @@ SOURCES += \
         baseobject/baseobject.cpp \
         buttons/button.cpp \
         camera/camera.cpp \
+        checkbox/checkbox.cpp \
         colors/colorscheme.cpp \
         controllcontainer/controllcontainer.cpp \
         cube/colorcube.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     baseobject/baseobject.h \
     buttons/button.h \
     camera/camera.h \
+    checkbox/checkbox.h \
     colors/colorscheme.h \
     controllcontainer/controllcontainer.h \
     cube/colorcube.h \

@@ -591,7 +591,7 @@ void InitGL::InitEngineObject() {
 
     // Sphere
     loginfo("Erstelle Sphere .........done");
-    sphere1  = new CSphere(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,1.0,1.0,1.0), projection->GetPerspective(),12,(GLfloat)4.0,shader);
+    sphere1  = new CSphere(glm::vec3(0.0,0.0,0.0),glm::vec4(1.0,1.0,1.0,1.0), projection->GetPerspective(),15,(GLfloat)4.0,shader);
     sphere1->SetColor(glm::vec4(1.0,1.0,0.5,1.0));
     sphere1->SetHasAlpha(true);
 
@@ -606,7 +606,7 @@ void InitGL::InitEngineObject() {
     // Lightsource as a spere
     //-----------------------------------------
     loginfo("Serstell LichtQuelle als wiesse spere....","InitGL::InitEngineObjects");
-    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(1.0,1.0,1.0,1.0),projection->GetPerspective(),12,(GLfloat)2.0,shader );
+    lightSource = new CSphere(ambientLight->getPos(),glm::vec4(1.0,1.0,1.0,1.0),projection->GetPerspective(),18,(GLfloat)2.0,shader );
     lightSource->SetColor(glm::vec4(1.0,1.0,1.0,0.4));
     //Texture loading
     cubeimages.clear();

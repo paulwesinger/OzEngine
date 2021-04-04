@@ -162,7 +162,7 @@ void CEngine::initMenu(){
     butn0->AddHandler(FxFog);
     con1->addButton(butn0);
 
-    butn1 = new CImageButton(_ResX, _ResY,"images/ButtonReleased.png", "images/ShowSkybox.png", con1->NextControllPos());
+    butn1 = new CImageButton(_ResX, _ResY,"images/ButtonReleased.png", "images/ShowSkyBox.png", con1->NextControllPos());
     butn1->useShader(TEXTURE_SHADER);
     butn1->setColor(BTN_ENABLE);
     butn1->setDisablecolor(BTN_DISABLE);
@@ -188,7 +188,7 @@ void CEngine::initMenu(){
     con2 = new CControllContainer(MainMenu->Pos().x,
                                              curr_y,
                                   MainMenu->Width(),0);
-    fogBtn = new CImageButton(_ResX, _ResY, "images/ButtonReleased.png", "images/NewCube.png",con2->NextControllPos() );
+    fogBtn = new CImageButton(_ResX, _ResY, "images/ButtonReleased.png", "images/ToogleSkybox.png",con2->NextControllPos() );
     fogBtn->setColor(BTN_ENABLE);
     fogBtn->setDisablecolor(BTN_DISABLE);
     fogBtn->setSize(BTN_WIDTH,BTN_HEIGHT);
