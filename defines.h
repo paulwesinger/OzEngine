@@ -155,6 +155,7 @@ enum Events{
     KEY_S,
     KEY_D,
     KEY_E,
+    KEY_Q,  // Stop animation
     //ortho bzw perspective mode:
     KEY_O,
     KEY_P,

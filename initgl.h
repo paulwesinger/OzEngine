@@ -92,6 +92,7 @@ protected:
     void ShowFrames();
     void LoadConfiguration();
     void InitFX();
+    void stopAnimation();
 
 
     // HandleInput wird wahrscheinlich überflussig....
@@ -125,6 +126,7 @@ protected:
     // Flags for effects:
     bool _Fog;
     bool _HasSkyBox;
+    bool _Animate;
 
 
 

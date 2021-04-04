@@ -216,21 +216,22 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glBindTexture(GL_TEXTURE_2D, _Textures[0]);
 
 
+    glPointSize(2.0f);
     // Alle indices binden:
     // Nordpol
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_npol);
-    glDrawElements( GL_TRIANGLE_FAN, _CountPoints * 2 + 2 , GL_UNSIGNED_SHORT, 0);
+    glDrawElements( GL_TRIANGLE_FAN, _CountPoints * 2 + 1 , GL_UNSIGNED_SHORT, 0);
 
     // Südpol
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_spol);
-    glDrawElements( GL_TRIANGLE_FAN, _CountPoints * 2 + 2 , GL_UNSIGNED_SHORT, 0);
+    glDrawElements( GL_LINES, southPol.size()  , GL_UNSIGNED_SHORT, 0);
 
     // Body
 
     //glUniform4f(color_location,1.0,0.0,GetColor().b,0.3);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
-    glDrawElements(GL_TRIANGLE_STRIP,body.size(),GL_UNSIGNED_SHORT,0);
+    glDrawElements(GL_LINES,body.size(),GL_UNSIGNED_SHORT,0);
 
 
     glUniform4f(color_location,0.0,0.0,0.0,1.0);
@@ -238,18 +239,22 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
 
     glPointSize(32.0f);
 
+    glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
+    glDrawArrays(GL_POINTS, 0 , 1);
+
     glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
     glDrawArrays(GL_POINTS, 1 , 1);
 
-    glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
+    glUniform4f(color_location,1.0,1.0,1.0,GetColor().a);
     glDrawArrays(GL_POINTS, 24 , 1);
 
-    glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
+    glUniform4f(color_location,1.0,0.0,1.0,GetColor().a);
     glDrawArrays(GL_POINTS, 25 , 1);
-
+    glUniform4f(color_location,0.0,1.0,1.0,GetColor().a);
+    glDrawArrays(GL_POINTS, 48 , 1);
 
     glUniform4f(color_location,0.0,1.0,0.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 48 , 1);
+    glDrawArrays(GL_POINTS, 49 , 1);
 
 /*
     glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
@@ -300,9 +305,9 @@ void CSphere::calcNew() {
     // Erstmal NordPol festlegen
     glm::vec3 npol = glm::vec3(0.0,_Radius ,0.0);
     float winkel_laenge = 180.0f / (_CountPoints -1 ) ;
-    float winkel_breite = 360.0f / ((_CountPoints  * 2) - 1 )  ; // ((_CountPoints  * 2) - 1)
+    float winkel_breite = 360.0f / ((_CountPoints  * 2)-1); // ((_CountPoints  * 2) - 1)
     float laengenwinkel = 90.0f - winkel_laenge;
-    float breitenwinkel = -winkel_breite;
+    float breitenwinkel = winkel_breite;
 
     sVertexTexture vt;   // Structure für Texture Sphere
     sVertexColor   vc;   // Structure für Color Sphere
@@ -354,7 +359,7 @@ void CSphere::calcNew() {
         texV = (i+1) * texCoordV;
         vt.tex   = glm::vec2(texU,texV);
 
-        //structure für Color Nordpol
+        //structure für Color
         vc.vector = laengengrad;
         vc.color = color;
 
@@ -363,9 +368,9 @@ void CSphere::calcNew() {
 
         // ========================================================
         // Jetzt den Breitengrad für jeden längengrad punkt rechnen
-        // diesmal CountPoints * 2
+        // diesmal CountPoints * 2 -1
         //---------------------------------------------------------
-        for (int j = 0; j < _CountPoints * 2 - 1 ;  j++) {//                   -1;  j++) {
+        for (int j = 0; j < _CountPoints * 2 -1;  j++) {//                   -1;  j++) {
             // sehne  :
             glm::vec2 lPoint;
 
@@ -410,6 +415,8 @@ void CSphere::calcNew() {
 
     vertsTexture.push_back(vt);
     vertsColor.push_back(vc);
+
+    logwarn( "Anzahl Vertices " + IntToString(vertsTexture.size()),"Sphere::Setup");
 }
 
 
@@ -519,7 +526,6 @@ void CSphere::setUp() {
                  GL_DYNAMIC_DRAW);
 
 
-
     // Vertex
     glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, 8*sizeof(float),(void*)0);
     glEnableVertexAttribArray(0);
@@ -530,17 +536,8 @@ void CSphere::setUp() {
     glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8 * sizeof(float), (void*)(6 *sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    //-------------------------------------------
-    // Element buffer  --> NordPol - Triangle Fan
-    //-------------------------------------------
-    GLushort npol_indices[_CountPoints * 2 + 2];
 
-    for (GLushort i = 0; i < _CountPoints * 2 + 1; i++)
-        npol_indices[i] = i;
-    npol_indices[_CountPoints * 2 + 1] = 1;
-
-
-    for (GLushort i = 0; i < _CountPoints * 2 + 2; i ++) {
+    for (GLushort i = 0; i < _CountPoints * 2 + 1; i ++) {
         northPol.push_back(i);
     }
 
@@ -553,25 +550,6 @@ void CSphere::setUp() {
                   &northPol[0],
                   GL_DYNAMIC_DRAW);
 
-    //-------------------------------------------
-    // Element buffer südpol  zum aufwärmen:
-    //-------------------------------------------
-    GLushort spol_indices[_CountPoints * 2 + 2];
-    spol_indices[0] = countVertex-1;
-
-    for (GLushort i = 1; i < _CountPoints * 2 + 2;i ++)    //2; i++)
-        spol_indices[i] = countVertex - i;
-
-    spol_indices[_CountPoints * 2 + 2] = countVertex - 2;//2;
-    // ab in den Buffer..
-    glGenBuffers(1,&_Ebo_spol);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo_spol);
-    glBufferData (GL_ELEMENT_ARRAY_BUFFER,
-                  sizeof (spol_indices),
-                  spol_indices,
-                  GL_DYNAMIC_DRAW);
-
-
     // -------------------------------------
     // Sphere body
     //--------------------------------------
@@ -579,13 +557,14 @@ void CSphere::setUp() {
     int step = _CountPoints * 2;
     int hlp = step;
 
-    int i, j;
+    int i, j,count = 0;
 
-    for (j = 0; j < _CountPoints - 3; j++) {
+    for (j = 0; j < _CountPoints - 2; j++) {  // -3
 
         for (i= 0; i < hlp; i++){
             body.push_back(i + 1 + x);
             body.push_back(i+x+step+1);
+
         }
         // CountPoints* 2 * y + x....
 
@@ -593,8 +572,17 @@ void CSphere::setUp() {
         body.push_back( 1+x+step);//_CountPoints * 2 * j + step +1);
 
         x += step;
+        count = x;
     }
 
+    loginfo("countPoints " + IntToString(_CountPoints),"Sphere::Setup");
+    loginfo("count " + IntToString(count),"Sphere::Setup");
+    logEmptyLine(2);
+
+    southPol.push_back(217);
+    for (GLushort i = 0; i < _CountPoints * 2 ; i ++) {
+        southPol.push_back(i+ 218 );
+    }
 
     glGenBuffers(1,&_BodyPoints);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
@@ -604,7 +592,12 @@ void CSphere::setUp() {
                         GL_STATIC_DRAW);
     //glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indicesEBO.size() * sizeof(<data type>), &m_indicesEBO[0], GL_STATIC_DRAW);
 
-
+    glGenBuffers(1,&_Ebo_spol);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo_spol);
+    glBufferData (GL_ELEMENT_ARRAY_BUFFER,
+                  southPol.size() * sizeof (GLushort),
+                  &southPol[0],
+                  GL_DYNAMIC_DRAW);
 
     // Alles reseten
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);

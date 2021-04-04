@@ -669,6 +669,13 @@ void InitGL::setFramelabel(TextRender *pText){
         _Frames = pText;
 }
 
+void InitGL::stopAnimation() {
+ if (_Animate)
+     _Animate = false;
+ else
+     _Animate = true;
+}
+
 void InitGL::Run() {
 
     bool quit = false;
@@ -827,6 +834,11 @@ void InitGL::Run() {
            case KEY_S:camera->MoveBackward(elapsed);break;
            case KEY_Down: camera ->PitchCameraDown(elapsed); break;
 
+            case KEY_Q: stopAnimation(); break;
+
+
+
+
            // Key "C" und "T" sind für Color und Texture Shader
            case KEY_C: {
                currentShader = cubeshaderprog_color;
@@ -887,10 +899,14 @@ void InitGL::Run() {
        glEnable(GL_DEPTH_TEST);
        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+
        vec3 dummy;
        dummy = vec3(0.0,0.2,0.0);
-       sphere1->SetFirstTranslate(true);
-       sphere1 ->StepRotate(dummy);
+       if (_Animate) {
+            sphere1->SetFirstTranslate(true);
+            sphere1 ->StepRotate(dummy);
+       }
 
 
        //meshObject
@@ -909,7 +925,8 @@ void InitGL::Run() {
         //dummy = vec3(0.0,0.2,0.0);
 
         lightSource->SetFirstTranslate(true);
-        lightSource ->StepRotate( glm::vec3(0.0,0.2,0.2));    //dummy);
+        if (_Animate)
+            lightSource ->StepRotate( glm::vec3(0.0,0.2,0.2));    //dummy);
 
         sphere1->Draw(camera);
         lightSource->Draw(camera);
@@ -935,8 +952,11 @@ void InitGL::Run() {
                 glm::vec3 rv(hlp * 0.5);
 
                 glm::vec3 vt(0.001,0.002,0.003);
-                list3D[i]->StepTranslate(vt);
-                list3D[i]->StepRotate(rv);
+
+                if (_Animate) {
+                    list3D[i]->StepTranslate(vt);
+                    list3D[i]->StepRotate(rv);
+                }
 
 
                 vt.x =0.01;
@@ -1132,6 +1152,7 @@ int InitGL::HandleInput(SDL_Event e, uint &mox, uint &moy) {
                 case SDLK_o         : return KEY_O;  // Orthomode
                 case SDLK_c         : return KEY_C;  // Colored Draw
                 case SDLK_t         : return KEY_T;  // Textured Draw
+                case SDLK_q         : return KEY_Q;
                 case SDLK_m         : return KEY_M;
 
             case SDLK_F11           : return KEY_F11;
