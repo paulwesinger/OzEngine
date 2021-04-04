@@ -53,6 +53,8 @@ public:
     virtual void setActiveShader(ShaderType t);
     virtual void initShader(ShaderType s,GLuint prog);
     virtual void addLight(light * l);
+    virtual void setDrawMode(GLuint mode);
+
 
 
     // Flags
@@ -98,6 +100,8 @@ protected:
 
     uint _CountTextures;  // die Anzehl = Listen länge
     GLuint  _Textures[5];
+
+    GLuint _DrawMode;
 
     // Light
      light *  _Light;

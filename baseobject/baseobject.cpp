@@ -52,6 +52,8 @@ void BaseObject::init( ) {
     _AlphaColor.r = 0.0;
     _AlphaColor.g = 0.0;
     _AlphaColor.b = 0.0;
+
+    _DrawMode = GL_TRIANGLE_STRIP;
 }
 
 void BaseObject::Draw(Camera * cam){}
@@ -168,4 +170,8 @@ void BaseObject::setActiveShader(ShaderType t){
 
  void BaseObject::SetAlphaColor(glm::vec3 alphacol) { _AlphaColor = alphacol; }
  glm::vec3 BaseObject::AlphaColor() {return _AlphaColor; }
+
+ void BaseObject::setDrawMode(GLuint mode) {
+    _DrawMode = mode;
+ }
 

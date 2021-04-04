@@ -220,18 +220,16 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     // Alle indices binden:
     // Nordpol
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_npol);
-    glDrawElements( GL_LINES, _CountPoints * 2 + 1 , GL_UNSIGNED_SHORT, 0);
+    glDrawElements( GL_TRIANGLE_FAN, /*_CountPoints * 2 + 1 */ northPol.size()  , GL_UNSIGNED_SHORT, 0);
 
     // Südpol
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_spol);
-    glDrawElements( GL_LINES, _CountPoints * 2 + 1 /*southPol.size()*/, GL_UNSIGNED_SHORT, 0);
+    glDrawElements(GL_TRIANGLE_FAN, /*_CountPoints * 2 + 1*/ southPol.size(), GL_UNSIGNED_SHORT, 0);
 
     // Body
 
-    //glUniform4f(color_location,1.0,0.0,GetColor().b,0.3);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
-    glDrawElements(GL_LINES,body.size(),GL_UNSIGNED_SHORT,0);
+    glDrawElements(_DrawMode,body.size(),GL_UNSIGNED_SHORT,0);
 
     glBindTexture(GL_TEXTURE_2D,0);
     glActiveTexture(GL_TEXTURE0);
