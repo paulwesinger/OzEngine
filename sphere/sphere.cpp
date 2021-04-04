@@ -224,14 +224,14 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
 
     // Südpol
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_spol);
-    glDrawElements( GL_LINES, southPol.size()  , GL_UNSIGNED_SHORT, 0);
+    glDrawElements( GL_TRIANGLE_FAN, _CountPoints * 2 + 1 /*southPol.size()*/, GL_UNSIGNED_SHORT, 0);
 
     // Body
 
     //glUniform4f(color_location,1.0,0.0,GetColor().b,0.3);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
-    glDrawElements(GL_LINES,body.size(),GL_UNSIGNED_SHORT,0);
+    glDrawElements(GL_LINE_STRIP,body.size(),GL_UNSIGNED_SHORT,0);
 
 
     glUniform4f(color_location,0.0,0.0,0.0,1.0);
@@ -239,22 +239,22 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
 
     glPointSize(32.0f);
 
-    glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 0 , 1);
+    //glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
+    //glDrawArrays(GL_POINTS, 0 , 1);
 
     glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 1 , 1);
-
-    glUniform4f(color_location,1.0,1.0,1.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 24 , 1);
-
-    glUniform4f(color_location,1.0,0.0,1.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 25 , 1);
-    glUniform4f(color_location,0.0,1.0,1.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 48 , 1);
+    glDrawArrays(GL_POINTS, 241 , 1);
 
     glUniform4f(color_location,0.0,1.0,0.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 49 , 1);
+    glDrawArrays(GL_POINTS, 240 , 1);
+
+    //glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
+    //glDrawArrays(GL_POINTS, 239 , 1);
+    glUniform4f(color_location,1.0,1.0,1.0,GetColor().a);
+    glDrawArrays(GL_POINTS, 217 , 1);
+
+    //glUniform4f(color_location,0.0,1.0,0.0,GetColor().a);
+    //glDrawArrays(GL_POINTS, 49 , 1);
 
 /*
     glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
@@ -415,8 +415,6 @@ void CSphere::calcNew() {
 
     vertsTexture.push_back(vt);
     vertsColor.push_back(vc);
-
-    logwarn( "Anzahl Vertices " + IntToString(vertsTexture.size()),"Sphere::Setup");
 }
 
 
@@ -536,7 +534,7 @@ void CSphere::setUp() {
     glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8 * sizeof(float), (void*)(6 *sizeof(float)));
     glEnableVertexAttribArray(2);
 
-
+    int highest = 0;
     for (GLushort i = 0; i < _CountPoints * 2 + 1; i ++) {
         northPol.push_back(i);
     }
@@ -554,12 +552,12 @@ void CSphere::setUp() {
     // Sphere body
     //--------------------------------------
     int x = 0;
-    int step = _CountPoints * 2;
+    int step = _CountPoints * 2 ;
     int hlp = step;
 
     int i, j,count = 0;
 
-    for (j = 0; j < _CountPoints - 2; j++) {  // -3
+    for (j = 0; j < _CountPoints - 3; j++) {  // -3
 
         for (i= 0; i < hlp; i++){
             body.push_back(i + 1 + x);
@@ -571,7 +569,7 @@ void CSphere::setUp() {
         body.push_back( 1+x);  // _CountPoints * 2 * j + 1);
         body.push_back( 1+x+step);//_CountPoints * 2 * j + step +1);
 
-        x += step;
+         x += step;
         count = x;
     }
 
@@ -579,10 +577,22 @@ void CSphere::setUp() {
     loginfo("count " + IntToString(count),"Sphere::Setup");
     logEmptyLine(2);
 
-    southPol.push_back(217);
-    for (GLushort i = 0; i < _CountPoints * 2 ; i ++) {
-        southPol.push_back(i+ 218 );
+
+    southPol.push_back(241);
+
+    for (GLushort i = _CountPoints * 2; i > 0;  i --) {
+        southPol.push_back(i + 216 );
+
+        if ( highest < i + 217 )
+            highest = i + 217;
     }
+    //southPol.push_back(240);
+
+
+
+    logEmptyLine(5);
+    logwarn ("Highest variable " + IntToString( highest),"Sphere::Setup");
+    logEmptyLine(5);
 
     glGenBuffers(1,&_BodyPoints);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
