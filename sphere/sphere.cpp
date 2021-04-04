@@ -220,49 +220,19 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     // Alle indices binden:
     // Nordpol
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_npol);
-    glDrawElements( GL_TRIANGLE_FAN, _CountPoints * 2 + 1 , GL_UNSIGNED_SHORT, 0);
+    glDrawElements( GL_LINES, _CountPoints * 2 + 1 , GL_UNSIGNED_SHORT, 0);
 
     // Südpol
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _Ebo_spol);
-    glDrawElements( GL_TRIANGLE_FAN, _CountPoints * 2 + 1 /*southPol.size()*/, GL_UNSIGNED_SHORT, 0);
+    glDrawElements( GL_LINES, _CountPoints * 2 + 1 /*southPol.size()*/, GL_UNSIGNED_SHORT, 0);
 
     // Body
 
     //glUniform4f(color_location,1.0,0.0,GetColor().b,0.3);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
-    glDrawElements(GL_LINE_STRIP,body.size(),GL_UNSIGNED_SHORT,0);
+    glDrawElements(GL_LINES,body.size(),GL_UNSIGNED_SHORT,0);
 
-
-    glUniform4f(color_location,0.0,0.0,0.0,1.0);
-
-
-    glPointSize(32.0f);
-
-    //glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
-    //glDrawArrays(GL_POINTS, 0 , 1);
-
-    glUniform4f(color_location,1.0,0.0,0.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 241 , 1);
-
-    glUniform4f(color_location,0.0,1.0,0.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 240 , 1);
-
-    //glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
-    //glDrawArrays(GL_POINTS, 239 , 1);
-    glUniform4f(color_location,1.0,1.0,1.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 217 , 1);
-
-    //glUniform4f(color_location,0.0,1.0,0.0,GetColor().a);
-    //glDrawArrays(GL_POINTS, 49 , 1);
-
-/*
-    glUniform4f(color_location,0.0,0.0,1.0,GetColor().a);
-    glDrawArrays(GL_POINTS, 49 , 1);
-    glDrawArrays(GL_POINTS, 50 , 1);
-    glDrawArrays(GL_POINTS, 73 , 1);
-    glDrawArrays(GL_POINTS, 95 , 1);
-*/
     glBindTexture(GL_TEXTURE_2D,0);
     glActiveTexture(GL_TEXTURE0);
 
@@ -573,26 +543,30 @@ void CSphere::setUp() {
         count = x;
     }
 
-    loginfo("countPoints " + IntToString(_CountPoints),"Sphere::Setup");
-    loginfo("count " + IntToString(count),"Sphere::Setup");
-    logEmptyLine(2);
+    //-------------------------
+    // Southpol: negate winding
+    //-------------------------
+
+    int countPointsMeridian = _CountPoints - 2;
+    int countPointsLatitude = _CountPoints * 2;
+    int bodypoints = countPointsLatitude * countPointsMeridian;
 
 
+    /*   Muster zur berechnung
     southPol.push_back(241);
 
     for (GLushort i = _CountPoints * 2; i > 0;  i --) {
         southPol.push_back(i + 216 );
-
-        if ( highest < i + 217 )
-            highest = i + 217;
     }
-    //southPol.push_back(240);
+   */
+    southPol.push_back(bodypoints + 1);
 
 
+    for (GLushort i = _CountPoints * 2; i > 0;  i --) {
+        southPol.push_back(i + (bodypoints - countPointsLatitude) );
+    }
 
-    logEmptyLine(5);
-    logwarn ("Highest variable " + IntToString( highest),"Sphere::Setup");
-    logEmptyLine(5);
+
 
     glGenBuffers(1,&_BodyPoints);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_BodyPoints);
