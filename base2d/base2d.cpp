@@ -314,6 +314,7 @@ sPoint Base2D::Pos() {
     return _Pos;
 }
 
+
 // ---------------------------------------------------
 // Render Function
 // param in [x] - X Position in screencoords

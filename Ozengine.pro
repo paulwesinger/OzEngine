@@ -29,6 +29,7 @@ SOURCES += \
         plane3D/plane3D.cpp \
         projection/projection.cpp \
         shaders/shader.cpp \
+        signals/signal.cpp \
         skybox/skybox.cpp \
         sphere/sphere.cpp \
         textedit/textedit.cpp \
@@ -86,6 +87,7 @@ HEADERS += \
     plane3D/plane3D.h \
     projection/projection.h \
     shaders/shader.h \
+    signals/signal.h \
     skybox/skybox.h \
     sphere/sphere.h \
     textedit/textedit.h \

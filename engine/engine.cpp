@@ -103,6 +103,10 @@ void CEngine::Run() {
 // Place here Functons for button handler..
 // ---------------------------------------------------------------
 
+void CEngine::functoogleCheckBox() {
+
+
+}
 void CEngine::funcToogleSkybox() {
     if (renderSkybox) {
         renderSkybox = false;
@@ -218,6 +222,22 @@ void CEngine::initMenu(){
     // add label for Frames to buildin textrender label
     txtEdit->setLabel("FPS");
     setFramelabel(txtEdit->getTextPtr());
+    //MainMenu->addConatiner(con2);
+
+    //----------------------------------------------------
+    // checkbox
+    //----------------------------------------------------
+    p = con2->NextControllPos();
+
+    checkBox = new CheckBox(_ResX, _ResY, "images/ButtonReleased.png", p,s ,glm::vec4(0.79, 0.99, 1.0, 1.0) );
+    //txtEdit->setSize(s.w,s.h);
+    checkBox->setPos(p.x, p.y);
+    checkBox->setColor(glm::vec4(0.79, 0.99, 1.0, 1.0));
+    con2->addControll2D(checkBox);
+    curr_y = MainMenu->CurrentY();
+
+    // add label for Frames to buildin textrender label
+    checkBox->setLabel("CheckBox");
     MainMenu->addConatiner(con2);
 }
 
@@ -238,10 +258,14 @@ void CEngine::Init2D() {
   }
 
 void CEngine::Init3D(){
-    logEmptyLine();
-    loginfo("============================");
-    loginfo("Erstelle 3D Objekte.........");
-    loginfo("============================");
+
+
+   logEmptyLine();
+   loginfo("============================");
+   loginfo("Erstelle 3D Objekte.........");
+   loginfo("============================");
+
+
    fileUtil * fileutil = new fileUtil();
    bool ok;
    //--------------------------------------

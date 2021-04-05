@@ -18,9 +18,10 @@
 class CheckBox : public Base2D
 {
 public:
-    CheckBox();
+    CheckBox(int resx, int resy);
     CheckBox(int resx, int resy,sPoint p, sSize s, glm::vec4 labelcol);
     CheckBox(int resx, int resy,std::string path, sPoint p, sSize s, glm::vec4 labelcol);
+    ~CheckBox();
     void Render();
 
     void showLabel (bool show);
@@ -31,6 +32,7 @@ public:
 
 protected:
     TextRender * textLabel;
+    TextRender * _X;
     bool _Checked;
     bool _ShowLabel;
 private:

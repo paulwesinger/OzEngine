@@ -4,6 +4,7 @@
 #include "../textrenderer/textrender.h"
 #include "../controllcontainer/controllcontainer.h"
 #include "../buttons/button.h"
+#include "../checkbox/checkbox.h"
 #include "../base2d/base2d.h"
 #include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
@@ -38,6 +39,7 @@ public:
     void addConatiner( CControllContainer* con);
     void addButton(CControllContainer * con, CButton * btn);
     void addTextItem(CControllContainer * con, std::string text);
+  //  void addCheckBox(CControllContainer * con, CheckBox * cb);
 
     sPoint Pos();
     int Width();

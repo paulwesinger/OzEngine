@@ -6,6 +6,7 @@
 #include "../textrenderer/textrender.h"
 #include "../fileutils/fileutil.h"
 #include "../textedit/textedit.h"
+#include "../checkbox/checkbox.h"
 #include "../defines.h"
 #include "../defaults.h"
 #include <vector>
@@ -41,6 +42,7 @@ static CButton* butn2;
 static bool renderSkybox;
 
 
+
 class CEngine : public InitGL
 {
 public:
@@ -69,6 +71,7 @@ protected:
 
     static void funcFog();
     static void funcToogleSkybox();
+    static void functoogleCheckBox();
 
  private:
 
@@ -86,6 +89,8 @@ protected:
     // Menu controlls
     //----------------------------------------------------------------
     TextEdit * txtEdit;
+    CheckBox * checkBox;
+
     std::string &getValueItem(std::string &s, std::string erasestring);
     TextRender * textrenderer;
     fileUtil * fu;

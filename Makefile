@@ -6,7 +6,7 @@ skybox/skybox.cpp fileutils/fileutil.cpp objectclasses/object.cpp projection/pro
 plane3D/plane3D.cpp 3DLoader/load3ds.cpp textrenderer/textrender.cpp sphere/sphere.cpp \
 imageloader/loadimage.cpp buttons/button.cpp colors/colorscheme.cpp engine/engine.cpp\
 lights/light.cpp meshobject/meshobject.cpp objloader/objloader.cpp menu/menu.cpp \
-controllcontainer/controllcontainer.cpp cube/colorcube.cpp textedit/textedit.cpp
+controllcontainer/controllcontainer.cpp cube/colorcube.cpp textedit/textedit.cpp checkbox/checkbox.cpp signals/signal.h
 
 	 
 
@@ -18,7 +18,7 @@ LIB = -L/usr/lib64/ -lm -ldl -lSDL2 -lSDL2_image -lGL -lGLEW  -lfreetype -lIrrKl
 
 CC = /usr/bin/g++
 BIN = Test
-CFLAGS = -Wall -c 'sdl-config --cflags' -std=c++14 
+CFLAGS = -Wall -c 'sdl-config --cflags' -std=c++17
 LDFLAGS = -g
 OBJ= $(SRC)
 $(BIN):

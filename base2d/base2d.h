@@ -51,8 +51,9 @@ public:
 
     virtual void Render();
 
-
 protected:
+
+
     glm::vec4 _Color;
     glm::vec4 _DisableColor;
 
@@ -60,6 +61,7 @@ protected:
     sSize _Size;
 
     bool _Enable;
+
 private:
 
     int _ResX;
