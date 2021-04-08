@@ -134,8 +134,8 @@ void CEngine::Render(glm::mat4 cam) {
 void CEngine::initMenu(){
 
 
-    //                  |Resolution|  | Position  | | width,height, colors             |
-     MainMenu = new CMenu(_ResX, _ResY, _ResX-MENU_WIDTH, 0, MENU_HEIGHT, 900, glm::vec4(0.1,0.1,0.1,0.8), glm::vec4(0.9,0.9,0.9,1.0));
+    //                  |Resolution|  | Position           | width,height, colors             |
+     MainMenu = new CMenu(_ResX, _ResY, 0, 0, MENU_WIDTH, MENU_HEIGHT, glm::vec4(0.1,0.1,0.1,0.8), glm::vec4(0.9,0.9,0.9,1.0));
     // loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
 
     int curr_y;
@@ -147,16 +147,6 @@ void CEngine::initMenu(){
     con1 = new CControllContainer(MainMenu->Pos().x,
                                   MainMenu->Pos().y,
                                   MainMenu->Width(), 0);
-
-    /*
-    butn0 = new CTextButton(_ResX, _ResY,"images/darkgray.png",  "Fogjgjjg",con1->NextControllPos() );
-    butn0->setSize(BTN_WIDTH,BTN_HEIGHT);
-    butn0->setScale(TEXT::SCALE_SMALL);
-    butn0->setColor(BTN_ENABLE);
-    butn0->setDisablecolor(BTN_DISABLE);
-    butn0->AddHandler(FxFog);
-    con1->addButton(butn0);
-    */
 
     butn0 = new CImageButton(_ResX, _ResY,"images/ButtonReleased.png", "images/NewCube.png", con1->NextControllPos() );
     butn0->setSize(BTN_WIDTH,BTN_HEIGHT);

@@ -15,8 +15,8 @@
 
 // Res for windowed Mode
 
-#define SD_WIDTH    1920//1280.0f//1024
-#define SD_HEIGHT   1200//768.0f//768
+#define SD_WIDTH    1280.0f//1024
+#define SD_HEIGHT   768.0f//768
 #define FULLSCREEN_WIDTH  3840//1680.0f//1920.0f
 #define FULLSCREEN_HEIGHT 2160//1050.0f//1200.0f
 
@@ -360,44 +360,54 @@ bool InitGL::InitSDL2()  {
     loginfo("Num Display modes: " + IntToString(numDisplaymodes), "InitGL::Init");
 
     // Alle Display modes auflisten:
-    int currentdisplay = 0;
-    for (int i = 0; i < numDisplaymodes; i++ ) {
-        SDL_DisplayMode dpm;
-        SDL_GetDisplayMode(currentdisplay,i,&dpm);
-        std::string w = IntToString(dpm.w);
-        std::string h = IntToString(dpm.h);
-        std::string index =IntToString(i);
-        try {
 
-            // todo: Pixelformat auswerten
-            loginfo("Resolution Mode[" + index+ "] : " + w + "x" + h ,"InitGL::Init");
-        }
-        catch ( ...) {
-            logwarn("Konnte mode[" + index + "] nicht ermitteln");
-        }
 
-    }
+     for(int j = 0; j < SDL_GetNumVideoDisplays(); j++)
+     {
+        for (int i = 0; i < numDisplaymodes; i++ ) {
+            SDL_DisplayMode dpm;
+            SDL_GetDisplayMode(j,i,&dpm);
+            std::string w = IntToString(dpm.w);
+            std::string h = IntToString(dpm.h);
+            std::string index =IntToString(i);
+            try {
+
+                // todo: Pixelformat auswerten
+                loginfo("Display : " + IntToString(j) + "  Resolution Mode[" + index+ "] : " + w + "x" + h ,"InitGL::Init");
+            }
+            catch ( ...) {
+                logwarn("Konnte mode[" + index + "] nicht ermitteln");
+            }
+
+        }
+     }
     SDL_GetDesktopDisplayMode(0, &DesktopDisplayMode );
 
-    //_ResX = FULLSCREEN_WIDTH;
-    //_ResY = FULLSCREEN_HEIGHT;
+//    _ResX = FULLSCREEN_WIDTH;
+//    _ResY = FULLSCREEN_HEIGHT;
 
     if ( _FullScreen) {
 
+
         window = SDL_CreateWindow(
                 caption.c_str(),
-                0,//SDL_WINDOWPOS_UNDEFINED,
-                0,//SDL_WINDOWPOS_UNDEFINED,
+                0, //SDL_WINDOWPOS_UNDEFINED,
+                0, //SDL_WINDOWPOS_UNDEFINED,
                 _ResX,_ResY,
                 //SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_OPENGL
-                SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL
+                SDL_WINDOW_OPENGL
             );
+        SDL_SetWindowFullscreen(window,SDL_WINDOW_FULLSCREEN);
+
+//        int w,h;
+//        SDL_GL_GetDrawableSize(window,&w,&h);
+//        logwarn("Drawable size " +IntToString(w) + "  " + IntToString(h) );
 
     }
     else {
 
-            //_ResX = SD_WIDTH;
-            //_ResY = SD_HEIGHT;
+            _ResX = SD_WIDTH;
+            _ResY = SD_HEIGHT;
             window = SDL_CreateWindow(
                 caption.c_str(),
                 SDL_WINDOWPOS_UNDEFINED,
@@ -406,12 +416,12 @@ bool InitGL::InitSDL2()  {
                 SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
             );
 
-            glViewport(0,0,_ResX, _ResY);
-    }
+    glViewport(0,0,_ResX, _ResY);
+}
 
 
 
-    if ( window == NULL)  {
+    if ( window == nullptr)  {
         sdl_die("Konnte Fenster nicht erzeugen");
         return false;
     }
@@ -457,11 +467,11 @@ bool InitGL::InitSDL2()  {
 
 
     //if (_FullScreen)
-        SDL_SetWindowDisplayMode(window,&newDisplayMode);  // Only in fullscreen available
+    SDL_SetWindowDisplayMode(window,&newDisplayMode);  // Only in fullscreen available
 
      // Testweise Displaymode ermitteln
     SDL_DisplayMode current;
-    int error = SDL_GetCurrentDisplayMode(0, &current);
+    int error = SDL_GetCurrentDisplayMode(1, &current);
     if ( error == 0) {
        printf ("InitGL -- WindowSize:  %i x %i h \n",current.w,current.h);
     }
