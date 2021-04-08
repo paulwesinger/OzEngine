@@ -61,7 +61,7 @@ public:
     virtual void setScale(float s = 1.0f) = 0;
 
     //EventHandling
-    virtual void OnClick() = 0 ;  // Muss überschrieben werden !!!!
+    //virtual void OnClick() = 0 ;  // Muss überschrieben werden !!!!
     virtual void OnRelease() = 0;
     virtual void OnFocus();
 
@@ -113,7 +113,7 @@ protected:
     void releaseClick() override;
 
     void setPos(int x, int y) override;
-    void alignToSize(int w, int h);
+    void alignToSize(int w, int h) override;
 
     float _TextScale;
     TextRender * btnText;

@@ -81,6 +81,10 @@ void CheckBox::Render() {
 
 }
 
+void CheckBox::OnClick(){
+  setChecked();
+}
+
 TextRender* CheckBox::getLabelPtr(){
     return textLabel;
 }
@@ -94,13 +98,17 @@ void CheckBox::setLabel(std::string label) {
         textLabel->setText(0, label);
 }
 
-void CheckBox::setChecked(bool checked) {
-    _Checked = checked;
+void CheckBox::setChecked() {
+
+    _Checked = ! _Checked;
     if (_Checked )
         _X-> setText(0,"X");
     else
         _X->setText(0," ");
+}
 
+void CheckBox::AddHandler(FP Handler) {
+    clickFunc = Handler;
 }
 
 bool CheckBox::Checked() {

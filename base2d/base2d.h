@@ -50,6 +50,7 @@ public:
     virtual bool  intersect(int x, int y);
 
     virtual void Render();
+    virtual void OnClick();
 
 protected:
 

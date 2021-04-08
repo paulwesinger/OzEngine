@@ -93,10 +93,11 @@ void CButton::setPos(int x, int y){
 // -----------------------------------------------
 // Event Handling
 // -----------------------------------------------
+/*
 void CButton::OnClick() {
-    clickFunc();
+    //clickFunc();
 }  // Must be overwritten
-
+*/
 void CButton::OnRelease(){}
 
 void CButton::OnFocus() {

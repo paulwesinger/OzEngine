@@ -315,6 +315,10 @@ sPoint Base2D::Pos() {
 }
 
 
+
+void Base2D::OnClick(){}   // Im child überschreiben
+
+
 // ---------------------------------------------------
 // Render Function
 // param in [x] - X Position in screencoords

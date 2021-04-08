@@ -21,20 +21,24 @@ public:
     CheckBox(int resx, int resy);
     CheckBox(int resx, int resy,sPoint p, sSize s, glm::vec4 labelcol);
     CheckBox(int resx, int resy,std::string path, sPoint p, sSize s, glm::vec4 labelcol);
-    ~CheckBox();
-    void Render();
+    ~CheckBox() override;
+    void Render() override;
 
     void showLabel (bool show);
     void setLabel(std::string label);
-    void setChecked(bool checked);
+    void setChecked();
     TextRender * getLabelPtr();
     bool Checked();
+    void OnClick() override;
 
 protected:
     TextRender * textLabel;
     TextRender * _X;
     bool _Checked;
     bool _ShowLabel;
+    FP clickFunc;
+    void AddHandler(FP Handler);
+
 private:
     glm::vec4 _LabelTextColor;
 

@@ -1116,8 +1116,8 @@ void InitGL::OnLeftMouseButtonClick(int &x, int &y) {
             if ( ! MainMenu->containerList.at(i)->controlls2D.empty() ) {
                 for (uint j=0; j< MainMenu->containerList.at(i)->controlls2D.size(); j ++) {
                     if (MainMenu->containerList.at(i)->controlls2D.at(j)->intersect(m.x, m.y) ) {
-                        loginfo("InitGL::OnLeftButtonClick controll2D intersect at " + IntToString(j) );
-                                           }
+                        MainMenu->containerList.at(i)->controlls2D.at(j)->OnClick();
+                    }
                 }
             }
         }
