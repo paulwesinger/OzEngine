@@ -963,9 +963,13 @@ void InitGL::Run() {
 
                 glm::vec3 vt(0.001,0.002,0.003);
 
+                list3D[0]->Translate(camera->GetPos() + camera->GetDir());
+
                 if (_Animate) {
-                    list3D[i]->StepTranslate(vt);
-                    list3D[i]->StepRotate(rv);
+                    if (i > 0) {
+                        list3D[i]->StepTranslate(vt);
+                        list3D[i]->StepRotate(rv);
+                    }
                 }
 
 
