@@ -1,8 +1,8 @@
 Image: images/darkgray.png
 PositionX: 120
-PositionY: 90
+PositionY: 542
 SizeX: 120
-SizeY: 30
+SizeY: 20
 Enable: 1
 BGRed: 0.0
 BGGreen: 0.0

@@ -578,7 +578,20 @@ void InitGL::InitEngineObject() {
     sPoint p;
     p.x =   100;
     p.y =   400;
+
     textrender = new TextRender(_ResX, _ResY, p);
+    textrender->AddString("Das ist die 1. Zeile");
+    textrender->AddString("Das ist die 2. Zeile");
+    textrender->AddString("Das ist die 3. Zeile");
+
+    textrender->SetHasBottom(true);
+    textrender->SetHasHeader(true);
+    textrender->SetHasBackground(true);
+    textrender->SetHasTexture(true);
+    textrender->SetAlignRight(false);
+
+
+
     loginfo("Erstelle Shaders........");
     InitShaders();
     loginfo("..... done all");
@@ -698,8 +711,6 @@ void InitGL::Run() {
     vec3 steprotate;
     vec3 stepscale;
 
-    bool left = true;
-    bool up = true;
 
     steptrans  = vec3(0.0,-0.5,0.0);
     steprotate = vec3(0.5,0.8,0.0);
@@ -723,7 +734,7 @@ void InitGL::Run() {
     irrklang::vec3df position(23,70,200);
 
     // start the sound paused:
-    irrklang::ISound* snd = soundengine->play3D("sounds/media/explosion.wav", position, false, true);
+    irrklang::ISound* snd = soundengine->play3D("sounds/media/bell.wav", position, false, true);
 
     if (snd)
 
@@ -734,15 +745,7 @@ void InitGL::Run() {
        snd->setIsPaused(false); // unpause the sound
     }
 
-    textrender->AddString("Das ist die 1. Zeile");
-    textrender->AddString("Das ist die 2. Zeile");
-    textrender->AddString("Das ist die 3. Zeile");
 
-    textrender->SetHasBottom(true);
-    textrender->SetHasHeader(true);
-    textrender->SetHasBackground(true);
-    textrender->SetHasTexture(true);
-    textrender->SetAlignRight(false);
     //--------------------------------------------------
     // framerate berechene
     //--------------------------------------------------
@@ -844,10 +847,7 @@ void InitGL::Run() {
            case KEY_S:camera->MoveBackward(elapsed);break;
            case KEY_Down: camera ->PitchCameraDown(elapsed); break;
 
-            case KEY_Q: stopAnimation(); break;
-
-
-
+           case KEY_Q: stopAnimation(); break;
 
            // Key "C" und "T" sind für Color und Texture Shader
            case KEY_C: {

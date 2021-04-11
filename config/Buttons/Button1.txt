@@ -1,6 +1,6 @@
 Image: images/darkgray.png
 PositionX: 120
-PositionY: 40
+PositionY: 500
 SizeX: 120
 SizeY: 20
 Enable: 0
