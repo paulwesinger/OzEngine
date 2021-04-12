@@ -17,18 +17,10 @@
 #include "../shaders/shader.h"
 #include "../baseobject/baseobject.h"
 #include "../camera/camera.h"
+#include "../defines.h"
 
 
-typedef struct {
-    glm::vec3 vector;
-    glm::vec3 color;
-    glm::vec2 tex;
-} sVertexTexture ;
 
-typedef struct {
-    glm::vec3 vector;
-    glm::vec3 color;
-} sVertexColor;
 
 class CSphere  : public BaseObject {
 public:

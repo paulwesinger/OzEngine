@@ -17,6 +17,8 @@
 #include <vector>
 #include <string>
 
+#include <glm/glm.hpp>
+
 const int MAX_SCHEMES = 6;   // siehe COLOR_SCHEMES
 const std::string NO_FILE  = "NO FILE";
 
@@ -40,6 +42,18 @@ enum COLOR_Sheme {
 };
 
 typedef void (*FP)();  // Zeiger auf Funktion wird für eventhandling gebraucht
+
+typedef struct {
+    glm::vec3 vector;
+    glm::vec3 color;
+    glm::vec2 tex;
+} sVertexTexture ;
+
+typedef struct {
+    glm::vec3 vector;
+    glm::vec3 color;
+} sVertexColor;
+
 
 typedef struct {
  int x;

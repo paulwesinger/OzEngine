@@ -11,7 +11,6 @@
 #include "../imageloader/loadimage.h"
 #include "../vecmath/vecmath.h"
 
-#include "baseobject.h"
 
 BaseObject::BaseObject() {
     vec3 v = vec3(0.0,0.0,0.0);

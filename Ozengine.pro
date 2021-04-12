@@ -18,6 +18,7 @@ SOURCES += \
         fileutils/fileutil.cpp \
         imageloader/loadimage.cpp \
         initgl.cpp \
+        landscape/landscape.cpp \
         lights/light.cpp \
         logs/logs.cpp \
         main.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     include/ik_vec3d.h \
     include/irrKlang.h \
     initgl.h \
+    landscape/landscape.h \
     lights/light.h \
     logs/logs.h \
     menu/menu.h \

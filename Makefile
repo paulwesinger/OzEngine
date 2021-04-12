@@ -6,7 +6,8 @@ skybox/skybox.cpp fileutils/fileutil.cpp objectclasses/object.cpp projection/pro
 plane3D/plane3D.cpp 3DLoader/load3ds.cpp textrenderer/textrender.cpp sphere/sphere.cpp \
 imageloader/loadimage.cpp buttons/button.cpp colors/colorscheme.cpp engine/engine.cpp\
 lights/light.cpp meshobject/meshobject.cpp objloader/objloader.cpp menu/menu.cpp \
-controllcontainer/controllcontainer.cpp cube/colorcube.cpp textedit/textedit.cpp checkbox/checkbox.cpp signals/signal.h
+controllcontainer/controllcontainer.cpp cube/colorcube.cpp textedit/textedit.cpp checkbox/checkbox.cpp signals/signal.h \
+landscape/landscape.cpp
 
 	 
 
