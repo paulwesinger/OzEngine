@@ -1,5 +1,6 @@
 #include "engine.h"
 #include "../utils/utils.h"
+#include "../landscape/landscape.h"
 //#include "../defaults.h"
 /*
 
@@ -281,6 +282,19 @@ void CEngine::Init3D(){
    else
        logwarn("Fehler: Datei  < config/ColorCubes.cfg  > nicht gefunden !");
 
+
+   // --------------------------------------
+   // Landscape loading
+   //---------------------------------------
+   ok = fileutil->readLine(OBJECT3D_CFG + "Landscapes/Landscapes.cfg", object3DLandscapeList);
+   if (ok) {
+        if ( ! loadLandscape() )
+            logwarn("Fehler: Keine Landscape gefunden oder Fehler im Pfad!");
+   }
+   else
+       logwarn("Fehler: Datei  < config/Landscape.cfg  > nicht gefunden !");
+
+
    logEmptyLine() ;
    loginfo("----------------------------");
    loginfo(" Init 3D Objects ");
@@ -288,9 +302,87 @@ void CEngine::Init3D(){
    loginfo("----------------------------");
 }
 
+
+bool CEngine::loadLandscape() {
+    loginfo("Lade Datei |Landscapes.cfg|","CEngine::loadLandscapes");
+
+     // Liste mit Objekten abarbeiten :
+
+    if (object3DLandscapeList.empty() )
+        return false;
+
+    logwarn("Anzahl der Landscapes: " + IntToString(object3DLandscapeList.size()));
+
+    for (unsigned int i = 0; i < object3DLandscapeList.size(); i++) {
+
+         std::string path = OBJECT3D_CFG + "Landscapes/" + object3DLandscapeList[i];
+
+         loginfo("Erstelle Object: .......< " + path+ " >","Engine::loadLandscapes");
+
+         fileUtil * objreader = new fileUtil;
+         std::vector<std::string> objconfig;
+         objreader->readLine(path, objconfig);
+
+         if( ! objconfig.empty() ) {
+
+             sLandscape sLandscape;
+
+             if (initLandscape(sLandscape,objconfig)) {
+
+                 LandScape * obj = new LandScape();
+                 //obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
+                 if ( sLandscape.textures == "" )
+                     obj->SetHasTextures( false);
+                 else
+                     obj->SetHasTextures( true);
+
+                 obj->SetColor(glm::vec4(sLandscape.color.x, sLandscape.color.y, sLandscape.color.z, sLandscape.color.w));
+                 obj->Rotate(glm::vec3(sLandscape.trans.rotate.x, sLandscape.trans.rotate.y, sLandscape.trans.rotate.z) );
+                 obj->Translate(glm::vec3(sLandscape.trans.translate.x, sLandscape.trans.translate.y, sLandscape.trans.translate.z));
+                 obj->Scale(glm::vec3(sLandscape.trans.scale.x, sLandscape.trans.scale.y, sLandscape.trans.scale.z));
+                 obj->setPatchX(sLandscape.patchX);
+                 obj->setPatchZ(sLandscape.patchy);
+                 obj->setRasterX(sLandscape.rasterx);
+                 obj->setRasterZ(sLandscape.rastery);
+
+                 //----------------------------------------
+                 // Add textures , if we have some
+                 // ---------------------------------------
+                 bool texturesok;
+                 std::vector<std::string> images;
+
+                 std::string path = sLandscape.textures;
+                 if ( sLandscape.textures != "NONE" ) {
+                     fileUtil fu;
+
+                     texturesok =  fu.readLine(path, images);
+                     if (texturesok)
+                         obj->addTexture(images,"Engine::loadLandscape");
+                     else
+                         logwarn("Engine::loadScape :  konnte Textures nicht laden ! ","Engine::loadLandscape");
+                 }
+
+                 obj->init();
+
+                 loginfo("Landscape initialisisert ","CEngine::loadLandscape");
+                 add2List(obj,LIGHT_SHADER);
+             }
+             else
+                 logwarn("konnte Landscape nicht initialisieren !!", "CEngine::loadLandscpae" );
+                // Hier die neuen stringpart functions einbauen
+
+             logEmptyLine();
+             loginfo("Prepare for next Object: ","CEngine::init3D");
+
+        }
+    }
+    return true;
+}
+
+
 bool CEngine::loadTexturedCubes(){
 
-    loginfo("Lade Datei |TexCubes.cfg|","CEngine::Init3D");
+    loginfo("Lade Datei |TexCubes.cfg|","CEngine::loadTextureCubes");
 
      // Liste mit Objekten abarbeiten :
 
@@ -301,7 +393,7 @@ bool CEngine::loadTexturedCubes(){
 
          std::string path = OBJECT3D_CFG + "TexturedCubes/" + object3DTexturedList[i];
 
-         loginfo("Erstelle Object: .......< " + path+ " >","Engine::Init3D");
+         loginfo("Erstelle Object: .......< " + path+ " >","Engine::loadTexturedCubes");
 
          fileUtil * objreader = new fileUtil;
          std::vector<std::string> objconfig;
@@ -334,7 +426,6 @@ bool CEngine::loadTexturedCubes(){
                  std::vector<std::string> images;
 
                  std::string path = s3D.textures;
-
                  if ( s3D.textures != "NONE" ) {
                      fileUtil fu;
 
@@ -362,7 +453,7 @@ bool CEngine::loadTexturedCubes(){
 
 bool CEngine::loadColorCubes() {
 
-    loginfo("Lade Datei |ColorCubes.cfg|","CEngine::Init3D");
+    loginfo("Lade Datei |ColorCubes.cfg|","CEngine::loadColorCubes");
 
      // Liste mit Objekten abarbeiten :
 
@@ -494,6 +585,82 @@ void CEngine::loadButtons() {
 
 std::string &CEngine::getValueItem(std::string &s, std::string erasestring) {
     return s.erase(0,erasestring.length() ) ;
+}
+
+bool CEngine::initLandscape(sLandscape &ls, std::vector<std::string> &cfg){
+    if (cfg.size() >= CFG_3D_SIZE ) {
+
+        //+---------------------------------------------------------------------+
+        //+     VORGEHEN :                                                      |
+        //+     Liste abarbeiten, Teilstring bis " " ermitteln,                 |
+        //+     Variablen name = Teilstring --> 2. Teilstring in Wert wandeln   |
+        //+     und in der s3DStruct zuweisen                                   |
+        //+---------------------------------------------------------------------+
+
+        for (uint i = 0; i < cfg.size(); i++) {
+            std::vector<std::string> parts = split(cfg.at(i), SPACE);
+
+            if (parts.at(0) == "colorRed")
+                ls.color.x = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "colorGreen")
+                ls.color.y = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "colorBlue")
+                ls.color.z = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "colorAlpha")
+                ls.color.w = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "hasLight")
+                ls.hasLight = StringToInt(parts.at(1));
+
+            if (parts.at(0) == "textures")
+                ls.textures = parts.at(1);
+
+            if (parts.at(0) == "translateX")
+                ls.trans.translate.x = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "translateY")
+                ls.trans.translate.y = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "translateZ")
+                ls.trans.translate.z = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "rotateX")
+                ls.trans.rotate.x = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "rotateY")
+                ls.trans.rotate.y = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "rotateZ")
+                ls.trans.rotate.z = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "scaleX")
+                ls.trans.scale.x = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "scaleY")
+                ls.trans.scale.y = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "scaleZ")
+                ls.trans.scale.z = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "rasterZ")
+                ls.trans.rotate.z = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "rasterX")
+                ls.trans.scale.x = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "patchZ")
+                ls.trans.scale.y = StringToInt(parts.at(1));
+
+            if (parts.at(0) == "patchX")
+                ls.trans.scale.z = StringToInt(parts.at(1));
+        }
+        return true;
+
+    }
+    return false;
 }
 
 bool CEngine::init3DStruct(s3DStruct &d3s, std::vector<std::string> &cfg){

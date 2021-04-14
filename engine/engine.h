@@ -1,6 +1,8 @@
 #ifndef CENGINE_H
 #define CENGINE_H
 
+#include <vector>
+
 #include "../initgl.h"
 #include "../buttons/button.h"
 #include "../textrenderer/textrender.h"
@@ -9,7 +11,6 @@
 #include "../checkbox/checkbox.h"
 #include "../defines.h"
 #include "../defaults.h"
-#include <vector>
 #include "../controllcontainer/controllcontainer.h"
 #include "../menu/menu.h"
 
@@ -60,6 +61,7 @@ protected:
     std::vector<std::string> object2DList;
     std::vector<std::string> object3DTexturedList;
     std::vector<std::string> object3DColoredList;
+    std::vector<std::string> object3DLandscapeList;
 
 
     CControllContainer *con1;
@@ -79,12 +81,15 @@ protected:
     void Init2D();
     void Init3D();
     void initMenu();
+    void initLandscape();
 
     bool initButtonStruct(sButtonStruct & bs,std::vector<std::string> cfg);
     bool init3DStruct(s3DStruct & d3s, std::vector<std::string> &cfg);
+    bool initLandscape(sLandscape &ls, std::vector<std::string> &cfg);
 
     bool loadTexturedCubes();
     bool loadColorCubes();
+    bool loadLandscape();
     //----------------------------------------------------------------
     // Menu controlls
     //----------------------------------------------------------------

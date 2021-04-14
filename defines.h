@@ -213,5 +213,18 @@ typedef struct {
     FLOAT4 color;
     std::string textures;
 }s3DStruct;
+
+typedef  struct {
+    int patchX;
+    int patchy;
+    float rasterx;
+    float rastery;
+    std::string textures;
+    FLOAT4 color;
+    TRANSFORM trans;
+    bool hasLight;
+}sLandscape ;
+
+
 #endif /* DEFINES_H */
 

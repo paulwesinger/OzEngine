@@ -3,10 +3,15 @@
 
 #include <glm/glm.hpp>
 
+namespace BASE {
+    const glm::vec2 ZERO_VEC2(0.0);
+    const glm::vec3 ZERO_VEC3(0.0);
+    const glm::vec4 ZERO_VEC4(0.0);
+}
+
 namespace CONTROLL {
     const int HEIGHT = 40;
 };
-
 
 namespace BUTTON {
     const int X_MARGIN = 5;

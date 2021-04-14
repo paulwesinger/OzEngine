@@ -19,30 +19,67 @@ LandScape::LandScape(){
     _PatchX = TERRAIN::PATCH_X;
     _PatchZ = TERRAIN::PATCH_Z;
 
-    init();
+    //init();
 }
-LandScape::LandScape(float rasterx, float rastery){
+LandScape::LandScape(float rasterx, float rastery)
+    : BaseObject() {
     _RasterX = rasterx;
     _RasterZ = rastery;
 
     _PatchX = TERRAIN::PATCH_X;
     _PatchZ = TERRAIN::PATCH_Z;
 
-    init();
+    //init();
 }
 
-LandScape::LandScape(int patchx, int patchy, float rasterx, float rastery){
+LandScape::LandScape(int patchx, int patchy, float rasterx, float rastery)
+    :BaseObject(){
     _RasterX = rasterx;
     _RasterZ = rastery;
 
     _PatchX = patchx;
     _PatchZ = patchy;
 
-    init();
+    //init();
 }
+
+LandScape::LandScape(int patchx, int patchy, float rasterx, float rastery, vec3 color)
+    :BaseObject(BASE::ZERO_VEC3,BASE::ZERO_VEC3,BASE::ZERO_VEC3, glm::vec4(color,1.0)){
+
+    _RasterX = rasterx;
+    _RasterZ = rastery;
+
+    _PatchX = patchx;
+    _PatchZ = patchy;
+
+    //init();
+}
+
+void LandScape::setPatchX(int px) { _PatchX = px; }
+void LandScape::setPatchZ(int pz) { _PatchZ = pz; }
+void LandScape::setRasterZ(float rz) { _RasterZ = rz; }
+void LandScape::setRasterX(float rx) { _RasterX = rx; }
 
 void LandScape::Draw(Camera *cam) {
 
+
+
+    int modellocation = glGetUniformLocation(currentShader,"model");
+    int lightlocation = glGetUniformLocation(currentShader,"lightpos");
+    int lightcolorlocation = glGetUniformLocation(currentShader,"lightcolor");
+
+    if ( _Light != nullptr) {
+        glm::vec3 c =   _Light->getColor();
+        glm::vec3 p =   _Light->getPos();
+        glUniform3f(lightlocation,p.x,p.y,p.z);
+        glUniform3f(lightcolorlocation,c.x,c.y,c.z);
+    }
+    else {
+        glm::vec3 lightpos = vec3(-10.0,2.0,-5.0);
+        glm::vec3 lightcolor = glm::vec3( 0.0,1.0,0.0);
+        glUniform3f(lightlocation,lightpos.x,lightpos.y,lightpos.z);
+        glUniform3f(lightcolorlocation,lightcolor.x,lightcolor.y,lightcolor.z);
+    }
 }
 
 void LandScape::setUp() {
@@ -100,6 +137,7 @@ void LandScape::setUp() {
 
 void LandScape::init(){
 
+    loginfo("Create Landscape","Landscape::init");
     setUp();
 
     glGenVertexArrays(1,&_Vao);
@@ -122,4 +160,5 @@ void LandScape::init(){
     // Texture
     glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8 * sizeof(float), (void*)(6 *sizeof(float)));
     glEnableVertexAttribArray(2);
+    loginfo("Landscape ........ Done","Landscape::init");
 }

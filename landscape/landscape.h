@@ -9,6 +9,8 @@
 #include <vector>
 #include <string>
 
+
+#include "../baseobject/baseobject.h"
 #include "../defines.h"
 #include "../camera/camera.h"
 #include "../lights/light.h"
@@ -24,18 +26,28 @@ using namespace glm;
 */
 
 
-class LandScape
+class LandScape : public BaseObject
 {
 public:
     LandScape();
     LandScape(float rasterx, float rastey);
     LandScape(int patchx, int patchy, float rasterx, float rastey);
+    LandScape(int patchx, int patchy, float rasterx, float rastey, vec3 color);
+
+
     void Draw(Camera *cam);
+    // Object Loading:
+    // Patches resolution
+    void setPatchX(int px);
+    void setPatchZ(int pz);
+    // Raster margin
+    void setRasterX(float rx);
+    void setRasterZ(float rz);
+
+    void init();
 
 protected:
     uint _Vao, _Vbo,_Ebo;
-    void init();
-
 private:
     std::vector<sVertexTexture>  vertsTex;
     std::vector<sVertexColor> vertsCol;
@@ -47,6 +59,8 @@ private:
     int _PatchZ;
 
     void setUp();
+
+
 };
 
 #endif // LANDSCAPE_H
