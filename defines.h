@@ -216,9 +216,9 @@ typedef struct {
 
 typedef  struct {
     int patchX;
-    int patchy;
-    float rasterx;
-    float rastery;
+    int patchZ;
+    float rasterX;
+    float rasterZ;
     std::string textures;
     FLOAT4 color;
     TRANSFORM trans;

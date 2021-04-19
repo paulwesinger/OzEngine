@@ -47,8 +47,8 @@ namespace TEXT {
 namespace TERRAIN {
     //Defaults
     //Abstand zwischen den verts
-    const float RASTER_X = 100.0f;
-    const float RASTER_Z = 100.0f;
+    const float RASTER_X = 10.0f;
+    const float RASTER_Z = 10.0f;
 
     // Auflösung in x und y Richtung:
     const int PATCH_X = 32;

@@ -99,13 +99,13 @@ bool BaseObject::addTexture(std::vector<std::string> path, std::string obj) {
         else
             logwarn("Texture  nicht geladen !"," BaseObject::addTexture");
 
-        if ( ++ _CountTextures > MAX_TEXTURES ) {
+        if ( _CountTextures ++ > MAX_TEXTURES ) {
             logwarn( "No more Textures available ! MAX_TEXTURES = 5","BaseObject::addTextures");
             break;
         }
     }  // for
 
-    loginfo("addTexture :: _CountTextures: " + IntToString(_CountTextures),"Baseobjec::Init");
+    loginfo("addTexture :: _CountTextures: " + IntToString(_CountTextures-1),"Baseobjec::Init");
     if (_HasTextures)
         return true;
     return  false;

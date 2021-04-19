@@ -15,7 +15,7 @@
 #include "../logs/logs.h"
 using namespace std;
 
-const int MAXLINES = 10000;
+const int MAXLINES = 100;
 
 fileUtil::fileUtil() {
     clear();
@@ -78,7 +78,36 @@ int fileUtil::ParseToint(std::string line, std::string delString, std::string sp
 }
 
 bool fileUtil::readLine(string datei,std::vector<std::string> &lines) {
-    ifstream is(datei.c_str(),ifstream::in);
+    ifstream is;
+    string line;
+
+    is.open(datei.c_str());
+    if (is.is_open() ) {
+        int i = 0;
+        while (getline(is,line)) {
+           lines.push_back(line);
+           i++;
+        }
+        is.close();
+
+        loginfo("Loaded " + IntToString(i) + " entries","fileUtil :: readline" );
+        loginfo ("Reading Data from file " + datei + " ... done","fileUtil :: readLine");
+        logEmptyLine();
+
+        return  true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /*
     //vector<string> stringlist;
     int i =0;
     if ( is.is_open()) {
@@ -101,6 +130,7 @@ bool fileUtil::readLine(string datei,std::vector<std::string> &lines) {
         is.close();
         return true;
     }
+    */
     else {
         logwarn("Warning : Konnte Datei " + datei + " nicht öffnen","fileutil");
         return  false;

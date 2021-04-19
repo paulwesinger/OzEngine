@@ -18,8 +18,8 @@ Projection::Projection() {
     // Ortho
     _X          = 0.0f;
     _Y          = 0.0f;
-    _Width      = 1280.0f;
-    _Height     = 720.0f;
+    _Width      = 1920.0f;
+    _Height     = 1200.0f;
 
     _Perspective    = glm::perspective(_Fov, _Aspect,_NearPlane, _FarPlane);
     _Ortho          = glm::ortho(_X,_Y,_Width, _Height,  _NearPlane, _FarPlane );

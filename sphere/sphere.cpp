@@ -502,7 +502,6 @@ void CSphere::setUp() {
     glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8 * sizeof(float), (void*)(6 *sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    int highest = 0;
     for (GLushort i = 0; i < _CountPoints * 2 + 1; i ++) {
         northPol.push_back(i);
     }

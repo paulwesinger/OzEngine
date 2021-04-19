@@ -33,6 +33,7 @@ public:
     LandScape(float rasterx, float rastey);
     LandScape(int patchx, int patchy, float rasterx, float rastey);
     LandScape(int patchx, int patchy, float rasterx, float rastey, vec3 color);
+    ~LandScape();
 
 
     void Draw(Camera *cam);
@@ -48,9 +49,20 @@ public:
 
 protected:
     uint _Vao, _Vbo,_Ebo;
+    GLint           mv_location;
+    GLint           ortho_location;
+    GLint           color_location; // Farbe im vertex Shader
+
+    vec3           _Trans;
+    vec3           _Rotate;
+    vec3           _Scale;
+    vec4           _Color;
+
 private:
     std::vector<sVertexTexture>  vertsTex;
     std::vector<sVertexColor> vertsCol;
+
+    std::vector<ushort> indices;
 
     float _RasterX;
     float _RasterZ;

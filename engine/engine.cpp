@@ -313,6 +313,9 @@ bool CEngine::loadLandscape() {
 
     logwarn("Anzahl der Landscapes: " + IntToString(object3DLandscapeList.size()));
 
+
+
+
     for (unsigned int i = 0; i < object3DLandscapeList.size(); i++) {
 
          std::string path = OBJECT3D_CFG + "Landscapes/" + object3DLandscapeList[i];
@@ -325,25 +328,31 @@ bool CEngine::loadLandscape() {
 
          if( ! objconfig.empty() ) {
 
-             sLandscape sLandscape;
+             loginfo("objconfig size : " + IntToString(objconfig.size()),"Engine::loadLandScape");
 
-             if (initLandscape(sLandscape,objconfig)) {
+//             for (int i =0; i< objconfig.size(); i++) {
+ //                logimage("objconfig[" + IntToString(i)+ "] : " + objconfig[i] ,"Engine::loadLandscape");
+  //           }
+
+
+             sLandscape landscape;
+             if (initLandscape(landscape,objconfig)) {
 
                  LandScape * obj = new LandScape();
                  //obj->SetColor(glm::vec4(s3D.color.x, s3D.color.y, s3D.color.z, s3D.color.w));
-                 if ( sLandscape.textures == "" )
+                 if ( landscape.textures == "NONE" )
                      obj->SetHasTextures( false);
                  else
                      obj->SetHasTextures( true);
 
-                 obj->SetColor(glm::vec4(sLandscape.color.x, sLandscape.color.y, sLandscape.color.z, sLandscape.color.w));
-                 obj->Rotate(glm::vec3(sLandscape.trans.rotate.x, sLandscape.trans.rotate.y, sLandscape.trans.rotate.z) );
-                 obj->Translate(glm::vec3(sLandscape.trans.translate.x, sLandscape.trans.translate.y, sLandscape.trans.translate.z));
-                 obj->Scale(glm::vec3(sLandscape.trans.scale.x, sLandscape.trans.scale.y, sLandscape.trans.scale.z));
-                 obj->setPatchX(sLandscape.patchX);
-                 obj->setPatchZ(sLandscape.patchy);
-                 obj->setRasterX(sLandscape.rasterx);
-                 obj->setRasterZ(sLandscape.rastery);
+                 obj->SetColor(glm::vec4(landscape.color.x, landscape.color.y, landscape.color.z, landscape.color.w));
+                 obj->Rotate(glm::vec3(landscape.trans.rotate.x, landscape.trans.rotate.y, landscape.trans.rotate.z) );
+                 obj->Translate(glm::vec3(landscape.trans.translate.x, landscape.trans.translate.y, landscape.trans.translate.z));
+                 obj->Scale(glm::vec3(landscape.trans.scale.x, landscape.trans.scale.y, landscape.trans.scale.z));
+                 //obj->setPatchX(landscape.patchX);
+                 //obj->setPatchZ(landscape.patchZ);
+                 //obj->setRasterX(landscape.rasterX);
+                 //obj->setRasterZ(landscape.rasterZ);
 
                  //----------------------------------------
                  // Add textures , if we have some
@@ -351,11 +360,12 @@ bool CEngine::loadLandscape() {
                  bool texturesok;
                  std::vector<std::string> images;
 
-                 std::string path = sLandscape.textures;
-                 if ( sLandscape.textures != "NONE" ) {
+                 std::string path = landscape.textures;
+                 if ( landscape.textures != "NONE" ) {
                      fileUtil fu;
 
                      texturesok =  fu.readLine(path, images);
+
                      if (texturesok)
                          obj->addTexture(images,"Engine::loadLandscape");
                      else
@@ -645,17 +655,19 @@ bool CEngine::initLandscape(sLandscape &ls, std::vector<std::string> &cfg){
             if (parts.at(0) == "scaleZ")
                 ls.trans.scale.z = StringToFloat(parts.at(1));
 
-            if (parts.at(0) == "rasterZ")
-                ls.trans.rotate.z = StringToFloat(parts.at(1));
-
-            if (parts.at(0) == "rasterX")
-                ls.trans.scale.x = StringToFloat(parts.at(1));
-
-            if (parts.at(0) == "patchZ")
+            if (parts.at(0) == "patchX")
                 ls.trans.scale.y = StringToInt(parts.at(1));
 
-            if (parts.at(0) == "patchX")
+            if (parts.at(0) == "patchZ")
                 ls.trans.scale.z = StringToInt(parts.at(1));
+
+            if (parts.at(0) == "rasterX")
+                ls.rasterX = StringToFloat(parts.at(1));
+
+            if (parts.at(0) == "rasterZ")
+                ls.rasterZ = StringToFloat(parts.at(1));
+
+
         }
         return true;
 
