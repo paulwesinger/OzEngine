@@ -40,7 +40,7 @@ InitGL::InitGL (const std::string titel){
     lightSource = NULL;
     skybox  = NULL;
     base2d  = NULL;
-    land = nullptr;
+   // land = nullptr;
 
    // cockpit = NULL;
     textrender = NULL;
@@ -74,7 +74,7 @@ InitGL::~InitGL() {
 
     safeDelete(sphere1);
     safeDelete(lightSource);
-    safeDelete(land);
+    //safeDelete(land);
 
     if ( skybox != NULL)
         delete skybox;
@@ -648,7 +648,7 @@ void InitGL::InitEngineObject() {
     //-----------------------------------------
     // Landscape
     //-----------------------------------------
-    loginfo("Erstelle Landscape","InitGL::InitEngineObjects");
+/*    loginfo("Erstelle Landscape","InitGL::InitEngineObjects");
     land = new LandScape();
 
 
@@ -659,7 +659,7 @@ void InitGL::InitEngineObject() {
     else
         logwarn("Init::Sphere1 konnte Textures nicht laden ! ","InitGL::InitEngineObjects::Landscape::addTexture");
 
-
+*/
 
 }
 
@@ -963,7 +963,7 @@ void InitGL::Run() {
 
         // Landscape
 
-        land->Draw(camera);
+        //land->Draw(camera);
 
 
         // ===================================
@@ -982,7 +982,7 @@ void InitGL::Run() {
             for (unsigned int i=0;i < list3D.size(); i++ ) {
                 dummy = vec3(1.0 * (float) i ,2.0,3.0);
                 list3D[i]->SetProjection(projection->GetPerspective());
-                //list3D[i]->setActiveShader(LIGHT_SHADER);
+                ////list3D[i]->setActiveShader(LIGHT_SHADER);
 
 
                 float hlp = 0.1; //(float) (i+1);

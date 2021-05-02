@@ -138,20 +138,7 @@ void LandScape::Draw(Camera *cam) {
         Model = glm::translate(Model,GetTranslate());
     }
 
-  //  Model = glm::scale(Model,GetScale());
-
-
- //   if (_IsOrtho) {
- //       glm::mat4 view = glm::lookAt(vec3(0.0f,0.0f,0.1f),glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(0.0f, 1.0f, 0.0f));
- //       glm::mat4 mvp =  GetProjection() * view * Model;
- //       glUniformMatrix4fv(ortho_location, 1, GL_FALSE, glm::value_ptr(mvp));
- //}
- //   else {
- //      glm::mat4 mvp =  GetProjection() * cam ->GetView() *  Model;
- //      glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mvp));
- //   }
-
-    // -----------------------------------------
+      // -----------------------------------------
     // Lightning
     // -----------------------------------------
     glUniformMatrix4fv(modellocation, 1, GL_FALSE, glm::value_ptr(Model));
@@ -207,7 +194,7 @@ void LandScape::Draw(Camera *cam) {
 
 void LandScape::setUp() {
 
-    float y = 0.0f;
+    float y = -10.0f;
     sVertexTexture vt;
     sVertexColor vc;
 

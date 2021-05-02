@@ -140,7 +140,7 @@ protected:
     CSphere *sphere1;
     CSphere *lightSource;   // Damit wir wissen wo die ichtquekke wirjkich  ist
 
-    LandScape * land;
+    //LandScape * land;
 
     Base2D * base2d;
     Camera * camera;  // = View !!
