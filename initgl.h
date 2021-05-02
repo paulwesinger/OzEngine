@@ -28,6 +28,7 @@
 #include "cube/colorcube.h"
 #include "sphere/sphere.h"
 #include "skybox/skybox.h"
+#include "landscape/landscape.h"
 #include "base2d/base2d.h"
 #include "camera/camera.h"
 #include "defines.h"
@@ -138,6 +139,8 @@ protected:
 
     CSphere *sphere1;
     CSphere *lightSource;   // Damit wir wissen wo die ichtquekke wirjkich  ist
+
+    LandScape * land;
 
     Base2D * base2d;
     Camera * camera;  // = View !!

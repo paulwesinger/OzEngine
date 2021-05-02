@@ -330,9 +330,9 @@ bool CEngine::loadLandscape() {
 
              loginfo("objconfig size : " + IntToString(objconfig.size()),"Engine::loadLandScape");
 
-//             for (int i =0; i< objconfig.size(); i++) {
- //                logimage("objconfig[" + IntToString(i)+ "] : " + objconfig[i] ,"Engine::loadLandscape");
-  //           }
+             for (int i =0; i< objconfig.size(); i++) {
+                 logimage("objconfig[" + IntToString(i)+ "] : " + objconfig[i] ,"Engine::loadLandscape");
+             }
 
 
              sLandscape landscape;
@@ -345,10 +345,15 @@ bool CEngine::loadLandscape() {
                  else
                      obj->SetHasTextures( true);
 
-                 obj->SetColor(glm::vec4(landscape.color.x, landscape.color.y, landscape.color.z, landscape.color.w));
-                 obj->Rotate(glm::vec3(landscape.trans.rotate.x, landscape.trans.rotate.y, landscape.trans.rotate.z) );
-                 obj->Translate(glm::vec3(landscape.trans.translate.x, landscape.trans.translate.y, landscape.trans.translate.z));
-                 obj->Scale(glm::vec3(landscape.trans.scale.x, landscape.trans.scale.y, landscape.trans.scale.z));
+                 //obj->SetColor(glm::vec4(landscape.color.x, landscape.color.y, landscape.color.z, landscape.color.w));
+                 //obj->Rotate(glm::vec3(landscape.trans.rotate.x, landscape.trans.rotate.y, landscape.trans.rotate.z) );
+                 //obj->Translate(glm::vec3(landscape.trans.translate.x, landscape.trans.translate.y, landscape.trans.translate.z));
+                 //obj->Scale(glm::vec3(landscape.trans.scale.x, landscape.trans.scale.y, landscape.trans.scale.z));
+                 obj->SetColor(glm::vec4(0.0,1.0,0.0,1.0));
+                 obj->Rotate(BASE::ZERO_VEC3);
+                 obj->Translate( BASE::ZERO_VEC3);
+                 obj->Scale(glm::vec3(1.0,1.0,1.0));
+
                  //obj->setPatchX(landscape.patchX);
                  //obj->setPatchZ(landscape.patchZ);
                  //obj->setRasterX(landscape.rasterX);

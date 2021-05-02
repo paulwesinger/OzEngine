@@ -111,8 +111,6 @@ void LandScape::Draw(Camera *cam) {
     int projectionloc = glGetUniformLocation(currentShader,"projection");
     int viewloc = glGetUniformLocation(currentShader,"view");
 
-    color_location = glGetUniformLocation(currentShader,"triangleColor");
-    ortho_location = glGetUniformLocation(currentShader,"orthomatrix");
 
     // Model  Lightning
     int modellocation = glGetUniformLocation(currentShader,"model");
@@ -122,25 +120,42 @@ void LandScape::Draw(Camera *cam) {
 
     glUniform4f(color_location,_Color.r,_Color.g, _Color.b, _Color.a);
     //Model matrix : an identity matrix (model will be at the origin)
-    // (reset..)
     glm::mat4 Model= glm::mat4(1.0f);
 
-    // Transform
-    Model = glm::rotate(Model, radians(GetRotate().x),vec3(1.0,0.0,0.0));
-    Model = glm::rotate(Model, radians(GetRotate().y),vec3(0.0,1.0,0.0));
-    Model = glm::rotate(Model, radians(GetRotate().z),vec3(0.0,0.0,1.0));
-    Model = glm::translate(Model,GetTranslate());
-    Model = glm::scale(Model,GetScale());
+    if (  GetFirstTranslate() ) {
+
+        Model = glm::translate(Model,GetTranslate());
+        //printf ( "Cube::Draw glm::translate :  %f, %f ,%f \n",GetTranslate().x,GetTranslate().y,GetTranslate().z);
+        Model = glm::rotate(Model, radians(GetRotate().x),vec3(1.0,0.0,0.0));
+        Model = glm::rotate(Model, radians(GetRotate().y),vec3(0.0,1.0,0.0));
+        Model = glm::rotate(Model, radians(GetRotate().z),vec3(0.0,0.0,1.0));
+    }
+    else {
+        Model = glm::rotate(Model, radians(GetRotate().x),vec3(1.0,0.0,0.0));
+        Model = glm::rotate(Model, radians(GetRotate().y),vec3(0.0,1.0,0.0));
+        Model = glm::rotate(Model, radians(GetRotate().z),vec3(0.0,0.0,1.0));
+
+        Model = glm::translate(Model,GetTranslate());
+    }
+
+  //  Model = glm::scale(Model,GetScale());
 
 
+ //   if (_IsOrtho) {
+ //       glm::mat4 view = glm::lookAt(vec3(0.0f,0.0f,0.1f),glm::vec3(0.0f,0.0f,-1.0f),glm::vec3(0.0f, 1.0f, 0.0f));
+ //       glm::mat4 mvp =  GetProjection() * view * Model;
+ //       glUniformMatrix4fv(ortho_location, 1, GL_FALSE, glm::value_ptr(mvp));
+ //}
+ //   else {
+ //      glm::mat4 mvp =  GetProjection() * cam ->GetView() *  Model;
+ //      glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mvp));
+ //   }
 
-    glm::mat4 mvp =  GetProjection() * cam ->GetView() *  Model;
-    glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mvp));
-
-
+    // -----------------------------------------
+    // Lightning
+    // -----------------------------------------
     glUniformMatrix4fv(modellocation, 1, GL_FALSE, glm::value_ptr(Model));
 
-    // add light
     if ( _Light != nullptr) {
         glm::vec3 c =   _Light->getColor();
         glm::vec3 p =   _Light->getPos();
@@ -155,28 +170,44 @@ void LandScape::Draw(Camera *cam) {
     }
 
 
+    glFrontFace(GL_CCW);
+   // glUniformMatrix4fv(projectionloc,1,GL_FALSE,glm::value_ptr(GetProjection()));
+   //glUniformMatrix4fv(viewloc,1,GL_FALSE,glm::value_ptr(cam->GetView()));
+   //   glm::mat4 mvp = GetProjection() * cam->GetView() * Model;
+
+
+
+
     glUniformMatrix4fv(projectionloc,1,GL_FALSE,glm::value_ptr(GetProjection()));
     glUniformMatrix4fv(viewloc,1,GL_FALSE,glm::value_ptr(cam->GetView()));
+
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D,_Textures[1]);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, _Textures[0]);
 
+
+    glPointSize(8.0);
     glBindVertexArray(_Vao);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Vbo);
-    glDrawElements( GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_SHORT, 0);//GL_TRIANGLES
+    glBindBuffer(GL_ARRAY_BUFFER, _Vbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo);
+
+    glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_SHORT, nullptr);
+
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindTexture(GL_TEXTURE_2D,0);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(0);
 
+
+
 }
 
 void LandScape::setUp() {
 
-    float y = 10.0f;
+    float y = 0.0f;
     sVertexTexture vt;
     sVertexColor vc;
 
@@ -215,11 +246,11 @@ void LandScape::setUp() {
             vc.vector = vt.vector;
 
             // -------------------------------------------------------
-            // Color
+            // Color  (Normals)
             // -------------------------------------------------------
-            vt.color.r = 1.0f;
+            vt.color.r = 0.0f;
             vt.color.g = 1.0f;
-            vt.color.b = 1.0f;
+            vt.color.b = 0.0f;
 
             vc.color = vt.color;
 
@@ -231,6 +262,8 @@ void LandScape::setUp() {
 
             vertsTex.push_back(vt);
             vertsCol.push_back(vc);
+
+
         }
     }
 }
@@ -246,10 +279,21 @@ void LandScape::init(){
     loginfo("size of List " + IntToString(vertsTex.size()) ,"Landscape::init");
 
 
+    for (int i = 0; i < 900; i++) {
+        logimage("_VBO.x [" + IntToString(i) + "]  " + FloatToString(vertsTex[i].vector.x) );
+        logimage("_VBO.y [" + IntToString(i) + "]  " + FloatToString(vertsTex[i].vector.y) );
+        logimage("_VBO.y [" + IntToString(i) + "]  " + FloatToString(vertsTex[i].vector.z) );
+        logEmptyLine();
+    }
+
+
     glGenVertexArrays(1,&_Vao);
-    glBindVertexArray(_Vao);
     // Vertex Buffer
     glGenBuffers(1,&_Vbo);
+    glGenBuffers(1,&_Ebo);
+
+    glBindVertexArray(_Vao);
+
     glBindBuffer(GL_ARRAY_BUFFER, _Vbo);
     glBufferData(GL_ARRAY_BUFFER,
                  vertsTex.size() * sizeof(sVertexTexture),
@@ -257,14 +301,15 @@ void LandScape::init(){
                  GL_DYNAMIC_DRAW);
 
 
+
     // Vertex
-    glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, 8*sizeof(float),(void*)0);
+    glVertexAttribPointer(0,3,GL_FLOAT, GL_TRUE, 8*sizeof(float),(void*)0);
     glEnableVertexAttribArray(0);
     //Color
-    glVertexAttribPointer(1,3,GL_FLOAT, GL_FALSE, 8*sizeof(float),(void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1,3,GL_FLOAT, GL_TRUE, 8*sizeof(float),(void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     // Texture
-    glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8 * sizeof(float), (void*)(6 *sizeof(float)));
+    glVertexAttribPointer(2,2,GL_FLOAT,GL_TRUE,8 * sizeof(float), (void*)(6 *sizeof(float)));
     glEnableVertexAttribArray(2);
 
     // -----------------------------------------
@@ -273,23 +318,30 @@ void LandScape::init(){
     // -------------------------------------
     // Sphere body
     //--------------------------------------
-    int x = 0;
-    int rasterX = static_cast<int>(_RasterX) ;
-    int hlp = rasterX;
+    GLushort x = 0;
+    GLushort patchx = static_cast<GLushort>(_PatchX) ;
+    GLushort hlp = static_cast<GLushort>(_PatchZ);
 
     ushort i, j;
 
-    for (j = 0; j < rasterX-1; j++) {  // -3
+    for (j = 0; j < _PatchX-1; j++) {  // -3
 
-        for (i= 0; i < hlp; i++){
+        for (i= 0; i < hlp-1; i++){
             indices.push_back(i +  x);
-            indices.push_back(i+x+rasterX);
+            indices.push_back(i+x+patchx);
         }
 
-        x += rasterX;
+        x += patchx;
     }
 
-    glGenBuffers(1,&_Ebo);
+    for (int i = 0; i < 900; i++) {
+        logimage("_Ebo.x [" + IntToString(i) + "]  " + IntToString(indices[i]) );
+        if ((i | 32) == 0)
+            logEmptyLine();
+
+    }
+
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
                  indices.size() * sizeof(GLushort),
@@ -299,5 +351,7 @@ void LandScape::init(){
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindBuffer(GL_ARRAY_BUFFER,0);
     glBindVertexArray(0);
+
+    loginfo("Sizeof Indicis " + IntToString(indices.size()) ,"Landscape::init");
     loginfo("Landscape ........ Done","Landscape::init");
 }

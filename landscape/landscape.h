@@ -14,6 +14,7 @@
 #include "../defines.h"
 #include "../camera/camera.h"
 #include "../lights/light.h"
+#include "../shaders/shader.h"
 
 using namespace glm;
 
@@ -57,6 +58,7 @@ protected:
     vec3           _Rotate;
     vec3           _Scale;
     vec4           _Color;
+    Shader *       _Shader;
 
 private:
     std::vector<sVertexTexture>  vertsTex;

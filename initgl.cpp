@@ -40,6 +40,8 @@ InitGL::InitGL (const std::string titel){
     lightSource = NULL;
     skybox  = NULL;
     base2d  = NULL;
+    land = nullptr;
+
    // cockpit = NULL;
     textrender = NULL;
    // soundengine = NULL;
@@ -72,6 +74,7 @@ InitGL::~InitGL() {
 
     safeDelete(sphere1);
     safeDelete(lightSource);
+    safeDelete(land);
 
     if ( skybox != NULL)
         delete skybox;
@@ -641,6 +644,23 @@ void InitGL::InitEngineObject() {
     cubeimages.clear();
 
     loginfo("Done 3D Objects .............");
+
+    //-----------------------------------------
+    // Landscape
+    //-----------------------------------------
+    loginfo("Erstelle Landscape","InitGL::InitEngineObjects");
+    land = new LandScape();
+
+
+    cubeimages.clear();
+    texturesok =  fu.readLine("config/cube2textures.cfg",cubeimages);
+    if (texturesok)
+        land->addTexture(cubeimages,"InitGL::Landscape");
+    else
+        logwarn("Init::Sphere1 konnte Textures nicht laden ! ","InitGL::InitEngineObjects::Landscape::addTexture");
+
+
+
 }
 
 // --------------------------------------------
@@ -941,6 +961,11 @@ void InitGL::Run() {
         sphere1->Draw(camera);
         lightSource->Draw(camera);
 
+        // Landscape
+
+        land->Draw(camera);
+
+
         // ===================================
         // Das beste zum Schluss : Skybox
         // ===================================
@@ -957,19 +982,21 @@ void InitGL::Run() {
             for (unsigned int i=0;i < list3D.size(); i++ ) {
                 dummy = vec3(1.0 * (float) i ,2.0,3.0);
                 list3D[i]->SetProjection(projection->GetPerspective());
+                //list3D[i]->setActiveShader(LIGHT_SHADER);
+
 
                 float hlp = 0.1; //(float) (i+1);
                 glm::vec3 rv(hlp * 0.5);
 
                 glm::vec3 vt(0.001,0.002,0.003);
 
-                list3D[0]->Translate(camera->GetPos() + camera->GetDir());
+                //list3D[0]->Translate(camera->GetPos() + camera->GetDir());
 
                 if (_Animate) {
-                    if (i > 0) {
+                  //  if (i > 0) {
                         list3D[i]->StepTranslate(vt);
                         list3D[i]->StepRotate(rv);
-                    }
+                   // }
                 }
 
 
@@ -977,6 +1004,7 @@ void InitGL::Run() {
                 vt.y =0.0;
                 vt.z =0.0;
 
+               // list3D[i]->setActiveShader(ShaderType::);
                 list3D[i]->Draw(camera);
 
             }
