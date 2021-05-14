@@ -1000,9 +1000,9 @@ void InitGL::Run() {
                 }
 
 
-                vt.x =0.01;
-                vt.y =0.0;
-                vt.z =0.0;
+                //vt.x =0.01;
+                //vt.y =0.0;
+                //vt.z =0.0;
 
                // list3D[i]->setActiveShader(ShaderType::);
                 list3D[i]->Draw(camera);
