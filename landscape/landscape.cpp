@@ -19,15 +19,6 @@ LandScape::LandScape()
     _RasterZ = TERRAIN::RASTER_Z;
     _PatchX = TERRAIN::PATCH_X;
     _PatchZ = TERRAIN::PATCH_Z;
-
-    float radians = glm::radians(45.0f);
-    float aspect = 4.0f / 3.0f;
-    float near= 0.1f ;
-    float far = 100.0f;
-    glm::mat4 pro = glm::perspective(radians,aspect,near,far); //Standard
-    SetProjection(pro);
-
-    //init();
 }
 LandScape::LandScape(float rasterx, float rastery)
     : BaseObject() {
@@ -36,17 +27,6 @@ LandScape::LandScape(float rasterx, float rastery)
 
     _PatchX = TERRAIN::PATCH_X;
     _PatchZ = TERRAIN::PATCH_Z;
-
-    float radians = glm::radians(45.0f);
-    float aspect = 4.0f / 3.0f;
-    float near= 0.1f ;
-    float far = 1000.0f;
-    glm::mat4 pro = glm::perspective(radians,aspect,near,far); //Standard
-
-
-    SetProjection(pro);
-
-    //init();
 }
 
 LandScape::LandScape(int patchx, int patchy, float rasterx, float rastery)
@@ -56,15 +36,6 @@ LandScape::LandScape(int patchx, int patchy, float rasterx, float rastery)
 
     _PatchX = patchx;
     _PatchZ = patchy;
-
-    float radians = glm::radians(45.0f);
-    float aspect = 4.0f / 3.0f;
-    float near= 0.1f ;
-    float far = 100.0f;
-    glm::mat4 pro = glm::perspective(radians,aspect,near,far); //Standard
-    SetProjection(pro);
-
-    //init();
 }
 
 LandScape::LandScape(int patchx, int patchy, float rasterx, float rastery, vec3 color)
@@ -75,15 +46,6 @@ LandScape::LandScape(int patchx, int patchy, float rasterx, float rastery, vec3 
 
     _PatchX = patchx;
     _PatchZ = patchy;
-
-    float radians = glm::radians(45.0f);
-    float aspect = 4.0f / 3.0f;
-    float near= 0.1f ;
-    float far = 100.0f;
-    glm::mat4 pro = glm::perspective(radians,aspect,near,far); //Standard
-    SetProjection(pro);
-
-    //init();
 }
 
 LandScape::~LandScape(){
