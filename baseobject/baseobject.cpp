@@ -53,6 +53,7 @@ void BaseObject::init( ) {
     _AlphaColor.b = 0.0;
 
     _DrawMode = GL_TRIANGLE_STRIP;
+    _HasAnimation = false;
 }
 
 void BaseObject::Draw(Camera * cam){}
@@ -149,8 +150,6 @@ void BaseObject::setActiveShader(ShaderType t){
      _rotate_step = step;
      _rotate += step;
      checkdegree(_rotate);
-
-
  }
  void BaseObject::StepTranslate(vec3 step)  { _trans_step = step; _translate += step; }
  void BaseObject::StepScale(vec3 step)      { _scale_step = step; _scale += step;  }

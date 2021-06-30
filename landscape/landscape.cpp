@@ -87,7 +87,6 @@ void LandScape::Draw(Camera *cam) {
     if (  GetFirstTranslate() ) {
 
         Model = glm::translate(Model,GetTranslate());
-        //printf ( "Cube::Draw glm::translate :  %f, %f ,%f \n",GetTranslate().x,GetTranslate().y,GetTranslate().z);
         Model = glm::rotate(Model, radians(GetRotate().x),vec3(1.0,0.0,0.0));
         Model = glm::rotate(Model, radians(GetRotate().y),vec3(0.0,1.0,0.0));
         Model = glm::rotate(Model, radians(GetRotate().z),vec3(0.0,0.0,1.0));
@@ -96,7 +95,6 @@ void LandScape::Draw(Camera *cam) {
         Model = glm::rotate(Model, radians(GetRotate().x),vec3(1.0,0.0,0.0));
         Model = glm::rotate(Model, radians(GetRotate().y),vec3(0.0,1.0,0.0));
         Model = glm::rotate(Model, radians(GetRotate().z),vec3(0.0,0.0,1.0));
-
         Model = glm::translate(Model,GetTranslate());
     }
 
@@ -118,24 +116,15 @@ void LandScape::Draw(Camera *cam) {
         glUniform3f(lightcolorlocation,lightcolor.x,lightcolor.y,lightcolor.z);
     }
 
-
     glFrontFace(GL_CCW);
-   // glUniformMatrix4fv(projectionloc,1,GL_FALSE,glm::value_ptr(GetProjection()));
-   //glUniformMatrix4fv(viewloc,1,GL_FALSE,glm::value_ptr(cam->GetView()));
-   //   glm::mat4 mvp = GetProjection() * cam->GetView() * Model;
-
-
-
 
     glUniformMatrix4fv(projectionloc,1,GL_FALSE,glm::value_ptr(GetProjection()));
     glUniformMatrix4fv(viewloc,1,GL_FALSE,glm::value_ptr(cam->GetView()));
-
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D,_Textures[1]);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, _Textures[0]);
-
 
     glPointSize(8.0);
     glBindVertexArray(_Vao);
@@ -144,14 +133,10 @@ void LandScape::Draw(Camera *cam) {
 
     glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_SHORT, nullptr);
 
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
     glBindTexture(GL_TEXTURE_2D,0);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(0);
-
-
-
 }
 
 void LandScape::setUp() {

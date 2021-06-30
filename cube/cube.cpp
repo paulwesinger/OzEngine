@@ -143,7 +143,7 @@ static const GLchar *orthofs_source = {
     "in vec2 TexCoords;                         \n"
     "out vec4 color;                            \n"
     "uniform sampler2D texture1;                 \n"
-
+#include <glm/glm.hpp>
     "void main()                                \n"
     "{                                          \n"
     "    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(texture1, TexCoords).r); \n"
@@ -158,7 +158,7 @@ CCube::CCube()  :BaseObject() {
    float radians = glm::radians(45.0f);
    float aspect = 4.0f / 3.0f;
    float near= 0.1f ;
-   float far = 100.0f;
+   float far = 10000.0f;
    glm::mat4 pro = glm::perspective(radians,aspect,near,far); //Standard
    SetProjection(pro);
    Init();
@@ -263,26 +263,6 @@ void CCube::addLight(light *l) {
    BaseObject::addLight(l);
 }
 
-void CCube::Calc( float roty,float trans_x) {
-
-    _Rotate.y += _rotate.y;
-    if (_Rotate.y >= 360 ) {
-        float diff = _Rotate.y -360;
-        _Rotate.y = diff;
-    }
-
-    if ( left) {
-        _Trans.x += trans_x;
-        if ( _Trans.x > 2 )
-            left = false;
-    }
-    if ( ! left ) {
-        _Trans.x -= trans_x;
-        if (_Trans.x < -2)
-            left = true;
-    }
-    // printf("Rotate Y  %f\n" ,_Rotate_Y );
-}
 
 void CCube::SetColor( vec4 color){
     _Color = color;

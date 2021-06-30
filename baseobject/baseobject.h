@@ -73,6 +73,8 @@ public:
 
 
 protected:
+    bool _HasAnimation; // Flag für abgeleitete Objekte
+
     GLuint      perspectiveTextureShader,
                 perspectiveColorShader,
                 lightshader,

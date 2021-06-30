@@ -757,7 +757,7 @@ void InitGL::Run() {
     irrklang::ISound* snd = soundengine->play3D("sounds/media/bell.wav", position, false, true);
 
     if (snd)
-
+;
     {
        irrklang::vec3df velPerSecond(0,0,0);    // only relevant for doppler effects
        snd ->setVolume( 100);

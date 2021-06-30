@@ -28,7 +28,6 @@ public:
     CCube(vec3 origin , vec4 color, glm::mat4 pro);
     virtual ~CCube();
     virtual void Draw( Camera * cam);
-    virtual void Calc(float roty,float trans_x); // Check for Arguments
     virtual void SetColor(vec4 color);
 
     void Init();

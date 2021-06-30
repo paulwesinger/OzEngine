@@ -5,6 +5,7 @@ CONFIG -= qt
 
 SOURCES += \
         3DLoader/load3ds.cpp \
+        Animate/animate.cpp \
         base2d/base2d.cpp \
         baseobject/baseobject.cpp \
         buttons/button.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
 
 HEADERS += \
     3DLoader/load3ds.h \
+    Animate/animate.h \
     base2d/base2d.h \
     baseobject/baseobject.h \
     buttons/button.h \
