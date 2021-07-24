@@ -172,4 +172,7 @@ void BaseObject::setActiveShader(ShaderType t){
  void BaseObject::setDrawMode(GLuint mode) {
     _DrawMode = mode;
  }
+ bool BaseObject::HasAnimation() {
+     return _HasAnimation;
+ }
 

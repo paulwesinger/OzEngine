@@ -36,6 +36,7 @@ public:
     virtual vec3 GetTranslate();
     virtual vec3 GetRotate();
     virtual vec3 GetScale();
+    virtual bool HasAnimation();
 
     virtual vec4 GetColor();
     virtual void Draw( Camera * cam);

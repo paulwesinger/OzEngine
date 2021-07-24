@@ -17,10 +17,11 @@
 #include "../camera/camera.h"
 #include "../shaders/shader.h"
 #include "../lights/light.h"
+#include "../Animate/animate.h"
 
 using namespace glm;
 
-class CCube : public BaseObject {
+class CCube : public Animate {
 public:
     CCube();
     CCube(const CCube& orig,glm::mat4 pro);

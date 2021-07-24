@@ -2,27 +2,6 @@
 #include "../utils/utils.h"
 #include "../landscape/landscape.h"
 //#include "../defaults.h"
-/*
-
-#include <stdio.h>
-#include <usb.h>
-main(){
-    struct usb_bus *bus;
-    struct usb_device *dev;
-    usb_init();
-    usb_find_busses();
-    usb_find_devices();
-    for (bus = usb_busses; bus; bus = bus->next)
-        for (dev = bus->devices; dev; dev = dev->next){
-            printf("Trying device %s/%s\n", bus->dirname, dev->filename);
-            printf("\tID_VENDOR = 0x%04x\n", dev->descriptor.idVendor);
-            printf("\tID_PRODUCT = 0x%04x\n", dev->descriptor.idProduct);
-        }
-}
-
-*/
-
-
 
 #define safeDelete(pt) \
     if (pt != nullptr) \
@@ -32,10 +11,6 @@ main(){
 //------------------------------------------------------------------
 // static functions for Button Handler
 //------------------------------------------------------------------
-
-
-
-
 void EnableButton1() {
     if ( butn0 != nullptr)
         butn0->enable();
@@ -380,7 +355,7 @@ bool CEngine::loadLandscape() {
                  obj->init();
 
                  loginfo("Landscape initialisisert ","CEngine::loadLandscape");
-                 add2List(obj,LIGHT_SHADER);
+                 add2List(obj,LIGHT_SHADER); //)TEXTURE_SHADER
              }
              else
                  logwarn("konnte Landscape nicht initialisieren !!", "CEngine::loadLandscpae" );
@@ -451,7 +426,7 @@ bool CEngine::loadTexturedCubes(){
                          logwarn("Init::Cube2 :  konnte Textures nicht laden ! ","InitGL::Init::cube2::addTexture");
                  }
                  loginfo("s3D initialisisert ","CEngine::init3D");
-                 add2List(obj,LIGHT_SHADER);
+                 add2List(obj,LIGHT_SHADER); //LIGHT_SHADER)
 
              }
              else

@@ -512,6 +512,7 @@ void InitGL::setClearColor(float r, float g, float b) {
     _ClearColor.y = g;
     _ClearColor.z = b;
     _ClearColor.w = 1.0f;
+    glClearColor(_ClearColor.x, _ClearColor.y, _ClearColor.z, _ClearColor.w);
 }
 
 
@@ -520,6 +521,7 @@ void InitGL::SetClearColor(float r, float g, float b, float a) {
     _ClearColor.y = g;
     _ClearColor.z = b;
     _ClearColor.w = a;
+    glClearColor(_ClearColor.x, _ClearColor.y, _ClearColor.z, _ClearColor.w);
 }
 
 void InitGL::InitEngineObject() {
@@ -527,17 +529,8 @@ void InitGL::InitEngineObject() {
 // Hier werden alle Objeckte initialisiert
 // ===============================================================
 
-
-    //                   |Resolution|  | Position  | | width,height, colors             |
-//    MainMenu = new CMenu(_ResX, _ResY, _ResX- 200, 0, 200, 900, glm::vec4(0.1,0.1,0.6,0.5), glm::vec4(0.9,0.9,0.9,1.0));
-//    loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
-
-
-
-    loginfo("Setze ClearColor auf Schwarz ...... done","InitGL::InitEngineObject");
-    _ClearColor.x = 0.0f; _ClearColor.y = 0.0f; _ClearColor.z = 0.0f; _ClearColor.w = 1.0f;
-    glClearColor(_ClearColor.x, _ClearColor.y, _ClearColor.z, _ClearColor.w);
-
+    loginfo("Setze ClearColor auf Hell Blau ...... done","InitGL::InitEngineObject");
+    setClearColor(0.9f,0.9f,1.0f);
     // ---------------------------------------
     // Camera View
     // ---------------------------------------
@@ -550,7 +543,7 @@ void InitGL::InitEngineObject() {
     //----------------------------------------
     ambientLight = new light;
     ambientLight->setColor(glm::vec3(1.0,0.0,1.0));
-    ambientLight->setPos(glm::vec3(0.0,1.0,40.0));
+    ambientLight->setPos(glm::vec3(0.0,10.0,-10.0));
 
 
     loginfo("Erstelle Standard Ambientes Licht ","InitGL::InitEngineObjects");
@@ -933,10 +926,14 @@ void InitGL::Run() {
 
        vec3 dummy;
        dummy = vec3(0.0,0.2,0.0);
+       sphere1->SetProjection(projection->GetPerspective());
+
+       sphere1->setActiveShader(TEXTURE_SHADER);
        if (_Animate) {
             sphere1->SetFirstTranslate(true);
             sphere1 ->StepRotate(dummy);
        }
+       sphere1->Draw(camera);
 
 
        //meshObject
@@ -948,31 +945,15 @@ void InitGL::Run() {
       //  me->Draw(camera, currentShader);
 
 
-        // lightsource
-
         lightSource->SetColor(glm::vec4(1.0,1.0,1.0,1.0));
-
-        //dummy = vec3(0.0,0.2,0.0);
-
+        lightSource->setActiveShader(TEXTURE_SHADER);
+        lightSource->SetProjection(projection->GetPerspective());
         lightSource->SetFirstTranslate(true);
-        if (_Animate)
+        if (_Animate )
             lightSource ->StepRotate( glm::vec3(0.0,0.2,0.2));    //dummy);
 
-        sphere1->Draw(camera);
+
         lightSource->Draw(camera);
-
-        // Landscape
-
-        //land->Draw(camera);
-
-
-        // ===================================
-        // Das beste zum Schluss : Skybox
-        // ===================================
-
-        Render(camera->GetView());
-        //skybox->Draw(camera->GetView());
-
 
         // ===================================
         // Engine Objekte
@@ -992,25 +973,23 @@ void InitGL::Run() {
 
                 //list3D[0]->Translate(camera->GetPos() + camera->GetDir());
 
-                if (_Animate) {
-                  //  if (i > 0) {
-                        list3D[i]->StepTranslate(vt);
-                        list3D[i]->StepRotate(rv);
-                   // }
+                if (_Animate && list3D[i]->HasAnimation()) {
+                    list3D[i]->StepTranslate(vt);
+                    list3D[i]->StepRotate(rv);
                 }
 
-
-                //vt.x =0.01;
-                //vt.y =0.0;
-                //vt.z =0.0;
-
-               // list3D[i]->setActiveShader(ShaderType::);
+                // list3D[i]->setActiveShader(ShaderType::);
                 list3D[i]->Draw(camera);
 
             }
         }
 
 
+        // ===================================
+        // Das beste zum Schluss : Skybox
+        // ===================================
+
+        Render(camera->GetView());
         // ===================================
         // Alles für 2D Projektion vorbereiten
         //====================================

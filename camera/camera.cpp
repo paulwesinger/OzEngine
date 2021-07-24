@@ -148,7 +148,7 @@ void Camera::MoveBackward(uint elapsed) {
     _View = glm::lookAt(_Pos,_Pos + _Dir,Up );
 }
 
-void Camera::MoveLeft(uint elapsed) { ;
+void Camera::MoveLeft(uint elapsed) {
     float vel =  _Speed * ((float)elapsed / 100);
     _Pos += Right * vel;
     _View = glm::lookAt(_Pos,_Pos + _Dir,Up );

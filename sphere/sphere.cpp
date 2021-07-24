@@ -70,7 +70,7 @@ static const GLchar * fs_source = {
 
 
 CSphere::CSphere() :
-    BaseObject((vec3(0.0,0.0,0.0)),vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec4(0.5,0.2,0.6,1.0)) {
+    Animate((vec3(0.0,0.0,0.0)),vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec4(0.5,0.2,0.6,1.0)) {
    _CountPoints = 36;
    _Radius = 20.0f;
 
@@ -79,12 +79,12 @@ CSphere::CSphere() :
    float near= 0.1f ;
    float far = 100.0f;
    glm::mat4 pro = perspective(radians,aspect,near,far); //Standard
-   SetProjection(pro);
+ //  SetProjection(pro);
    setUp();
 }
 
 CSphere::CSphere( int points) :
-        BaseObject((vec3(0.0,0.0,0.0)),vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec4(0.5,0.2,0.6,1.0)) {
+        Animate((vec3(0.0,0.0,0.0)),vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec4(0.5,0.2,0.6,1.0)) {
    _CountPoints = points;
    _Radius      = 20.0f;
    float radians = glm::radians(45.0f);
@@ -92,11 +92,11 @@ CSphere::CSphere( int points) :
    float near= 0.1f ;
    float far = 100.0f;
    glm::mat4 pro = perspective(radians,aspect,near,far); //Standard
-   SetProjection(pro);
+ //  SetProjection(pro);
    setUp();
 }
 CSphere::CSphere( int points, GLfloat rad)
-        : BaseObject((vec3(0.0,0.0,0.0)),vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec4(0.5,0.2,0.6,1.0)) {
+        : Animate((vec3(0.0,0.0,0.0)),vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec4(0.5,0.2,0.6,1.0)) {
    _CountPoints = points;
    _Radius      = rad;
    float radians = glm::radians(45.0f);
@@ -104,7 +104,7 @@ CSphere::CSphere( int points, GLfloat rad)
    float near= 0.1f ;
    float far = 100.0f;
    glm::mat4 pro = perspective(radians,aspect,near,far); //Standard
-   SetProjection(pro);
+  // SetProjection(pro);
    setUp();
 }
 
@@ -112,7 +112,7 @@ CSphere::CSphere(const CSphere& orig) {
 }
 
 CSphere::CSphere(vec3 origin, glm::mat4 pro)
-    : BaseObject(origin,origin,origin,vec4(0.5,0.2,0.6,1.0))
+    : Animate(origin,origin,origin,vec4(0.5,0.2,0.6,1.0))
 {
     _CountPoints = 36;
     _Radius      = 20.0f;
@@ -120,7 +120,7 @@ CSphere::CSphere(vec3 origin, glm::mat4 pro)
     setUp();
 }
 CSphere::CSphere(vec3 origin, glm::mat4 pro, int points)
-    : BaseObject(origin,origin,origin,vec4(0.5,0.2,0.6,1.0))
+    : Animate(origin,origin,origin,vec4(0.5,0.2,0.6,1.0))
 {
     _CountPoints = points;
     _Radius      = 20.0f;
@@ -128,35 +128,35 @@ CSphere::CSphere(vec3 origin, glm::mat4 pro, int points)
     setUp();
 }
 CSphere::CSphere(vec3 origin, glm::mat4 pro, int points, GLfloat rad, Shader * shad)
-    : BaseObject(origin,origin,origin,vec4(0.5,0.2,0.6,1.0))
+    : Animate(origin,origin,origin,vec4(0.5,0.2,0.6,1.0))
 {
     shader = shad;
     _CountPoints = points;
     _Radius      = rad;
-    SetProjection( pro);
+  //  SetProjection( pro);
     setUp();
 }
 
 CSphere::CSphere(vec3 origin, vec4 color, glm::mat4 pro)
-    : BaseObject(origin,origin,origin,color) {
+    : Animate(origin,origin,origin,color) {
     _Radius      = 20.0f;
     _CountPoints = 36;
-    SetProjection(pro);
+   // SetProjection(pro);
     setUp();
 }
 CSphere::CSphere(vec3 origin, vec4 color, glm::mat4 pro ,int points)
-    : BaseObject(origin,origin,origin,color) {
+    : Animate(origin,origin,origin,color) {
     _Radius      = 20.0f;
     _CountPoints = points;
-    SetProjection(pro);
+ //   SetProjection(pro);
     setUp();
 }
 CSphere::CSphere(vec3 origin, vec4 color, glm::mat4 pro ,int points,GLfloat rad,Shader * shad)
-    : BaseObject(origin,origin,origin,color) {
+    : Animate(origin,origin,origin,color) {
     shader = shad;
     _Radius      = rad;
     _CountPoints = points;
-    SetProjection(pro);
+  //  SetProjection(pro);
     setUp();
 }
 
@@ -176,9 +176,6 @@ void CSphere::Draw(Camera* cam ){//, GLuint &shaderprog) {
     glUseProgram(shaderprogram);
     mv_location     = glGetUniformLocation(shaderprogram,"mv");
     color_location  = glGetUniformLocation(shaderprogram,"changecolor");
-
-   // mv_location     = glGetUniformLocation(shaderprog,"mv_matrix");
-   // color_location  = glGetUniformLocation(shaderprog,"trianglecolor");
 
     glUniform4f(color_location,GetColor().r,GetColor().g,GetColor().b,GetColor().a);
 

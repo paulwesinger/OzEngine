@@ -19,10 +19,11 @@
 #include "../camera/camera.h"
 #include "../shaders/shader.h"
 #include "../lights/light.h"
+#include "../Animate/animate.h"
 
 using namespace glm;
 
-class CColorCube : public BaseObject {
+class CColorCube : public Animate {
 public:
     CColorCube();
     CColorCube(const CColorCube& orig,glm::mat4 pro);

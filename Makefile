@@ -7,7 +7,7 @@ plane3D/plane3D.cpp 3DLoader/load3ds.cpp textrenderer/textrender.cpp sphere/sphe
 imageloader/loadimage.cpp buttons/button.cpp colors/colorscheme.cpp engine/engine.cpp\
 lights/light.cpp meshobject/meshobject.cpp objloader/objloader.cpp menu/menu.cpp \
 controllcontainer/controllcontainer.cpp cube/colorcube.cpp textedit/textedit.cpp checkbox/checkbox.cpp signals/signal.h \
-landscape/landscape.cpp
+landscape/landscape.cpp Animate/animate.cpp
 
 	 
 

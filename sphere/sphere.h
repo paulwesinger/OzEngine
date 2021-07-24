@@ -18,11 +18,12 @@
 #include "../baseobject/baseobject.h"
 #include "../camera/camera.h"
 #include "../defines.h"
+#include "../Animate/animate.h"
 
 
 
 
-class CSphere  : public BaseObject {
+class CSphere  : public Animate{    //BaseObject {
 public:
     CSphere();
     CSphere(int points);

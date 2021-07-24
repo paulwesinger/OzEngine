@@ -119,7 +119,7 @@ static const GLchar *orthofs_source = {
 };
 // Standard Constructors and Destructor
 
-CColorCube::CColorCube()  :BaseObject() {
+CColorCube::CColorCube()  :Animate() {
 
    shader = new Shader;
    float radians = glm::radians(45.0f);
@@ -127,26 +127,26 @@ CColorCube::CColorCube()  :BaseObject() {
    float near= 0.1f ;
    float far = 10000.0f;
    glm::mat4 pro = glm::perspective(radians,aspect,near,far); //Standard
-   SetProjection(pro);
+ //  SetProjection(pro);
    Init();
 }
 
 CColorCube::CColorCube(const CColorCube& orig,glm::mat4 pro)
-    : BaseObject ( vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec4(0.5,0.2,0.6,1.0)) {
+    : Animate ( vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec3(0.0,0.0,0.0),vec4(0.5,0.2,0.6,1.0)) {
     shader = new Shader;
     SetProjection(pro);
     Init();
 }
 
 CColorCube:: CColorCube(glm::vec3(origin),glm::mat4 pro)
-        : BaseObject (origin,origin,origin,vec4(0.5,0.2,0.6,1.0)) {
+        : Animate (origin,origin,origin,vec4(0.5,0.2,0.6,1.0)) {
     shader = new Shader;
     SetProjection(pro);
     Init();
 }
 
 CColorCube:: CColorCube(glm::vec3(origin),vec4 color, glm::mat4 pro)
-        : BaseObject (origin,origin,origin,color) {
+        : Animate (origin,origin,origin,color) {
     shader = new Shader;
     SetProjection(pro);
     Init();
