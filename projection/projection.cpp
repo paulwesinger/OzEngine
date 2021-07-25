@@ -11,10 +11,10 @@
 
 Projection::Projection() {
     // Standards
-    _Fov        = glm::radians(45.0f);
-    _Aspect     = 4.0f / 3.0f;
+    _Fov        = glm::radians(33.0f);
+    _Aspect     = 16.0f / 10.0f;
     _NearPlane  = -1.0f;  // Darf nicht NULL sein !!!
-    _FarPlane   = 1000.0f;
+    _FarPlane   = 10000.0f;
     // Ortho
     _X          = 0.0f;
     _Y          = 0.0f;

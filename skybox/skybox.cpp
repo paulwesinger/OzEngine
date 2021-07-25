@@ -59,47 +59,47 @@ static const GLchar * skybox_FS_source =
 };
 static float skyboxVertices[] = {
         // positions
-        -100.0f,  100.0f, -100.0f,
-        -100.0f, -100.0f, -100.0f,
-         100.0f, -100.0f, -100.0f,
-         100.0f, -100.0f, -100.0f,
-         100.0f,  100.0f, -100.0f,
-        -100.0f,  100.0f, -100.0f,
+        -500.0f,  500.0f, -500.0f,
+        -500.0f, -500.0f, -500.0f,
+         500.0f, -500.0f, -500.0f,
+         500.0f, -500.0f, -500.0f,
+         500.0f,  500.0f, -500.0f,
+        -500.0f,  500.0f, -500.0f,
 
-        -100.0f, -100.0f,  100.0f,
-        -100.0f, -100.0f, -100.0f,
-        -100.0f,  100.0f, -100.0f,
-        -100.0f,  100.0f, -100.0f,
-        -100.0f,  100.0f,  100.0f,
-        -100.0f, -100.0f,  100.0f,
+        -500.0f, -500.0f,  500.0f,
+        -500.0f, -500.0f, -500.0f,
+        -500.0f,  500.0f, -500.0f,
+        -500.0f,  500.0f, -500.0f,
+        -500.0f,  500.0f,  500.0f,
+        -500.0f, -500.0f,  500.0f,
 
-         100.0f, -100.0f, -100.0f,
-         100.0f, -100.0f,  100.0f,
-         100.0f,  100.0f,  100.0f,
-         100.0f,  100.0f,  100.0f,
-         100.0f,  100.0f, -100.0f,
-         100.0f, -100.0f, -100.0f,
+         500.0f, -500.0f, -500.0f,
+         500.0f, -500.0f,  500.0f,
+         500.0f,  500.0f,  500.0f,
+         500.0f,  500.0f,  500.0f,
+         500.0f,  500.0f, -500.0f,
+         500.0f, -500.0f, -500.0f,
 
-        -100.0f, -100.0f,  100.0f,
-        -100.0f,  100.0f,  100.0f,
-         100.0f,  100.0f,  100.0f,
-         100.0f,  100.0f,  100.0f,
-         100.0f, -100.0f,  100.0f,
-        -100.0f, -100.0f,  100.0f,
+        -500.0f, -500.0f,  500.0f,
+        -500.0f,  500.0f,  500.0f,
+         500.0f,  500.0f,  500.0f,
+         500.0f,  500.0f,  500.0f,
+         500.0f, -500.0f,  500.0f,
+        -500.0f, -500.0f,  500.0f,
 
-        -100.0f,  100.0f, -100.0f,
-         100.0f,  100.0f, -100.0f,
-         100.0f,  100.0f,  100.0f,
-         100.0f,  100.0f,  100.0f,
-        -100.0f,  100.0f,  100.0f,
-        -100.0f,  100.0f, -100.0f,
+        -500.0f,  500.0f, -500.0f,
+         500.0f,  500.0f, -500.0f,
+         500.0f,  500.0f,  500.0f,
+         500.0f,  500.0f,  500.0f,
+        -500.0f,  500.0f,  500.0f,
+        -500.0f,  500.0f, -500.0f,
 
-        -100.0f, -100.0f, -100.0f,
-        -100.0f, -100.0f,  100.0f,
-         100.0f, -100.0f, -100.0f,
-         100.0f, -100.0f, -100.0f,
-        -100.0f, -100.0f,  100.0f,
-         100.0f, -100.0f,  100.0f
+        -500.0f, -500.0f, -500.0f,
+        -500.0f, -500.0f,  500.0f,
+         500.0f, -500.0f, -500.0f,
+         500.0f, -500.0f, -500.0f,
+        -500.0f, -500.0f,  500.0f,
+         500.0f, -500.0f,  500.0f
     };
 
 
@@ -121,7 +121,6 @@ SkyBox::SkyBox( glm::mat4 pro) {
         logwarn("Fatal : Shader nicht erstellt " ,"Skybox::SkyBox");
 
     }
-
 }
 
 SkyBox::SkyBox(const SkyBox& orig) {
@@ -157,8 +156,6 @@ void SkyBox::Draw( glm::mat4 cameraview) {
 bool SkyBox::Load(std::vector<std::string> &faces) {
     if ( skyboxLoaded ) {
 
-        // projection gehört "" global gestztr, für den Fall einer Window änderung !!!!!
-        //projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 1000.0f);// Projection Matrix setzen
         // Skybox
         glGenVertexArrays(1, &skyboxVao);
         glGenBuffers(1,&skyboxVertexbuffer);
@@ -169,7 +166,6 @@ bool SkyBox::Load(std::vector<std::string> &faces) {
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)nullptr);
 
         if ( LoadCubeMap(faces)) {
-
             return true;
         }
         else
