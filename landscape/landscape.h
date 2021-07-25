@@ -60,6 +60,8 @@ protected:
     vec4           _Color;
     Shader *       _Shader;
 
+    float genrateHeight(float ypos, float max, float min);
+
 private:
     std::vector<sVertexTexture>  vertsTex;
     std::vector<sVertexColor> vertsCol;

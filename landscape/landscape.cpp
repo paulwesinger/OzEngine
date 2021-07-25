@@ -139,6 +139,12 @@ void LandScape::Draw(Camera *cam) {
     glBindVertexArray(0);
 }
 
+float LandScape::genrateHeight(float ypos, float max, float min) {
+    float hlp = max + abs(min);
+    float fachlp = std::min( (hlp / static_cast<float>(rand() % (int)hlp)),max);
+    return  ypos +  fachlp ;
+}
+
 void LandScape::setUp() {
 
     float y = -10.0f;
@@ -164,16 +170,16 @@ void LandScape::setUp() {
     logwarn("Size _RasterX : "+ IntToString(_RasterX),"Landscape:: setUP");
     logwarn("Size _RasterZ : "+ IntToString(_RasterZ),"Landscape:: setUP");
 
-
-
+    float maxY = 9.0f;
+    float minY = -10.0f;
     for (int j = 0; j < _PatchZ; j++ ) {
-        for (int i = 0; i < _PatchX; i++) {
+         for (int i = 0; i < _PatchX; i++) {
 
             // ------------------------------------------------------
             // Vektoren
             // ------------------------------------------------------
             vt.vector.x = startX +(static_cast<float>(i) * _RasterX);
-            vt.vector.y = y ;   // hier generator für höhe einbauen
+            vt.vector.y = genrateHeight(y,maxY,minY); // hier generator für höhe einbauen
             vt.vector.z = startZ + (static_cast<float>(j) * _RasterZ);
 
             // daten für colorverts sind gleich

@@ -20,9 +20,9 @@ uniform vec3 lightcolor;
 uniform vec3 lightpos;
 uniform vec4 triangleColor;
 
-uniform vec3 diffuse_albedo = vec3(1.0,1.0,1.0); //vec3(0.5,0.2,0.7);
+uniform vec3 diffuse_albedo = vec3(0.5,1.0,0.7); //vec3(0.5,0.2,0.7);
 uniform vec3 specular_albedo = vec3(0.8);
-uniform float specular_power = 512.0;
+uniform float specular_power = 255.0;
 
 
 

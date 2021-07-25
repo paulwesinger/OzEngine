@@ -530,7 +530,7 @@ void InitGL::InitEngineObject() {
 // ===============================================================
 
     loginfo("Setze ClearColor auf Hell Blau ...... done","InitGL::InitEngineObject");
-    setClearColor(0.9f,0.9f,1.0f);
+    setClearColor(0.57f,0.72f,0.92f);
     // ---------------------------------------
     // Camera View
     // ---------------------------------------
@@ -749,6 +749,8 @@ void InitGL::Run() {
     Uint32 ms = 0;
     showMenu = true;
 
+    sphere1->SetProjection(projection->GetPerspective());
+
     while ( ! quit) {
          //     snd ->setVolume(40);
          // snd->drop();
@@ -903,13 +905,14 @@ void InitGL::Run() {
        }
 
        glEnable(GL_DEPTH_TEST);
+       glDepthFunc(GL_LEQUAL);
        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 
        vec3 dummy;
        dummy = vec3(0.0,0.2,0.0);
-       sphere1->SetProjection(projection->GetPerspective());
+//       sphere1->SetProjection(projection->GetPerspective());
 
        sphere1->setActiveShader(TEXTURE_SHADER);
        if (_Animate && sphere1->HasAnimation() ) {
