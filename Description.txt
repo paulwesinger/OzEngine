@@ -14,5 +14,14 @@ class TextEdit
     ->child class für Alphanummeric  ????
 
 
+----------------------------------------------------------------------------------------
+
+Wichtig : OzEngine dient nur zur visualisierung, objekte mit eigenen edithor erstellen!
+
+	Einlesen der daten über einen projektpfad, so wie in conf die objekte drin sind,
+	muß die structure vorhanden sein.
+
+    Buttons undMenüleiste für steuerung ausbauen !!
+
 
 

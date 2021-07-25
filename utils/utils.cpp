@@ -12,7 +12,7 @@ std::string IntToString ( int value) {
 std::string FloatToString ( float value) {
     char buf [50];
     //return wert wird nicht gebraucht
-    snprintf(buf,50,"%F", value);
+    snprintf(buf,50,"%F", static_cast<double>(value));
     return (std::string(buf));
 }
 

@@ -3,10 +3,10 @@
 #include "../landscape/landscape.h"
 //#include "../defaults.h"
 
+// macro
 #define safeDelete(pt) \
     if (pt != nullptr) \
         delete pt;
-
 
 //------------------------------------------------------------------
 // static functions for Button Handler
@@ -53,8 +53,8 @@ CEngine::CEngine(std::string titel) :
 }
 
 CEngine::~CEngine(){
-    safeDelete (con1);
-    safeDelete (con2);
+    safeDelete (con1)
+    safeDelete (con2)
 
     //safeDelete(fogBtn);
 }
@@ -103,18 +103,17 @@ void CEngine::Render(glm::mat4 cam) {
         InitGL::Render(cam);
 }
 
-
 // --------------------------------------------------------------
 // Init Methods for Engines
 // --------------------------------------------------------------
 void CEngine::initMenu(){
-
 
     //                  |Resolution|  | Position           | width,height, colors             |
      MainMenu = new CMenu(_ResX, _ResY, 0, 0, MENU_WIDTH, MENU_HEIGHT, glm::vec4(0.1,0.1,0.1,0.8), glm::vec4(0.9,0.9,0.9,1.0));
     // loginfo("Erstelle Main Menu ...... done","InitGL::InitEngineObject");
 
     int curr_y;
+
     // -------------------------------------
     // Standard Menu ist in Initgl vorhanden
     // jetzt  befüllen
@@ -138,7 +137,6 @@ void CEngine::initMenu(){
     butn1->setDisablecolor(BTN_DISABLE);
     butn1->setSize(BTN_WIDTH,BTN_HEIGHT);
     butn1->AddHandler(DisableButton1);
-  //  butn1->setbuttonColors(glm::vec3(0,0,1), glm::vec3(0,0,1));
     con1->addButton(butn1);
 
     butn2 = new CImageButton(_ResX, _ResY,"images/ButtonReleased.png",  "images/NewCube.png", con1->NextControllPos());
@@ -165,6 +163,7 @@ void CEngine::initMenu(){
 
     fogBtn->AddHandler(CEngine::funcToogleSkybox);
     con2->addButton(fogBtn);
+
     //-----------------------------------------------------
     // Textedit:
     //-----------------------------------------------------
@@ -225,12 +224,10 @@ void CEngine::Init2D() {
 
 void CEngine::Init3D(){
 
-
    logEmptyLine();
    loginfo("============================");
    loginfo("Erstelle 3D Objekte.........");
    loginfo("============================");
-
 
    fileUtil * fileutil = new fileUtil();
    bool ok;
@@ -288,9 +285,6 @@ bool CEngine::loadLandscape() {
 
     logwarn("Anzahl der Landscapes: " + IntToString(object3DLandscapeList.size()));
 
-
-
-
     for (unsigned int i = 0; i < object3DLandscapeList.size(); i++) {
 
          std::string path = OBJECT3D_CFG + "Landscapes/" + object3DLandscapeList[i];
@@ -308,8 +302,6 @@ bool CEngine::loadLandscape() {
              for (int i =0; i< objconfig.size(); i++) {
                  logimage("objconfig[" + IntToString(i)+ "] : " + objconfig[i] ,"Engine::loadLandscape");
              }
-
-
              sLandscape landscape;
              if (initLandscape(landscape,objconfig)) {
 
@@ -325,15 +317,10 @@ bool CEngine::loadLandscape() {
                  obj->Translate(glm::vec3(landscape.trans.translate.x, landscape.trans.translate.y, landscape.trans.translate.z));
                  obj->Scale(glm::vec3(landscape.trans.scale.x, landscape.trans.scale.y, landscape.trans.scale.z));
 
-                 //obj->SetColor(glm::vec4(0.0,1.0,0.0,1.0));
-                 //obj->Rotate(BASE::ZERO_VEC3);
-                 //obj->Translate( BASE::ZERO_VEC3);
-                 //obj->Scale(glm::vec3(1.0,1.0,1.0));
-
-                 obj->setPatchX(0);//landscape.patchX);
-                 obj->setPatchZ(0);//landscape.patchZ);
-                 obj->setRasterX(0);//landscape.rasterX);
-                 obj->setRasterZ(0);//landscape.rasterZ);
+                 obj->setPatchX(landscape.patchX);
+                 obj->setPatchZ(landscape.patchZ);
+                 obj->setRasterX(landscape.rasterX);
+                 obj->setRasterZ(landscape.rasterZ);
 
                  //----------------------------------------
                  // Add textures , if we have some
@@ -436,7 +423,6 @@ bool CEngine::loadTexturedCubes(){
 
              logEmptyLine();
              loginfo("Prepare for next Object: ","CEngine::init3D");
-
         }
     }
     return true;
@@ -487,7 +473,6 @@ bool CEngine::loadColorCubes() {
 
              logEmptyLine();
              loginfo("Prepare for next Object: ","CEngine::init3D");
-
         }
     }
     return true;
@@ -502,7 +487,6 @@ void CEngine::InitButtons() {
     loginfo("============================");
 
     loadButtons();
-
 }
 
 void CEngine::loadButtons() {
@@ -511,7 +495,6 @@ void CEngine::loadButtons() {
     fu = new fileUtil();
 
     ok = fu->readLine(BUTTONS_CFG + "ButtonList.cfg", btnList);
-
 
     if (ok) {
         loginfo("Lade Datei |ButtonList.cfg|","CEngine::loadbuttons");
@@ -564,7 +547,6 @@ void CEngine::loadButtons() {
     }
     else
         logwarn("Fehler: Datei | config/ButtonList nicht gefunden ! |");
-
 
     logEmptyLine() ;
     loginfo("----------------------------");
