@@ -5,23 +5,23 @@ int main(int argc,char ** argv)
 {
 
 
-    CEngine * init = new CEngine("Engine started");
+    CEngine * engine = new CEngine("Engine started");
 
-    if ( ! init ) {
+    if ( ! engine ) {
         printf( "Failed to Create Object !!! \n Aborting ......");
         return 1;
     }
 
-    if ( init->InitSDL2()) {
+    if ( engine->InitSDL2()) {
 
-        init->Run();
+        engine->Run();
 
     }
     else {
         printf(" Init SDL2 failed !! \n aborting ....");
         return 2;
     }
-    init->Done();
+    engine->Done();
 
-    delete init;
+    delete engine;
 }

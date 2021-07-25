@@ -40,9 +40,6 @@ static CButton* butn0;
 static CButton* butn1;
 static CButton* butn2;
 
-static bool renderSkybox;
-
-
 
 class CEngine : public InitGL
 {
@@ -73,7 +70,7 @@ protected:
 
     static void funcFog();
     static void funcToogleSkybox();
-    static void functoogleCheckBox();
+    static void functoogleCheckBox(bool checked);
 
  private:
 

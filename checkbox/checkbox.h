@@ -30,14 +30,14 @@ public:
     TextRender * getLabelPtr();
     bool Checked();
     void OnClick() override;
-
+    void AddHandler(FPB Handler);
 protected:
     TextRender * textLabel;
     TextRender * _X;
     bool _Checked;
     bool _ShowLabel;
-    FP clickFunc;
-    void AddHandler(FP Handler);
+    FPB clickFunc;
+
 
 private:
     glm::vec4 _LabelTextColor;

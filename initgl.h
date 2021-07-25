@@ -57,6 +57,9 @@ typedef struct {
 }GLFLOAT4;
 
 
+// static flags for handler in derrived classes
+static bool renderSkybox;
+
 
 class InitGL {
 public:
@@ -78,6 +81,9 @@ public:
     // effects
     static void setFog(bool enable = false);
     void fogParam();
+
+
+
 
 protected:
     std::vector<std::string> split(std::string const& input, std::string const& separator);

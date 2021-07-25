@@ -79,9 +79,12 @@ void CEngine::Run() {
 // Place here Functons for button handler..
 // ---------------------------------------------------------------
 
-void CEngine::functoogleCheckBox() {
+void CEngine::functoogleCheckBox(bool checked) {
 
-
+    if (checked )
+        loginfo("Checkboxclick checked","CEngine::functoogleCheckbox");
+    else
+        logwarn("Checkboxclick unchecked","CEngine::functoogleCheckbox");
 }
 void CEngine::funcToogleSkybox() {
     if (renderSkybox) {
@@ -99,6 +102,7 @@ void CEngine::funcFog(){
 }
 
 void CEngine::Render(glm::mat4 cam) {
+
     if (renderSkybox)
         InitGL::Render(cam);
 }
@@ -198,6 +202,7 @@ void CEngine::initMenu(){
     //txtEdit->setSize(s.w,s.h);
     checkBox->setPos(p.x, p.y);
     checkBox->setColor(glm::vec4(0.79, 0.99, 1.0, 1.0));
+    checkBox->AddHandler(CEngine::functoogleCheckBox);
     con2->addControll2D(checkBox);
     curr_y = MainMenu->CurrentY();
 

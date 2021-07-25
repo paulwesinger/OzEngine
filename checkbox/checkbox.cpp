@@ -83,6 +83,7 @@ void CheckBox::Render() {
 
 void CheckBox::OnClick(){
   setChecked();
+  clickFunc(_Checked);
 }
 
 TextRender* CheckBox::getLabelPtr(){
@@ -107,7 +108,7 @@ void CheckBox::setChecked() {
         _X->setText(0," ");
 }
 
-void CheckBox::AddHandler(FP Handler) {
+void CheckBox::AddHandler(FPB Handler) {
     clickFunc = Handler;
 }
 

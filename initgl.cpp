@@ -111,7 +111,7 @@ void InitGL::safeDelete(BaseObject * bo) {
 // -----------------------------------------
 void InitGL::Render(glm::mat4 cam) {
 
-    if ( skybox != nullptr)
+    if ( skybox != nullptr )
         skybox->Draw(cam);
 
     // Hier noch zusätzliche virtuelle Renderer (objecte, und so weiter!
@@ -950,8 +950,6 @@ void InitGL::Run() {
                 dummy = vec3(1.0 * (float) i ,2.0,3.0);
                 list3D[i]->SetProjection(projection->GetPerspective());
                 ////list3D[i]->setActiveShader(LIGHT_SHADER);
-
-
                 float hlp = 0.1; //(float) (i+1);
                 glm::vec3 rv(hlp * 0.5);
 
@@ -966,10 +964,8 @@ void InitGL::Run() {
 
                 // list3D[i]->setActiveShader(ShaderType::);
                 list3D[i]->Draw(camera);
-
             }
         }
-
 
         // ===================================
         // Das beste zum Schluss : Skybox
@@ -992,10 +988,7 @@ void InitGL::Run() {
             MainMenu ->Render();
 
         }
-
-
         textrender -> Render();
-
 
         if ( !  objects2D.empty() ) {
             for (uint i =0; i < objects2D.size(); i++) {

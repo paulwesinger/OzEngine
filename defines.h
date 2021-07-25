@@ -42,6 +42,7 @@ enum COLOR_Sheme {
 };
 
 typedef void (*FP)();  // Zeiger auf Funktion wird für eventhandling gebraucht
+typedef void (*FPB)(bool);
 
 typedef struct {
     glm::vec3 vector;
