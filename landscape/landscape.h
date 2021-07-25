@@ -46,7 +46,7 @@ public:
     void setRasterX(float rx);
     void setRasterZ(float rz);
 
-    void init();
+    bool init();
 
 protected:
     uint _Vao, _Vbo,_Ebo;
@@ -75,6 +75,8 @@ private:
     int _PatchZ;
 
     void setUp();
+
+    bool initOk;
 
 
 };

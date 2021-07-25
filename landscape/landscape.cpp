@@ -155,60 +155,65 @@ void LandScape::setUp() {
     // erstmal ein paar setups für die geometrie
     // landscape im mittelpunkt definieren
     //------------------------------------------
-    float sizeX = (static_cast<float>(_PatchX) * _RasterX) / 2 ;
-    float sizeZ = (static_cast<float>(_PatchZ) * _RasterZ) / 2 ;
 
-    float startX = -sizeX; //Linke seite negative
-    float startZ = -sizeZ;
+    initOk = _PatchX > 0 && _PatchZ > 0 && _RasterX > 0.0f && _RasterZ > 0.0f;
+    if (  initOk ) {
 
-    float texU = 1.0f / _RasterX;
-    float texV = 1.0f / _RasterZ;
+        float sizeX = (static_cast<float>(_PatchX) * _RasterX) / 2 ;
+        float sizeZ = (static_cast<float>(_PatchZ) * _RasterZ) / 2 ;
 
+        float startX = -sizeX; //Linke seite negative
+        float startZ = -sizeZ;
 
-    logwarn("Size _PatchX : "+ IntToString(_PatchX),"Landscape:: setUP");
-    logwarn("Size _PatchZ : "+ IntToString(_PatchZ),"Landscape:: setUP");
-    logwarn("Size _RasterX : "+ IntToString(_RasterX),"Landscape:: setUP");
-    logwarn("Size _RasterZ : "+ IntToString(_RasterZ),"Landscape:: setUP");
-
-    float maxY = 9.0f;
-    float minY = -10.0f;
-    for (int j = 0; j < _PatchZ; j++ ) {
-         for (int i = 0; i < _PatchX; i++) {
-
-            // ------------------------------------------------------
-            // Vektoren
-            // ------------------------------------------------------
-            vt.vector.x = startX +(static_cast<float>(i) * _RasterX);
-            vt.vector.y = genrateHeight(y,maxY,minY); // hier generator für höhe einbauen
-            vt.vector.z = startZ + (static_cast<float>(j) * _RasterZ);
-
-            // daten für colorverts sind gleich
-            vc.vector = vt.vector;
-
-            // -------------------------------------------------------
-            // Color  (Normals)
-            // -------------------------------------------------------
-            vt.color.r = 0.0f;
-            vt.color.g = 1.0f;
-            vt.color.b = 0.0f;
-
-            vc.color = vt.color;
-
-            //--------------------------------------------------------
-            //Texture coordinaten - nur für texshader landscape
-            //--------------------------------------------------------
-            vt.tex.x = (static_cast<float>(i) * texU);
-            vt.tex.y = (static_cast<float>(j) * texV);
-
-            vertsTex.push_back(vt);
-            vertsCol.push_back(vc);
+        float texU = 1.0f / _RasterX;
+        float texV = 1.0f / _RasterZ;
 
 
+        logwarn("Size _PatchX : "+ IntToString(_PatchX),"Landscape:: setUP");
+        logwarn("Size _PatchZ : "+ IntToString(_PatchZ),"Landscape:: setUP");
+        logwarn("Size _RasterX : "+ IntToString(_RasterX),"Landscape:: setUP");
+        logwarn("Size _RasterZ : "+ IntToString(_RasterZ),"Landscape:: setUP");
+
+        float maxY = 9.0f;
+        float minY = -10.0f;
+        for (int j = 0; j < _PatchZ; j++ ) {
+             for (int i = 0; i < _PatchX; i++) {
+
+                // ------------------------------------------------------
+                // Vektoren
+                // ------------------------------------------------------
+                vt.vector.x = startX +(static_cast<float>(i) * _RasterX);
+                vt.vector.y = genrateHeight(y,maxY,minY); // hier generator für höhe einbauen
+                vt.vector.z = startZ + (static_cast<float>(j) * _RasterZ);
+
+                // daten für colorverts sind gleich
+                vc.vector = vt.vector;
+
+                // -------------------------------------------------------
+                // Color  (Normals)
+                // -------------------------------------------------------
+                vt.color.r = 0.0f;
+                vt.color.g = 1.0f;
+                vt.color.b = 0.0f;
+
+                vc.color = vt.color;
+
+                //--------------------------------------------------------
+                //Texture coordinaten - nur für texshader landscape
+                //--------------------------------------------------------
+                vt.tex.x = (static_cast<float>(i) * texU);
+                vt.tex.y = (static_cast<float>(j) * texV);
+
+                vertsTex.push_back(vt);
+                vertsCol.push_back(vc);
+            }
         }
     }
+    else
+        logwarn("setup fail landscape will not be shown ","Landscape");
 }
 
-void LandScape::init(){
+bool LandScape::init(){
 
     loginfo("Create Landscape","Landscape::init");
 
@@ -216,16 +221,8 @@ void LandScape::init(){
     setUp();
 
     loginfo("size of Landscape " + IntToString(_PatchX) + " x "+ IntToString(_PatchZ) ,"Landscape::init");
-    loginfo("size of List " + IntToString(vertsTex.size()) ,"Landscape::init");
 
-
-    for (int i = 0; i < 900; i++) {
-        logimage("_VBO.x [" + IntToString(i) + "]  " + FloatToString(vertsTex[i].vector.x) );
-        logimage("_VBO.y [" + IntToString(i) + "]  " + FloatToString(vertsTex[i].vector.y) );
-        logimage("_VBO.y [" + IntToString(i) + "]  " + FloatToString(vertsTex[i].vector.z) );
-        logEmptyLine();
-    }
-
+    if ( initOk) {
 
     glGenVertexArrays(1,&_Vao);
     // Vertex Buffer
@@ -239,9 +236,6 @@ void LandScape::init(){
                  vertsTex.size() * sizeof(sVertexTexture),
                  &vertsTex[0],
                  GL_DYNAMIC_DRAW);
-
-
-
     // Vertex
     glVertexAttribPointer(0,3,GL_FLOAT, GL_TRUE, 8*sizeof(float),(void*)0);
     glEnableVertexAttribArray(0);
@@ -254,14 +248,11 @@ void LandScape::init(){
 
     // -----------------------------------------
     // generate indices
-    //------------------------------------------
-    // -------------------------------------
     // Sphere body
-    //--------------------------------------
+    //------------------------------------------
     GLushort x = 0;
     GLushort patchx = static_cast<GLushort>(_PatchX) ;
     GLushort hlp = static_cast<GLushort>(_PatchZ);
-
     ushort i, j;
 
     for (j = 0; j < _PatchX-1; j++) {  // -3
@@ -270,17 +261,8 @@ void LandScape::init(){
             indices.push_back(i +  x);
             indices.push_back(i+x+patchx);
         }
-
         x += patchx;
     }
-
-    for (int i = 0; i < 900; i++) {
-        logimage("_Ebo.x [" + IntToString(i) + "]  " + IntToString(indices[i]) );
-        if ((i | 32) == 0)
-            logEmptyLine();
-
-    }
-
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_Ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
@@ -292,6 +274,10 @@ void LandScape::init(){
     glBindBuffer(GL_ARRAY_BUFFER,0);
     glBindVertexArray(0);
 
-    loginfo("Sizeof Indicis " + IntToString(indices.size()) ,"Landscape::init");
     loginfo("Landscape ........ Done","Landscape::init");
+    }
+    else
+        logwarn("Landscape  wurde nicht initialisiert !!","Landscape::init");
+
+    return ( initOk);
 }

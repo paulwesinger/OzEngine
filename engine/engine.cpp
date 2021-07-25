@@ -320,19 +320,20 @@ bool CEngine::loadLandscape() {
                  else
                      obj->SetHasTextures( true);
 
-                 //obj->SetColor(glm::vec4(landscape.color.x, landscape.color.y, landscape.color.z, landscape.color.w));
-                 //obj->Rotate(glm::vec3(landscape.trans.rotate.x, landscape.trans.rotate.y, landscape.trans.rotate.z) );
-                 //obj->Translate(glm::vec3(landscape.trans.translate.x, landscape.trans.translate.y, landscape.trans.translate.z));
-                 //obj->Scale(glm::vec3(landscape.trans.scale.x, landscape.trans.scale.y, landscape.trans.scale.z));
-                 obj->SetColor(glm::vec4(0.0,1.0,0.0,1.0));
-                 obj->Rotate(BASE::ZERO_VEC3);
-                 obj->Translate( BASE::ZERO_VEC3);
-                 obj->Scale(glm::vec3(1.0,1.0,1.0));
+                 obj->SetColor(glm::vec4(landscape.color.x, landscape.color.y, landscape.color.z, landscape.color.w));
+                 obj->Rotate(glm::vec3(landscape.trans.rotate.x, landscape.trans.rotate.y, landscape.trans.rotate.z) );
+                 obj->Translate(glm::vec3(landscape.trans.translate.x, landscape.trans.translate.y, landscape.trans.translate.z));
+                 obj->Scale(glm::vec3(landscape.trans.scale.x, landscape.trans.scale.y, landscape.trans.scale.z));
 
-                 //obj->setPatchX(landscape.patchX);
-                 //obj->setPatchZ(landscape.patchZ);
-                 //obj->setRasterX(landscape.rasterX);
-                 //obj->setRasterZ(landscape.rasterZ);
+                 //obj->SetColor(glm::vec4(0.0,1.0,0.0,1.0));
+                 //obj->Rotate(BASE::ZERO_VEC3);
+                 //obj->Translate( BASE::ZERO_VEC3);
+                 //obj->Scale(glm::vec3(1.0,1.0,1.0));
+
+                 obj->setPatchX(0);//landscape.patchX);
+                 obj->setPatchZ(0);//landscape.patchZ);
+                 obj->setRasterX(0);//landscape.rasterX);
+                 obj->setRasterZ(0);//landscape.rasterZ);
 
                  //----------------------------------------
                  // Add textures , if we have some
@@ -352,23 +353,23 @@ bool CEngine::loadLandscape() {
                          logwarn("Engine::loadScape :  konnte Textures nicht laden ! ","Engine::loadLandscape");
                  }
 
-                 obj->init();
-
-                 loginfo("Landscape initialisisert ","CEngine::loadLandscape");
-                 add2List(obj,LIGHT_SHADER); //)TEXTURE_SHADER
+                 if (obj->init() ) {
+                     loginfo("Landscape initialisisert ","CEngine::loadLandscape");
+                     add2List(obj,LIGHT_SHADER); //)TEXTURE_SHADER
+                 }
+                 else
+                    logwarn("Landscape wurde nicht initialisisert ","CEngine::loadLandscape");
              }
              else
-                 logwarn("konnte Landscape nicht initialisieren !!", "CEngine::loadLandscpae" );
+                 logwarn("konnte Structure Landscape nicht initialisieren !!", "CEngine::loadLandscpae" );
                 // Hier die neuen stringpart functions einbauen
 
              logEmptyLine();
              loginfo("Prepare for next Object: ","CEngine::init3D");
-
         }
     }
     return true;
 }
-
 
 bool CEngine::loadTexturedCubes(){
 
@@ -636,10 +637,10 @@ bool CEngine::initLandscape(sLandscape &ls, std::vector<std::string> &cfg){
                 ls.trans.scale.z = StringToFloat(parts.at(1));
 
             if (parts.at(0) == "patchX")
-                ls.trans.scale.y = StringToInt(parts.at(1));
+                ls.patchX = StringToInt(parts.at(1));
 
             if (parts.at(0) == "patchZ")
-                ls.trans.scale.z = StringToInt(parts.at(1));
+                ls.patchZ = StringToInt(parts.at(1));
 
             if (parts.at(0) == "rasterX")
                 ls.rasterX = StringToFloat(parts.at(1));
