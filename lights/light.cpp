@@ -15,7 +15,7 @@ light::light(int type) {
 
 void light::init() {
     _LightType = AMBIENTE;
-    _Pos = glm::vec3(-10.0, 10.0, -10.0);
+    _Pos = glm::vec3(0.0, 100.0, 0.0);
     _Color = glm::vec3(1.0, 1.0, 1.0);
     _Direction = glm::vec3(0.0, 0.0, 0.0);  // We look to the center of our universe
     _LightOn = true;

@@ -20,9 +20,9 @@ uniform vec3 lightcolor;
 uniform vec3 lightpos;
 uniform vec4 triangleColor;
 
-uniform vec3 diffuse_albedo = vec3(0.5,0.2,0.7);
-uniform vec3 specular_albedo = vec3(0.7);
-uniform float specular_power = 256.0;
+uniform vec3 diffuse_albedo = vec3(1.0,1.0,1.0); //vec3(0.5,0.2,0.7);
+uniform vec3 specular_albedo = vec3(0.8);
+uniform float specular_power = 512.0;
 
 
 
@@ -32,6 +32,7 @@ void main(void) {
     vec3 L = normalize(fs_in.L);
     vec3 V = normalize(fs_in.V);
 
+/*   pointlight
     vec3 R = reflect(-L,N);
 
     vec3 diffuse = max(dot(N,L),0.0) * specular_albedo;
@@ -40,9 +41,11 @@ void main(void) {
 
     vec4 texcolor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.8);
     FragColor = vec4(diffuse + specular, 1.0) * texcolor * triangleColor;
+*/
 
-/*
-   float ambientStrength = 0.8;
+
+// Ambientes licht
+   float ambientStrength = 1.0;
    vec3 ambient = lightcolor * ambientStrength;
 
    // Bis hierher passt
@@ -55,8 +58,5 @@ void main(void) {
 
     vec4 texcolor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.8);
     FragColor = texcolor * (vec4(diffuse,1.0) + vec4(ambient,1.0));
-
-*/
-
 
 }

@@ -542,8 +542,8 @@ void InitGL::InitEngineObject() {
     // Light init
     //----------------------------------------
     ambientLight = new light;
-    ambientLight->setColor(glm::vec3(1.0,0.0,1.0));
-    ambientLight->setPos(glm::vec3(0.0,10.0,-10.0));
+    ambientLight->setColor(glm::vec3(1.0,1.0,1.0));
+    ambientLight->setPos(glm::vec3(0.0,100.0,0.0));
 
 
     loginfo("Erstelle Standard Ambientes Licht ","InitGL::InitEngineObjects");
@@ -626,7 +626,7 @@ void InitGL::InitEngineObject() {
     //-----------------------------------------
     loginfo("Serstell LichtQuelle als wiesse spere....","InitGL::InitEngineObjects");
     lightSource = new CSphere(ambientLight->getPos(),glm::vec4(1.0,1.0,1.0,1.0),projection->GetPerspective(),18,(GLfloat)2.0,shader );
-    lightSource->SetColor(glm::vec4(1.0,1.0,1.0,0.4));
+    lightSource->SetColor(glm::vec4(1.0,1.0,1.0,0.8));
     //Texture loading
     cubeimages.clear();
     texturesok =  fu.readLine("config/cube2textures.cfg",cubeimages);
@@ -637,23 +637,6 @@ void InitGL::InitEngineObject() {
     cubeimages.clear();
 
     loginfo("Done 3D Objects .............");
-
-    //-----------------------------------------
-    // Landscape
-    //-----------------------------------------
-/*    loginfo("Erstelle Landscape","InitGL::InitEngineObjects");
-    land = new LandScape();
-
-
-    cubeimages.clear();
-    texturesok =  fu.readLine("config/cube2textures.cfg",cubeimages);
-    if (texturesok)
-        land->addTexture(cubeimages,"InitGL::Landscape");
-    else
-        logwarn("Init::Sphere1 konnte Textures nicht laden ! ","InitGL::InitEngineObjects::Landscape::addTexture");
-
-*/
-
 }
 
 // --------------------------------------------
@@ -929,7 +912,7 @@ void InitGL::Run() {
        sphere1->SetProjection(projection->GetPerspective());
 
        sphere1->setActiveShader(TEXTURE_SHADER);
-       if (_Animate) {
+       if (_Animate && sphere1->HasAnimation() ) {
             sphere1->SetFirstTranslate(true);
             sphere1 ->StepRotate(dummy);
        }
@@ -949,7 +932,7 @@ void InitGL::Run() {
         lightSource->setActiveShader(TEXTURE_SHADER);
         lightSource->SetProjection(projection->GetPerspective());
         lightSource->SetFirstTranslate(true);
-        if (_Animate )
+        if (_Animate && lightSource->HasAnimation() )
             lightSource ->StepRotate( glm::vec3(0.0,0.2,0.2));    //dummy);
 
 
