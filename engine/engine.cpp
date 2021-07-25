@@ -82,9 +82,9 @@ void CEngine::Run() {
 void CEngine::functoogleCheckBox(bool checked) {
 
     if (checked )
-        loginfo("Checkboxclick checked","CEngine::functoogleCheckbox");
+        InitGL::stopAnimation();  // eigntlich startanimation..
     else
-        logwarn("Checkboxclick unchecked","CEngine::functoogleCheckbox");
+       InitGL::stopAnimation();
 }
 void CEngine::funcToogleSkybox() {
     if (renderSkybox) {
@@ -199,7 +199,9 @@ void CEngine::initMenu(){
     p = con2->NextControllPos();
 
     checkBox = new CheckBox(_ResX, _ResY, "images/ButtonReleased.png", p,s ,glm::vec4(0.79, 0.99, 1.0, 1.0) );
-    //txtEdit->setSize(s.w,s.h);
+
+    s.w = MainMenu->Width() - 80;
+    checkBox ->setSize(s.w,s.h);
     checkBox->setPos(p.x, p.y);
     checkBox->setColor(glm::vec4(0.79, 0.99, 1.0, 1.0));
     checkBox->AddHandler(CEngine::functoogleCheckBox);
@@ -207,7 +209,7 @@ void CEngine::initMenu(){
     curr_y = MainMenu->CurrentY();
 
     // add label for Frames to buildin textrender label
-    checkBox->setLabel("CheckBox");
+    checkBox->setLabel("Animate");
     MainMenu->addConatiner(con2);
 }
 

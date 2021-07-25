@@ -59,6 +59,7 @@ typedef struct {
 
 // static flags for handler in derrived classes
 static bool renderSkybox;
+static bool _Animate;
 
 
 class InitGL {
@@ -99,7 +100,7 @@ protected:
     void ShowFrames();
     void LoadConfiguration();
     void InitFX();
-    void stopAnimation();
+    static void stopAnimation();
 
 
     // HandleInput wird wahrscheinlich überflussig....
@@ -133,7 +134,7 @@ protected:
     // Flags for effects:
     bool _Fog;
     bool _HasSkyBox;
-    bool _Animate;
+
 
 
 
