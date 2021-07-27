@@ -1,8 +1,8 @@
 originX 0.0
 originY 0.0
 originZ 0.0
-colorRed 0.0
-colorGreen 1.0
+colorRed 1.0
+colorGreen 0.0
 colorBlue 0.0
 colorAlpha 1.0
 hasLight 1
@@ -13,7 +13,7 @@ translateZ -4.0
 rotateX 1.0
 rotateY 1.0
 rotateZ 1.0
-scaleX 1.0
-scaleY 1.0
-scaleZ 3.0
+scaleX 0.1
+scaleY 0.1
+scaleZ 0.1
 firstTranslate 1
