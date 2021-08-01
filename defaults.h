@@ -10,7 +10,7 @@ namespace BASE {
 }
 
 namespace CONTROLL {
-    const int HEIGHT = 40;
+    const int HEIGHT = 30;
 };
 
 namespace BUTTON {
@@ -32,7 +32,7 @@ namespace LABEL {
     const glm::vec4 COLOR_TEXT = glm::vec4(0.0);
     const glm::vec4 COLOR_BACKGROUND = glm::vec4(0.8,0.8, 0.8, 1.0);
     const int MARGIN_X  = 2;
-    const int MARGIN_Y  = 15;
+    const int MARGIN_Y  = 10;
 }
 
 namespace TEXT {

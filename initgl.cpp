@@ -683,9 +683,11 @@ void InitGL::toogleFullScreen (){
     }
 }
 
-void InitGL::setFramelabel(TextRender *pText){
-    if (pText != nullptr)
-        _Frames = pText;
+void InitGL::ShowFramesPerSec(uint32 sec){
+
+}
+
+void InitGL::ShowCameraPos() {
 }
 
 void InitGL::stopAnimation() {
@@ -762,9 +764,11 @@ void InitGL::Run() {
             _FramerateOut = frames;
             frames = 0;
             ms = 0;
-            if (_Frames != nullptr)
-                _Frames->setText(0, IntToString(_FramerateOut));
          }
+
+        ShowFramesPerSec(ms);
+        ShowCameraPos();
+
         textrender->setText(0,"Mouse X " + IntToString(_Mouse.x) );
         textrender->setText(1,"Mouse Y " + IntToString(_Mouse.y) );
         tickstart = tickend;

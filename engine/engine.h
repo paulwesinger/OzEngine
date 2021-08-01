@@ -65,7 +65,7 @@ protected:
     CControllContainer *con2;
 
 
-    CButton * fogBtn;
+    CButton * toogleSkyBoxBtn;
 
 
     static void funcFog();
@@ -80,6 +80,10 @@ protected:
     void initMenu();
     void initLandscape();
 
+    // virtuelle functions
+    void ShowFramesPerSec(uint32 sec) override;
+    void ShowCameraPos() override;
+
     bool initButtonStruct(sButtonStruct & bs,std::vector<std::string> cfg);
     bool init3DStruct(s3DStruct & d3s, std::vector<std::string> &cfg);
     bool initLandscape(sLandscape &ls, std::vector<std::string> &cfg);
@@ -90,8 +94,14 @@ protected:
     //----------------------------------------------------------------
     // Menu controlls
     //----------------------------------------------------------------
-    TextEdit * txtEdit;
-    CheckBox * checkBox;
+    TextEdit * txtFrameperSec;
+    CheckBox * checkBoxAnimation;
+
+    // Label für CameraPos :
+    TextEdit * cameraX;
+    TextEdit * cameraY;
+    TextEdit * cameraZ;
+
 
     std::string &getValueItem(std::string &s, std::string erasestring);
     TextRender * textrenderer;

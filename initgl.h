@@ -97,7 +97,6 @@ protected:
     void setClearColor(float r, float g, float b);
     void toogleFullScreen();
 
-    void ShowFrames();
     void LoadConfiguration();
     void InitFX();
     static void stopAnimation();
@@ -119,7 +118,8 @@ protected:
     void add2List(BaseObject * obj, ShaderType s);
     void add2Dobject(Base2D * obj);
     void addButton(CButton* obj);
-    void setFramelabel(TextRender *pText);
+    virtual void ShowFramesPerSec(uint32 sec);
+    virtual void ShowCameraPos();
 
     bool hasSkyBox();
     void setHasSkybox(bool enable);
