@@ -255,6 +255,9 @@ void CEngine::ShowFramesPerSec(uint32 sec) {
     }
 }
 
+
+
+
 void CEngine::ShowCameraPos() {
     if (cameraX != nullptr) {
         TextRender * tX = cameraX->getTextPtr();
