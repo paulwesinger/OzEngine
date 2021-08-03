@@ -13,8 +13,8 @@
 #include <vector>
 
 
-const int MENU_WIDTH  = 250;
-const int MENU_HEIGHT = 500;
+const int MENU_WIDTH  = 190;
+const int MENU_HEIGHT = 800;
 
 typedef struct {
     sRect Pos;

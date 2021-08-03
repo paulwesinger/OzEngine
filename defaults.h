@@ -10,7 +10,8 @@ namespace BASE {
 }
 
 namespace CONTROLL {
-    const int HEIGHT = 30;
+    const int HEIGHT   = 30;
+    const int MARGIN_X = 10;
 };
 
 namespace BUTTON {

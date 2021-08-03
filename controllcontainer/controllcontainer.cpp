@@ -17,7 +17,7 @@ CControllContainer::~CControllContainer() {
 CControllContainer::CControllContainer(int px, int py, int w, int h) {
 
     _Height = h;
-    _Width = w - 10;   // 2* 5
+    _Width = w ;   // 2* 5
     _CurrentY = py + 5;
     _CurrentX = px + 5;
 }

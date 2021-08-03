@@ -19,7 +19,7 @@ LIB = -L/usr/lib64/ -lm -ldl -lSDL2 -lSDL2_image -lGL -lGLEW  -lfreetype -lIrrKl
 
 CC = /usr/bin/g++
 BIN = Test
-CFLAGS = -Wall -c 'sdl-config --cflags' -std=c++17
+CFLAGS = -Wall -c 'sdl-config --cflags' -std=c++20
 LDFLAGS = -g
 OBJ= $(SRC)
 $(BIN):

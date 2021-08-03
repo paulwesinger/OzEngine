@@ -170,7 +170,6 @@ void CEngine::initMenu(){
     toogleSkyBoxBtn->setColor(BTN_ENABLE);
     toogleSkyBoxBtn->setDisablecolor(BTN_DISABLE);
     toogleSkyBoxBtn->setSize(BTN_WIDTH,BTN_HEIGHT);
-
     toogleSkyBoxBtn->AddHandler(CEngine::funcToogleSkybox);
     con2->addButton(toogleSkyBoxBtn);
 
@@ -180,24 +179,15 @@ void CEngine::initMenu(){
     sSize s;
     sPoint p;
     //con2->addSpacer();
-    curr_y = MainMenu->CurrentY();
-
-    s.w = MainMenu->Width()- 80;
+    s.w = MainMenu->Width() - CONTROLL::MARGIN_X ;
     s.h = CONTROLL::HEIGHT;
 
     p = con2->NextControllPos();
-
     txtFrameperSec = new TextEdit(_ResX, _ResY, "images/ButtonReleased.png", p,s ,glm::vec4(0.79, 0.99, 1.0, 1.0) , glm::vec4(0.79, 0.99, 1.0, 1.0));
-    txtFrameperSec->setSize(s.w,s.h);
-    txtFrameperSec->setPos(p.x, p.y);
     txtFrameperSec->setColor(glm::vec4(0.79, 0.99, 1.0, 1.0));
     con2->addControll2D(txtFrameperSec);
-    curr_y = MainMenu->CurrentY();
-
     // add label for Frames to buildin textrender label
     txtFrameperSec->setLabel("FPS");
-    //ShowFramesPerSec();
-
 
     //----------------------------------------------------
     // checkbox für Animation
@@ -205,14 +195,9 @@ void CEngine::initMenu(){
     p = con2->NextControllPos();
 
     checkBoxAnimation = new CheckBox(_ResX, _ResY, "images/ButtonReleased.png", p,s ,glm::vec4(0.79, 0.99, 1.0, 1.0) );
-
-    s.w = MainMenu->Width() - 80;
-    checkBoxAnimation ->setSize(s.w,s.h);
-    checkBoxAnimation->setPos(p.x, p.y);
     checkBoxAnimation->setColor(glm::vec4(0.79, 0.99, 1.0, 1.0));
     checkBoxAnimation->AddHandler(CEngine::functoogleCheckBox);
     con2->addControll2D(checkBoxAnimation);
-    curr_y = MainMenu->CurrentY();
     // add label for Frames to buildin textrender label
     checkBoxAnimation->setLabel("Animate");
 
@@ -220,17 +205,25 @@ void CEngine::initMenu(){
     // Statusfenster(pos) von Camera:
     //----------------------------------------------------
     p = con2->NextControllPos();
-
     cameraX = new TextEdit(_ResX, _ResY, "images/ButtonReleased.png", p,s ,glm::vec4(0.79, 0.99, 1.0, 1.0) , glm::vec4(0.79, 0.99, 1.0, 1.0));
-    cameraX->setSize(s.w,s.h);
-    cameraX->setPos(p.x, p.y);
     cameraX->setColor(glm::vec4(0.79, 0.99, 1.0, 1.0));
     con2->addControll2D(cameraX);
-    curr_y = MainMenu->CurrentY();
-
     // add label for Frames to buildin textrender label
-    cameraX->setLabel("Camera - X");
-    //setFramelabel(cameraX->getTextPtr());
+    cameraX->setLabel("Cam X");
+
+    p = con2->NextControllPos();
+    cameraY = new TextEdit(_ResX, _ResY, "images/ButtonReleased.png", p,s ,glm::vec4(0.79, 0.99, 1.0, 1.0) , glm::vec4(0.79, 0.99, 1.0, 1.0));
+    cameraY->setColor(glm::vec4(0.79, 0.99, 1.0, 1.0));
+    con2->addControll2D(cameraY);
+    // add label for Frames to buildin textrender label
+    cameraY->setLabel("Cam Y");
+
+    p = con2->NextControllPos();
+    cameraZ = new TextEdit(_ResX, _ResY, "images/ButtonReleased.png", p,s ,glm::vec4(0.79, 0.99, 1.0, 1.0) , glm::vec4(0.79, 0.99, 1.0, 1.0));
+    cameraZ->setColor(glm::vec4(0.79, 0.99, 1.0, 1.0));
+    con2->addControll2D(cameraZ);
+    // add label for Frames to buildin textrender label
+    cameraZ->setLabel("Cam Z");
 
 
     MainMenu->addConatiner(con2);

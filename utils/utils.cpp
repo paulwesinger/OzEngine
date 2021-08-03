@@ -1,6 +1,6 @@
 #include "utils.h"
 #include <string>
-
+//#include <format>   für c++20
 
 std::string IntToString ( int value) {
     char buf [50];
@@ -10,10 +10,12 @@ std::string IntToString ( int value) {
 }
 
 std::string FloatToString ( float value) {
-    char buf [50];
-    //return wert wird nicht gebraucht
-    snprintf(buf,50,"%F", static_cast<double>(value));
-    return (std::string(buf));
+
+    std::string num_text = std::to_string(value);
+    std::string rounded = num_text.substr(0, num_text.find(".")+3);
+
+    //std::string s = std::format("{:.2f}", 3.14159265359);     c++20 aktualisieren
+    return rounded;
 }
 
 float StringToFloat( std::string value) {

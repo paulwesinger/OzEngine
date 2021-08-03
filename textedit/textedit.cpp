@@ -102,7 +102,7 @@ void TextEdit::init() {
     editLabel = new TextRender(resX, resY, _PosLabel);
     _PosText.x = _PosLabel.x + 100;// _Size.w / 2 ;
     _PosText.y = _Pos.y + LABEL::MARGIN_Y;
-    _SizeText.w = _Size.w / 2;
+    _SizeText.w = _Size.w / 2 - 10 ;
     _SizeText.h = editLabel->getTextAreaHeight();
     editLabel->SetScale(TEXT::SCALE_SMALL);
     editLabel->AddString("<>");
