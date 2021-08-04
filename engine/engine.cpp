@@ -613,7 +613,6 @@ void CEngine::loadButtons() {
                     loginfo(".........Done", "Engine::loadButtons");
                     logEmptyLine();
                 }
-
             }
 
         }
