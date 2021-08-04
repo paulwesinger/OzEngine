@@ -166,6 +166,7 @@ void CEngine::initMenu(){
     con2 = new CControllContainer(MainMenu->Pos().x,
                                              curr_y,
                                   MainMenu->Width(),0);
+    con2->addSpacer();
     toogleSkyBoxBtn = new CImageButton(_ResX, _ResY, "images/ButtonReleased.png", "images/ToogleSkybox.png",con2->NextControllPos() );
     toogleSkyBoxBtn->setColor(BTN_ENABLE);
     toogleSkyBoxBtn->setDisablecolor(BTN_DISABLE);
@@ -173,6 +174,7 @@ void CEngine::initMenu(){
     toogleSkyBoxBtn->AddHandler(CEngine::funcToogleSkybox);
     con2->addButton(toogleSkyBoxBtn);
 
+    con2->addSpacer();
     //-----------------------------------------------------
     // Textedit:
     //-----------------------------------------------------
@@ -595,7 +597,7 @@ void CEngine::loadButtons() {
                                          glm::vec3(btnStruct.TextRed,btnStruct.TextGreen,btnStruct.TextBlue));
 
                     switch (i) {
-                        case 0: btn ->AddHandler(EngineTestFunc4); break;
+                        case 0: btn ->AddHandler(funcToogleSkybox); break;
                         case 1: btn ->AddHandler(EngineTestFunc2); break;
                         case 2: btn ->AddHandler(EngineTestFunc3); break;
                     default:
