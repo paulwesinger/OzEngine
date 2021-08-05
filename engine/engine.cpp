@@ -614,7 +614,6 @@ void CEngine::loadButtons() {
                     logEmptyLine();
                 }
             }
-
         }
     }
     else
