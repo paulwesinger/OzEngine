@@ -183,6 +183,7 @@ CCube:: CCube(glm::vec3(origin),vec4 color, glm::mat4 pro)
     shader = new Shader;
     SetProjection(pro);
     Init();
+
 }
 
 CCube::~CCube() {
