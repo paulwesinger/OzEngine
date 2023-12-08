@@ -20,7 +20,7 @@
 //#include "glm/gtc/matrix_transform.hpp"
 
 #include <SDL2/SDL.h>
-#include <irrklang/irrKlang.h>
+// #include <irrklang/irrKlang.h>
 #include "logs/logs.h"
 #include "utils/utils.h"
 #include "shaders/shader.h"
@@ -172,11 +172,11 @@ protected:
     MOUSE _Mouse;
     float MouseResX;
     float MouseResY;
-
+/* 
     irrklang::ISoundEngine * soundengine;
     irrklang::ISoundEngine * soundengine1;
     irrklang::ISoundEngine * soundengine2;
-    irrklang::ISoundEngine * soundengine3;
+    irrklang::ISoundEngine * soundengine3; */
 
 
 

@@ -15,7 +15,8 @@ landscape/landscape.cpp Animate/animate.cpp
 #LIBS = -L/usr/lib64/ 
 #LIB =  -lm -ldl -lSDL2
 
-LIB = -L/usr/lib64/ -lm -ldl -lSDL2 -lSDL2_image -lGL -lGLEW  -lfreetype -lIrrKlang
+#LIB = -L/usr/lib64/ -lm -ldl -lSDL2 -lSDL2_image -lGL -lGLEW  -lfreetype -lIrrKlang
+LIB = -L/usr/lib64/ -lm -ldl -lSDL2 -lSDL2_image -lGL -lGLEW  -lfreetype  
 
 CC = /usr/bin/g++
 BIN = Test

@@ -20,7 +20,7 @@
 #define FULLSCREEN_WIDTH  3840//1680.0f//1920.0f
 #define FULLSCREEN_HEIGHT 2160//1050.0f//1200.0f
 
-using namespace irrklang;
+//using namespace irrklang;
 
 InitGL::InitGL (const std::string titel){
 
@@ -69,8 +69,8 @@ InitGL::~InitGL() {
     // Alten Videomode wiederherstellen
     SDL_SetWindowDisplayMode(window,&DesktopDisplayMode);
 
-    if (soundengine)
-        soundengine->drop();
+/*     if (soundengine)
+        soundengine->drop(); */
 
     safeDelete(sphere1);
     safeDelete(lightSource);
@@ -723,13 +723,13 @@ void InitGL::Run() {
     Uint32 second  = 0; // Zähler für elapsed bis 1000 ms
     int event = 0;
 
-    soundengine = irrklang::createIrrKlangDevice();
+    //soundengine = irrklang::createIrrKlangDevice();
     //soundengine1 = irrklang::createIrrKlangDevice();
     //if (soundengine) {
 
 
 
-    irrklang::vec3df position(23,70,200);
+  /*   irrklang::vec3df position(23,70,200);
 
     // start the sound paused:
     irrklang::ISound* snd = soundengine->play3D("sounds/media/bell.wav", position, false, true);
@@ -742,7 +742,7 @@ void InitGL::Run() {
        snd->setMinDistance(30.0f); // a loud sound
        snd->setIsPaused(false); // unpause the sound
     }
-
+ */
 
     //--------------------------------------------------
     // framerate berechene
